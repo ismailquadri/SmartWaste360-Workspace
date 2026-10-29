@@ -27,6 +27,9 @@ export const Route = createFileRoute("/")({
       { name: "twitter:title", content: TITLE },
       { name: "twitter:description", content: DESCRIPTION },
     ],
+    links: [
+      { rel: "preload", as: "image", href: photos.heroBridge, fetchPriority: "high" },
+    ],
   }),
   component: Home,
 });
@@ -60,6 +63,7 @@ function Home() {
           muted
           loop
           playsInline
+          preload="metadata"
           aria-label="LAWMA trucks crossing a Lagos bridge at sunrise"
         />
         <div className="absolute inset-0 -z-10 bg-gradient-to-t from-ink/85 via-ink/30 to-ink/10" aria-hidden="true" />
@@ -137,6 +141,7 @@ function Home() {
                       src={SERVICE_IMAGES[s.id]}
                       alt=""
                       loading="lazy"
+                      decoding="async"
                       className="h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.04]"
                     />
                   </div>
@@ -174,7 +179,7 @@ function Home() {
           </div>
           <TiltIn className="mx-auto mt-16 max-w-[1060px]">
             <div className="overflow-hidden rounded-2xl border border-line-light bg-card shadow-lift">
-              <img src={product.overview} alt="SmartWaste360 city overview with backlog by area and operator scores" loading="lazy" className="w-full" />
+              <img src={product.overview} alt="SmartWaste360 city overview with backlog by area and operator scores" loading="lazy" decoding="async" className="w-full" />
             </div>
           </TiltIn>
           <ul className="mt-16 grid gap-px overflow-hidden rounded-2xl border border-line-light bg-line-light sm:grid-cols-2 lg:grid-cols-4">

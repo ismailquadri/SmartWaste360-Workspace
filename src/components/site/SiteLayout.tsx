@@ -19,6 +19,7 @@ export function LawmaLogo({ tone = "dark", className }: { tone?: "dark" | "light
       alt="LAWMA — Lagos Waste Management Authority"
       width={913}
       height={308}
+      decoding="async"
       className={cn("h-7 w-auto md:h-8", className)}
     />
   );
