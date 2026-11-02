@@ -66,7 +66,7 @@ const COLUMNS: Column[] = [
 function Img({ tile, className }: { tile: Tile; className?: string }) {
   return (
     <figure className={cn("relative overflow-hidden rounded-2xl bg-paper-3", className)}>
-      <img src={tile.src} alt={tile.alt} loading="lazy" decoding="async" draggable={false} className="absolute inset-0 h-full w-full object-cover" />
+      <img src={tile.src} alt={tile.alt} loading="lazy" draggable={false} className="absolute inset-0 h-full w-full object-cover" />
       {tile.stat && (
         <figcaption className="glass absolute inset-x-2 bottom-2 rounded-xl p-5 text-paper md:inset-x-3 md:bottom-3 md:p-6">
           <CountUp value={tile.stat.value} suffix={tile.stat.suffix} className="display block text-[clamp(2.2rem,3.4vw,3.25rem)] leading-none tabular-nums" />

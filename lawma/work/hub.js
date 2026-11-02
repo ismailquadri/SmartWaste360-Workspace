@@ -1,4 +1,4 @@
-/* Hub additions: public reports (dump alarms), resident channels, service backlog, disposal-site queues, markets & businesses. */
+/* Hub additions: public reports (dump alarms), resident channels, service backlog, disposal-site queues, markets & businesses, partner remittances, customer pickups, facility weights. */
 // ---- Rules (single-line constants; src/test/hub-rules.test.ts evaluates them in isolation) ----
 const ALARM_ACK_LIMIT_MIN=30;
 const ALARM_STEPS=['New','Acknowledged','Assigned','Crew on site','Cleared'];
@@ -13,6 +13,13 @@ const queueWarning=waits=>waits.some(w=>w>QUEUE_WAIT_LIMIT_MIN);
 const SITE_REPORTS_KEY='lawma.site.reports.v1';
 const siteReportToHub=s=>({id:s.ref,type:s.type,area:s.area,place:s.place,note:s.description,size:s.size,channel:'Website',lang:'English',reporter:s.reporter,raised:s.raised,photoUrl:typeof s.photo==='string'&&s.photo.startsWith('data:image/')?s.photo:null,...(Array.isArray(s.coord)?{coord:s.coord}:{})});
 const monthlyInvoice=(account,period)=>({account:account.id,period,amount:account.monthly,basis:'Monthly service'});
+const PARTNER_SHARE=0.8;
+const REMITTANCE_DEADLINE='Friday 5 pm';
+const settlementSplit=gross=>{const authorityShare=Math.round(gross*(1-PARTNER_SHARE));return {partnerShare:gross-authorityShare,authorityShare}};
+const pickupFlow={Requested:['Scheduled','Declined'],Scheduled:['Collected','Cancelled'],Collected:['Completed','Cancelled'],Completed:[],Declined:[],Cancelled:[]};
+const pickupCanMove=(from,to)=>(pickupFlow[from]||[]).includes(to);
+const pickupEarnings=list=>list.filter(p=>p.status==='Completed').reduce((n,p)=>n+p.fee,0);
+const pickupUnsettled=(pickups,setts,partnerId)=>pickups.filter(p=>p.partner===partnerId&&p.status==='Completed'&&!setts.some(s=>s.partner===partnerId&&(s.pickups||[]).includes(p.id)));
 
 // ---- Data ----
 const HUB_PHOTOS=/*HUBPHOTOS*/;
@@ -32,6 +39,7 @@ function hubReplay(r,target,times){
  r.status=target;return r;
 }
 function hubSeed(){
+ const opMain=hubOperator('Ikeja'),opCoastal=hubOperator('Lekki');
  const rep=(o,status='New',times=[])=>hubReplay({photo:null,size:'Medium',lang:'English',partner:null,crew:null,caseId:null,duplicateOf:null,...o,coord:hubPoint(o.area,o.f??.5)},status,times);
  const reports=[
   rep({id:'PUB-001',type:'Illegal dump',area:'Mushin',place:'Ojuwoye market road, by the bus stop',channel:'WhatsApp',lang:'Pidgin',reporter:'Resident · 0803 ••• 4412',size:'Large',photo:'dump',raised:hubMinutesAgo(42),f:.42}),
@@ -46,7 +54,7 @@ function hubSeed(){
  const areas=Object.entries(areaDays).map(([area,days],i)=>({area,days,overdue:days<3?0:days*6+(i%3)*4,partner:hubOperator(area),moved:null}));
  const fleetPick=i=>fleet[(i*37+11)%fleet.length];
  const truck=(site,i,mins,travel)=>{const v=fleetPick(i);return {id:'Q-'+String(i+1).padStart(3,'0'),site,truck:v.code,partner:v.partnerId,arrived:hubMinutesAgo(mins),travel}};
- return {version:1,reports,areas,moves:[],
+ return {version:2,reports,areas,moves:[],
   sites:[{id:'DS-OLU',name:'Olusosun',area:'Ojota',gateToExit:38,exits:6},{id:'DS-SOL',name:'Solous II',area:'Igando',gateToExit:31,exits:4},{id:'DS-EPE',name:'Epe',area:'Epe',gateToExit:24,exits:2}],
   queue:[truck('DS-OLU',0,38,55),truck('DS-OLU',1,31,48),truck('DS-OLU',2,22,61),truck('DS-OLU',3,12,44),truck('DS-SOL',4,15,47),truck('DS-SOL',5,8,39),truck('DS-EPE',6,5,96)],
   onsite:[{truck:fleetPick(7).code,partner:fleetPick(7).partnerId,site:'DS-OLU',gateIn:hubMinutesAgo(20)}],
@@ -58,10 +66,24 @@ function hubSeed(){
    {id:'BUS-002',name:'Apapa food court',kind:'Business',area:'Apapa',window:'21:00–22:30',days:'Daily',partner:hubOperator('Apapa'),monthly:60000}
   ],
   cleanups:{'MKT-001':{status:'Done',time:'08:12',crew:'Crew lead 009'},'MKT-002':{status:'Missed',time:null,crew:null},'MKT-003':{status:'Done',time:'07:55',crew:'Crew lead 001'},'BUS-001':{status:'Scheduled',time:null,crew:null},'BUS-002':{status:'Scheduled',time:null,crew:null}},
-  invoices:[{id:'COM-001',...monthlyInvoice({id:'MKT-001',monthly:180000},'September 2026'),status:'Paid'},{id:'COM-002',...monthlyInvoice({id:'MKT-002',monthly:240000},'September 2026'),status:'Paid'},{id:'COM-003',...monthlyInvoice({id:'MKT-003',monthly:210000},'September 2026'),status:'Outstanding'}]
+  invoices:[{id:'COM-001',...monthlyInvoice({id:'MKT-001',monthly:180000},'September 2026'),status:'Paid'},{id:'COM-002',...monthlyInvoice({id:'MKT-002',monthly:240000},'September 2026'),status:'Paid'},{id:'COM-003',...monthlyInvoice({id:'MKT-003',monthly:210000},'September 2026'),status:'Outstanding'}],
+  pickups:[
+   {id:'PU-710001',partner:opCoastal,customer:'Ada Okafor',address:'71 Ajah Gardens',area:'Ajah',window:'Friday, 9 am–noon',fee:1500,status:'Requested',crew:null,raised:hubMinutesAgo(40),evidence:null,issue:null,history:[]},
+   {id:'PU-180002',partner:opMain,customer:'Tunde Bakare',address:'18 Olowu Street',area:'Ikeja',window:'Tomorrow, 8–11 am',fee:1450,status:'Requested',crew:null,raised:hubMinutesAgo(55),evidence:null,issue:null,history:[]},
+   {id:'PU-104201',partner:opMain,customer:'Chioma Eze',address:'4 Mainland Court',area:'Ikeja',window:'Thursday, 1–4 pm',fee:1500,status:'Scheduled',crew:'Crew Beta',raised:hubMinutesAgo(300),evidence:null,issue:null,history:[{status:'Scheduled',note:'Accepted · Crew Beta · Thursday, 1–4 pm'}]},
+   {id:'PU-088401',partner:opCoastal,customer:'Ibrahim Suleiman',address:'9 Freedom Way',area:'Lekki',window:'Wednesday, 10 am–1 pm',fee:1500,status:'Scheduled',crew:'Crew Alpha',raised:hubMinutesAgo(600),evidence:null,issue:'Missed collection reported last week',history:[{status:'Scheduled',note:'Accepted · Crew Alpha · Wednesday, 10 am–1 pm'}]},
+   {id:'PU-200101',partner:opCoastal,customer:'Folasade Adigun',address:'12 Marwa Close',area:'Lekki',window:'Monday, 9 am–noon',fee:1500,status:'Completed',crew:'Crew Alpha',raised:hubMinutesAgo(2800),evidence:'Collection evidence recorded',issue:null,history:[{status:'Completed',note:'Stop completed · earnings captured'}]},
+   {id:'PU-210301',partner:opCoastal,customer:'Kunle Oyelaran',address:'5B Chevron Drive',area:'Lekki',window:'Tuesday, 2–5 pm',fee:1450,status:'Completed',crew:'Crew Gamma',raised:hubMinutesAgo(4200),evidence:'Collection evidence recorded',issue:null,history:[{status:'Completed',note:'Stop completed · earnings captured'}]},
+   {id:'PU-176204',partner:opCoastal,customer:'Bisi Adeleke',address:'7 Admiralty Road',area:'Lekki',window:'Wednesday, 9 am–noon',fee:1450,status:'Completed',crew:'Crew Gamma',raised:hubMinutesAgo(1500),evidence:'Collection evidence recorded',issue:null,history:[{status:'Completed',note:'Stop completed · earnings captured'}]}
+  ],
+  settlements:[
+   {id:'SET-220001',partner:opMain,date:hubMinutesAgo(5000),gross:18500,partnerShare:14800,authorityShare:3700,status:'Reconciled',pickups:[]},
+   {id:'SET-219954',partner:opMain,date:hubMinutesAgo(11500),gross:16200,partnerShare:12960,authorityShare:3240,status:'Reconciled',pickups:[]},
+   {id:'SET-220002',partner:opCoastal,date:hubMinutesAgo(180),gross:2950,...settlementSplit(2950),status:'Awaiting confirmation',pickups:['PU-200101','PU-210301']}
+  ]
  };
 }
-if(modules.hub?.version!==1)modules.hub=hubSeed();
+if(!modules.hub)modules.hub=hubSeed();else if(modules.hub.version!==2){const fresh=hubSeed();modules.hub.version=2;modules.hub.settlements=fresh.settlements;modules.hub.pickups=fresh.pickups}
 const hub=modules.hub;
 const hubUI={status:'Open',channel:'All channels',showReports:true,showBacklog:false};
 const HUB_PERIOD='October 2026';
@@ -303,4 +325,114 @@ runModule=function(cmd,id){
  if(a==='cleanMissed'){const acc=hub.accounts.find(x=>x.id===id);if(!acc)return;hub.cleanups[acc.id]={status:'Missed',time:null,crew:null};const n=hubNewReport({type:'Market waste',area:acc.area,place:acc.name,channel:'Field officer',reporter:'LAWMA field officer',size:'Large'});saveAndRender(acc.name+' marked missed. '+n.id+' opened in Public reports.');return}
  if(a==='invoiceAll'){if(!hubCanBill())return;const todo=hub.accounts.filter(acc=>!hub.invoices.some(i=>i.account===acc.id&&i.period===HUB_PERIOD));if(!todo.length){toast(HUB_PERIOD+' invoices are already issued.');return}todo.forEach(acc=>hub.invoices.push({id:moduleID('COM',hub.invoices),...monthlyInvoice(acc,HUB_PERIOD),status:'Outstanding'}));recordModuleAction(todo.length+' monthly commercial invoices issued for '+HUB_PERIOD);saveAndRender(todo.length+' monthly invoices issued for '+HUB_PERIOD+'.');return}
  if(a==='paid'){if(!hubCanBill())return;const inv=hub.invoices.find(i=>i.id===id);if(!inv)return;inv.status='Paid';recordModuleAction(inv.id+' payment recorded');saveAndRender(inv.id+' marked paid.');return}
+};
+
+// ---- Partner remittances, customer pickups, facility weights ----
+// Mirrors the partner workspace: weekly remittances split 80/20, the customer pickups behind them, and weighbridge intake for partner loads.
+const hubCanRemit=()=>isAuthority()||journey.role==='finance';
+const hubRemVisible=()=>hub.settlements.filter(s=>!isPartnerRole()||s.partner===modules.partnerContext);
+const hubPUVisible=()=>hub.pickups.filter(p=>!isPartnerRole()||p.partner===modules.partnerContext);
+const hubPickupPill=p=>pill(p.status,p.status==='Completed'?'good':['Declined','Cancelled'].includes(p.status)?'red':'amber');
+const hubDueRows=()=>{const out=[];for(const p of hubPUVisible()){if(p.status!=='Completed')continue;let r=out.find(x=>x.partner===p.partner);if(!r){r={partner:p.partner,earnings:0,unremitted:[]};out.push(r)}r.earnings+=p.fee;if(!hub.settlements.some(s=>s.partner===p.partner&&(s.pickups||[]).includes(p.id)))r.unremitted.push(p)}return out};
+const hubWeightTrips=()=>Object.entries(modules.tlsStores||{}).flatMap(([fac,st])=>st.trips.map(t=>({...t,facility:fac}))).filter(t=>!isPartnerRole()||t.partner===modules.partnerContext);
+const hubFacilityName=fac=>modules.facilities.find(f=>f.id===fac)?.name||fac;
+const hubRemAccess=['management','finance','admin'];
+for(const r of hubRemAccess)if(personaPages[r]){if(!personaPages[r].includes('remittances'))personaPages[r].push('remittances');if(!personaPages[r].includes('partners'))personaPages[r].push('partners')}
+defs.insertAdjacentHTML('beforeend','<symbol id="i-naira" viewBox="0 0 24 24"><path d="M7 18V8l10 10V8M5 11h14M5 14h14"/></symbol>');
+const hubRemContext=changePartnerContext;changePartnerContext=function(id){hubRemContext(id);if(journey.role==='partner'&&currentPartner().service==='Collection'&&!personaPages.partner.includes('remittances'))personaPages.partner.push('remittances')};
+
+// Weighbridge records live with the TLS; seed two cleared loads and one awaiting unload so the weights panel opens on real records.
+function hubSeedWeights(){
+ if(!modules.tlsStores||!modules.tlsStores['FAC-001']||modules.hub.weightsSeeded||tls.trips.length)return;
+ modules.hub.weightsSeeded=true;
+ const load=(truck,driver,partner,route,state,net,mins)=>{
+  const t={id:tlsID('TRP'),order:null,truck,driver,partner,route,state,events:[],arrived:hubMinutesAgo(mins)};
+  tlsEvents(t).push({text:state==='Weighed'?'Gross and tare recorded · awaiting unload confirmation':'Load received · unload confirmed',time:hubMinutesAgo(Math.max(1,mins-6)),actor:'Facility supervisor'});
+  if(net){t.net=net;tlsPost(t.id,net,'Received','Trip '+t.id)}
+  tls.trips.push(t);
+ };
+ load('LND 221 KJA','Bashir A.',hubOperator('Ikeja'),'Ikeja · PSP route 06','Unloaded',4200,95);
+ load('LND 017 YB','Grace I.',hubOperator('Lekki'),'Lekki · PSP route 11','Unloaded',2650,70);
+ load('LND 884 XQ','Rasheed T.',hubOperator('Ikeja'),'Ikeja · Olowu street run','Weighed',3100,25);
+ saveModules();
+}
+hubSeedWeights();
+
+function hubRemittancePanel(){
+ const due=hubDueRows().filter(x=>x.unremitted.length);
+ return panel('Remittances','Money each partner remits from its workspace. Confirming a remittance posts the authority share to revenue.',table(['Remittance','Partner','Sent','Gross','Partner 80%','Authority 20%','Status',''],hubRemVisible().map(s=>[`<b>${esc(s.id)}</b><small class="cell-sub">${s.pickups&&s.pickups.length?esc(s.pickups.join(' · ')):'Weekly remittance'}</small>`,esc(partnerName(s.partner)),hubAge(s.date)+' ago',cash(s.gross),cash(s.partnerShare),cash(s.authorityShare),pill(s.status,s.status==='Reconciled'?'good':'amber'),s.status==='Awaiting confirmation'&&hubCanRemit()?hubBtn('Confirm','rem-confirm',s.id,true):'']))+
+ (due.length?`<h4 class="hub-list-title">Not yet remitted</h4>`+table(['Partner','Completed pickups','Earnings','Deadline'],due.map(x=>[esc(partnerName(x.partner)),x.unremitted.length,cash(x.unremitted.reduce((n,p)=>n+p.fee,0)),`<small class="cell-sub">Due by ${REMITTANCE_DEADLINE}</small>`])):''));
+}
+function hubPickupPanel(){
+ const rows=hubPUVisible().slice().sort((a,b)=>Date.parse(b.raised)-Date.parse(a.raised));
+ return panel('Customer pickups','Booked in the customer workspace and carried out by partner crews. A completed pickup with evidence adds to the partner’s remittable earnings.',table(['Pickup','Customer','Window','Crew','Fee','Status',''],rows.map(p=>[`<b>${esc(p.id)}</b><small class="cell-sub">${esc(p.address)} · ${esc(p.area)}</small>`,esc(p.customer),esc(p.window),p.crew?esc(p.crew):'<span class="cell-sub">Not assigned</span>',cash(p.fee),hubPickupPill(p),hubBtn('Open','pu-open',p.id)])));
+}
+function hubWeightPanel(){
+ const trips=hubWeightTrips().sort((a,b)=>Date.parse(b.arrived)-Date.parse(a.arrived));
+ return panel('Facility weights','Weighbridge intake for partner loads at the transfer loading station. A load is only complete with a weight and an unload confirmation.',(trips.length?table(['Weight ticket','Truck','Partner','Facility','Net intake','Stage',''],trips.map(t=>[`<b>${esc(t.id)}</b><small class="cell-sub">${esc(t.order||'Manual arrival')}</small>`,esc(t.truck),esc(partnerName(t.partner)),esc(hubFacilityName(t.facility)),t.net?tonnes(t.net):'<span class="cell-sub">Awaiting scale</span>',status(t.state),hubBtn('Open','wgt-open',t.id)])):empty('No loads at the facility yet','Partner trucks appear here when the facility registers their arrival.'))+`<div class="module-pad">${routeButton('Open TLS operations','facility')}</div>`);
+}
+screens.remittances=()=>{
+ const rows=hubRemVisible(),awaiting=rows.filter(s=>s.status==='Awaiting confirmation'),reconciled=rows.filter(s=>s.status==='Reconciled');
+ const dueRows=hubDueRows().filter(x=>x.unremitted.length),due=dueRows.reduce((n,x)=>n+x.unremitted.reduce((m,p)=>m+p.fee,0),0);
+ const kg=hubWeightTrips().filter(t=>t.net).reduce((n,t)=>n+t.net,0);
+ return pageHead('PARTNER REMITTANCES','Money, pickups and weights from partner workspaces.','Remittances arrive weekly with an 80/20 split, backed by completed customer pickups and weighbridge intake at the facility.','')+
+ stats([['Remitted',cash(reconciled.reduce((n,s)=>n+s.gross,0)),reconciled.length+' remittance'+(reconciled.length===1?'':'s')+' · authority share '+cash(reconciled.reduce((n,s)=>n+s.authorityShare,0))],
+ ['Awaiting confirmation',cash(awaiting.reduce((n,s)=>n+s.gross,0)),awaiting.length?'Confirm to post the authority share to revenue':'Nothing waiting'],
+ ['Due by '+REMITTANCE_DEADLINE,cash(due),dueRows.length?dueRows.length+' partner'+(dueRows.length===1?'':'s')+' with completed pickups not yet remitted':'Every completed pickup is covered by a remittance'],
+ ['Facility intake today',kg?tonnes(kg):'0 t','Weighbridge records at the transfer loading station']])+
+ hubRemittancePanel()+hubPickupPanel()+hubWeightPanel()+note('Records arrive from each partner workspace. Batches are shared until the live connection is switched on.');
+};
+// Partner operations share one menu; legacy remittance links still reach the same records.
+ui.partnerTab='directory';
+const hubWorkNavAt=journeyNav.findIndex(([id])=>id==='partnerWork');if(hubWorkNavAt>=0)journeyNav.splice(hubWorkNavAt,1);
+const hubPartnerTabs=()=>[['directory','Directory'],...(permitted('partnerWork')?[['partnerWork','Work orders']]:[]),...(permitted('remittances')?[['remittances','Remittances']]:[]),['pickups','Customer pickups'],['weights','Facility weights']];
+const hubPartnerDirectory=screens.partners,hubPartnerOrganisation=screens.partner;
+function hubPartnerWorkspace(base){
+ const tabs=hubPartnerTabs();
+ if(!tabs.some(([id])=>id===ui.partnerTab))ui.partnerTab='directory';
+ const controls='<div class="module-toolbar" role="tablist" aria-label="Partner operations">'+tabs.map(([id,label])=>'<button type="button" class="btn '+(ui.partnerTab===id?'primary':'')+'" role="tab" aria-selected="'+(ui.partnerTab===id)+'" data-module="hub-partner-tab" data-record="'+id+'">'+label+'</button>').join('')+'</div>';
+ const content=ui.partnerTab==='directory'?base():ui.partnerTab==='partnerWork'?screens.partnerWork():pageHead('PARTNER OPERATIONS',tabs.find(([id])=>id===ui.partnerTab)?.[1]||'Partners','', '')+(ui.partnerTab==='remittances'?hubRemittancePanel():ui.partnerTab==='pickups'?hubPickupPanel():hubWeightPanel());
+ return controls+content;
+}
+screens.partners=()=>hubPartnerWorkspace(hubPartnerDirectory);
+screens.partner=()=>hubPartnerWorkspace(hubPartnerOrganisation);
+const hubPartnerGo=goJourney;
+goJourney=function(page){if(['remittances','partnerWork'].includes(page)){if(!permitted(page))return;ui.partnerTab=page;page=isPartnerRole()?'partner':'partners'}hubPartnerGo(page)};
+if(['remittances','partnerWork'].includes(journey.page)){ui.partnerTab=journey.page;journey.page=isPartnerRole()?'partner':'partners'}
+const hubRemScenarios=screens.scenarios;
+screens.scenarios=()=>hubRemScenarios().replace('<div class="scenario-grid">','<div class="scenario-grid">'+[
+ ['Partner remittance','A partner remits the week’s earnings. Confirm the remittance and post the authority share to revenue.','Open remittances','rem-goto']
+].map(([t,d,l,c])=>`<section class="work-panel"><header><h2>${t}</h2><p>${d}</p></header><div class="module-pad">${hubBtn(l,c,'',true)}</div></section>`).join(''));
+
+const hubRemRun=runModule;
+runModule=function(cmd,id){
+ if(cmd==='hub-partner-tab'){if(!hubPartnerTabs().some(([tab])=>tab===id))return;ui.partnerTab=id;goJourney(isPartnerRole()?'partner':'partners');return}
+ if(cmd.startsWith('hub-rem-'))cmd='rem-'+cmd.slice(8);
+ if(!cmd.startsWith('rem-')&&!cmd.startsWith('pu-')&&!cmd.startsWith('wgt-')){hubRemRun(cmd,id);return}
+ if(cmd.startsWith('pu-')){
+  const p=hub.pickups.find(x=>x.id===id);if(!p)return;
+  drawer(p.id+' · '+esc(p.customer),rowKV('Partner',esc(partnerName(p.partner)))+rowKV('Customer',esc(p.customer))+rowKV('Address',esc(p.address+' · '+p.area))+rowKV('Window',esc(p.window))+(p.crew?rowKV('Crew',esc(p.crew)):'')+rowKV('Fee',cash(p.fee))+rowKV('Status',status(p.status))+(p.evidence?rowKV('Evidence',esc(p.evidence)):'')+(p.issue?rowKV('Customer issue',esc(p.issue)):'')+(p.history&&p.history.length?'<h3>Pickup history</h3><ol class="module-timeline">'+p.history.map(h=>`<li>${esc(h.note||h.status)}<small>${esc(h.status)}</small></li>`).join('')+'</ol>':''));
+  return;
+ }
+ if(cmd.startsWith('wgt-')){
+  const t=hubWeightTrips().find(x=>x.id===id);if(!t)return;
+  drawer(t.id+' · '+esc(t.truck),rowKV('Partner',esc(partnerName(t.partner)))+rowKV('Facility',esc(hubFacilityName(t.facility)))+(t.driver?rowKV('Driver',esc(t.driver)):'')+(t.route?rowKV('Route',esc(t.route)):'')+rowKV('Stage',status(t.state))+(t.net?rowKV('Net intake',tonnes(t.net)):'')+rowKV('Linked service',t.order?esc(t.order):'Manual arrival')+`<div class="drawer-actions">${routeButton('Open TLS operations','facility')}</div>`+(t.events&&t.events.length?'<h3>Weight history</h3><ol class="module-timeline">'+t.events.map(e=>`<li>${esc(e.text)}<small>${stamp(e.time)}</small></li>`).join('')+'</ol>':''));
+  return;
+ }
+ const a=cmd.slice(4);
+ if(a==='goto'){goJourney('remittances');return}
+ if(a==='confirm'){
+  if(!hubCanRemit()){toast('Only the finance team or an authority supervisor can confirm a remittance.');return}
+  const s=hub.settlements.find(x=>x.id===id);if(!s||s.status!=='Awaiting confirmation'){toast('This remittance is already confirmed.');return}
+  s.status='Reconciled';simNotice('Remittance confirmed',s.id+' · '+cash(s.authorityShare)+' authority share posted to revenue','remittances');recordModuleAction(s.id+' confirmed · '+cash(s.authorityShare)+' posted to revenue');
+  saveAndRender(s.id+' confirmed. '+cash(s.authorityShare)+' posted to revenue.');return;
+ }
+ if(a==='confirmAll'){
+  if(!hubCanRemit()){toast('Only the finance team or an authority supervisor can confirm a remittance.');return}
+  const todo=hubRemVisible().filter(s=>s.status==='Awaiting confirmation');
+  if(!todo.length){toast('Every remittance is already confirmed.');return}
+  todo.forEach(s=>s.status='Reconciled');simNotice('Remittances confirmed',todo.length+' remittance'+(todo.length===1?'':'s')+' · '+cash(todo.reduce((n,s)=>n+s.authorityShare,0))+' posted to revenue','remittances');recordModuleAction(todo.length+' partner remittance'+(todo.length===1?'':'s')+' confirmed');
+  saveAndRender(todo.length+' remittance'+(todo.length===1?'':'s')+' confirmed.');return;
+ }
+ hubRemRun(cmd,id);
 };

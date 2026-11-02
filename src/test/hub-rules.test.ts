@@ -21,6 +21,13 @@ const names = [
   "QUEUE_WAIT_LIMIT_MIN",
   "queueWarning",
   "monthlyInvoice",
+  "PARTNER_SHARE",
+  "REMITTANCE_DEADLINE",
+  "settlementSplit",
+  "pickupFlow",
+  "pickupCanMove",
+  "pickupEarnings",
+  "pickupUnsettled",
 ];
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const rules = new Function([...names.map(pick), `return {${names.join(",")}};`].join("\n"))() as any;
@@ -88,5 +95,49 @@ describe("market and business billing", () => {
     expect(inv.amount).toBe(180000);
     expect(inv.period).toBe("October 2026");
     expect(inv.basis).toBe("Monthly service");
+  });
+});
+
+describe("partner remittances", () => {
+  it("splits remittances 80/20 like the partner workspace", () => {
+    expect(rules.PARTNER_SHARE).toBe(0.8);
+    // 18500 is the partner workspace's own seeded remittance.
+    expect(rules.settlementSplit(18500)).toEqual({ partnerShare: 14800, authorityShare: 3700 });
+    expect(rules.settlementSplit(2950)).toEqual({ partnerShare: 2360, authorityShare: 590 });
+  });
+
+  it("uses a weekly remittance deadline", () => {
+    expect(rules.REMITTANCE_DEADLINE).toBe("Friday 5 pm");
+  });
+});
+
+describe("customer pickups", () => {
+  it("moves through the partner app states", () => {
+    expect(rules.pickupCanMove("Requested", "Scheduled")).toBe(true);
+    expect(rules.pickupCanMove("Requested", "Declined")).toBe(true);
+    expect(rules.pickupCanMove("Requested", "Completed")).toBe(false);
+    expect(rules.pickupCanMove("Scheduled", "Collected")).toBe(true);
+    expect(rules.pickupCanMove("Collected", "Completed")).toBe(true);
+    expect(rules.pickupCanMove("Scheduled", "Declined")).toBe(false);
+    expect(rules.pickupCanMove("Completed", "Scheduled")).toBe(false);
+    expect(rules.pickupFlow["Declined"]).toEqual([]);
+  });
+
+  it("counts only completed pickups as earnings", () => {
+    expect(rules.pickupEarnings([{ status: "Completed", fee: 1500 }, { status: "Scheduled", fee: 1450 }, { status: "Completed", fee: 1450 }])).toBe(2950);
+  });
+
+  it("marks completed pickups without a remittance as unsettled", () => {
+    const pickups: { id: string; partner: string; status: string; fee: number }[] = [
+      { id: "PU-1", partner: "P1", status: "Completed", fee: 1500 },
+      { id: "PU-2", partner: "P1", status: "Completed", fee: 1450 },
+      { id: "PU-3", partner: "P2", status: "Completed", fee: 1000 },
+    ];
+    const setts = [{ partner: "P1", pickups: ["PU-1"], status: "Awaiting confirmation" }];
+    expect(rules.pickupUnsettled(pickups, setts, "P1").map((p: { id: string }) => p.id)).toEqual(["PU-2"]);
+    expect(rules.pickupUnsettled(pickups, setts, "P2").map((p: { id: string }) => p.id)).toEqual(["PU-3"]);
+    // A confirmed remittance also covers its pickups.
+    const confirmed = [{ partner: "P1", pickups: ["PU-1", "PU-2"], status: "Reconciled" }];
+    expect(rules.pickupUnsettled(pickups, confirmed, "P1")).toEqual([]);
   });
 });

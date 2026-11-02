@@ -1,5 +1,5 @@
 """Fills src/lib/site/i18n/<lang>.json for every key in strings.json that is missing.
-Uses the Lovable AI Gateway (LOVABLE_API_KEY in the sandbox). Existing entries are kept,
+Uses a configured OpenAI-compatible translation endpoint. Existing entries are kept,
 so hand corrections by native speakers survive re-runs.
 Usage: python3 scripts/i18n/translate.py [yo ha ig pcm]
 """
@@ -10,8 +10,8 @@ import requests
 
 ROOT = Path(__file__).resolve().parents[2]
 DIR = ROOT / "src/lib/site/i18n"
-MODEL = "openai/gpt-6-astra"
-URL = "https://ai.gateway.lovable.dev/v1/chat/completions"
+MODEL = os.environ.get("TRANSLATION_MODEL", "")
+URL = os.environ.get("TRANSLATION_API_URL", "")
 
 LANGS = {
     "yo": "Standard Yoruba (Yorùbá) with full, correct tone marks and under-dots (ẹ, ọ, ṣ), precomposed Unicode where possible",
@@ -35,7 +35,7 @@ def call(messages, schema):
     body = {"model": MODEL, "messages": messages, "reasoning_effort": "medium",
             "response_format": {"type": "json_schema", "json_schema": {"name": "out", "strict": True, "schema": schema}}}
     for attempt in range(5):
-        r = requests.post(URL, json=body, headers={"Authorization": f"Bearer {os.environ['LOVABLE_API_KEY']}"}, timeout=300)
+        r = requests.post(URL, json=body, headers={"Authorization": f"Bearer {os.environ['TRANSLATION_API_KEY']}"}, timeout=300)
         if r.status_code in (429,) or r.status_code >= 500:
             time.sleep(5 * (attempt + 1)); continue
         r.raise_for_status()
@@ -85,6 +85,9 @@ def run(lang):
     print(lang, len(have), "/", len(strings), flush=True)
 
 if __name__ == "__main__":
+    missing = [key for key in ("TRANSLATION_API_URL", "TRANSLATION_API_KEY", "TRANSLATION_MODEL") if not os.environ.get(key)]
+    if missing:
+        sys.exit("Set these variables to regenerate translations: " + ", ".join(missing))
     langs = sys.argv[1:] or list(LANGS)
     for _ in range(2):  # second pass retries anything rejected by the checks
         with ThreadPoolExecutor(len(langs)) as ex: list(ex.map(run, langs))
