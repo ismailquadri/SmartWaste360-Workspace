@@ -409,7 +409,7 @@ function renderNav(){
  const groups=[
   ['Organisation',['overview','partners','partner','registry']],
   ['Operations',['fleet','dispatch','serviceLedger','crew','facility','capacity','cameras','partnerWork']],
-  ['Service & assurance',['publicReports','incidents','compliance','finance','commercial','care','connectedService','enforcement','recovery','resident','alerts']],
+  ['Service & assurance',['publicReports','incidents','compliance','finance','remittances','commercial','care','connectedService','enforcement','recovery','resident','alerts']],
   ['Governance',['systems','reports','scenarios']]
  ];
  navRail.innerHTML=groups.map(([label,pages])=>{

@@ -5,15 +5,6 @@
   "outputDirectory": ".vercel/output",
   "headers": [
     {
-      "source": "/__l5e/assets-v1/(.*)",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=31536000, immutable"
-        }
-      ]
-    },
-    {
       "source": "/assets/(.*)",
       "headers": [
         {
@@ -22,5 +13,6 @@
         }
       ]
     }
-  ]
+  ],
+  "installCommand": "npm ci"
 }

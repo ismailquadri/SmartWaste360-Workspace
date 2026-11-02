@@ -1,10 +1,16 @@
 # Roadmap
 
+- [x] Refine workspace sign-in: open layout, clear LAWMA photography, simpler actions and access-code feedback
+
+- [x] Group partner directory, work orders, remittances, customer pickups and facility weights under Partners; remove separate partner menus and Revenue duplicate
+
+- [ ] Partner app: redesign all screens using the management design in the separate partner application repository
 - [x] Public dump alarms workspace (inbox, map, actions, reporter updates, escalation, scenario)
 - [x] WhatsApp / USSD channel tags + Resident channels panel
 - [x] Service backlog view on Overview (days since pickup, operator scores, move work)
 - [x] Dumpsite queue and turnaround on Facilities
 - [x] Markets and businesses accounts (sanitation windows, monthly commercial invoices)
+- [x] Partner remittances interface: weekly 80/20 remittances, confirmation to revenue, unsettled pickups, facility weighbridge intake
 - [x] Billing stays monthly everywhere (no per-pickup pricing)
 - [x] Separate customer side from hub (Resident role removed, install prompt removed)
 - [x] Light/dark/phone check of new screens

@@ -1,29 +1,27 @@
-# Welcome to your Lovable project
+# LAWMA SmartWaste360 management
 
-This project was built with [Lovable](https://lovable.dev).
+Public LAWMA website and management workspace, built with React, TanStack Start, Vite and Nitro. Production: https://lawma-360-v2.vercel.app.
 
-## Build with Lovable
+## Development and validation
 
-Open your project in the [Lovable editor](https://lovable.dev) and keep building.
-
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: connect the project to GitHub and every change made in Lovable is committed straight to your repository.
-- **Full ownership**: this code is yours. Push to your repository and your changes sync back into Lovable, ready for your next prompt.
-
-## Development
-
-Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
+Use Node.js 24 and npm.
 
 ```sh
-git clone <this-repository-url>
-cd <repository-name>
-npm i
+npm ci
+python3 lawma/build_dashboard.py
 npm run dev
+npm run build
+npm test
 ```
 
-## Built with
+The standalone dashboard sources are in `lawma/work/`; commit regenerated `public/dashboard.html`. The workspace lives at `/workspace`.
 
-- TanStack Start
-- TypeScript
-- React
-- Tailwind CSS
+## Deployment
+
+The `main` branch deploys to the existing Vercel project `lawma-360-v2`. Nitro generates `.vercel/output`; the build uses `NITRO_PRESET=vercel npm run build`.
+
+## Data and translations
+
+This management export uses browser-local prototype data and has no configured remote database, database credentials, or database migration scripts. Publishing this app does not migrate any external database. A live-data migration requires access to the source database/export and a destination database plus its connection settings.
+
+The checked-in translation dictionaries work without credentials. To regenerate them, install Python `requests`, run `python3 scripts/i18n/extract.py`, then set `TRANSLATION_API_URL` (an OpenAI-compatible chat completions endpoint), `TRANSLATION_API_KEY`, and `TRANSLATION_MODEL` before running `python3 scripts/i18n/translate.py`. These are optional development variables, never browser variables.
