@@ -1,7 +1,7 @@
 // About LAWMA: taken from lawma.gov.ng (Who we are, Principal Officers, Departments and Units,
 // Achievements and awards, Past MD/CEO, district pages and Contact).
 
-const portraits = import.meta.glob<{ url: string }>("@/assets/people/*.asset.json", { eager: true, import: "default" });
+const portraits = import.meta.glob<{ url: string }>("../../assets/people/*.asset.json", { eager: true, import: "default" });
 /** Portrait URL by file stem, e.g. "kunle-adebiyi" or "past-09". */
 export function portrait(stem: string) {
   const hit = Object.entries(portraits).find(([path]) => path.endsWith(`/${stem}.jpg.asset.json`));
