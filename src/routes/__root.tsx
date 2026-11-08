@@ -12,6 +12,7 @@ import {
 import { type ReactNode } from "react";
 
 import { SiteAccessibility } from "@/components/site/AccessibilityPanel";
+import { EvaluationAccessWall } from "@/components/legal/EvaluationAccessWall";
 import { A11Y_BOOT_SCRIPT } from "@/lib/site/a11y";
 import appCss from "../styles.css?url";
 
@@ -126,9 +127,11 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <Outlet />
-      {!pathname.startsWith("/workspace") && <SiteAccessibility />}
+      <EvaluationAccessWall>
+        {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+        <Outlet />
+        {!pathname.startsWith("/workspace") && <SiteAccessibility />}
+      </EvaluationAccessWall>
     </QueryClientProvider>
   );
 }

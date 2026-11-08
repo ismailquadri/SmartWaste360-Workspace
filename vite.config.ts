@@ -14,4 +14,7 @@ export default defineConfig({
     react(),
   ],
   resolve: { dedupe: ["react", "react-dom", "@tanstack/react-router"] },
+  build: {
+    sourcemap: false,
+  },
 });
