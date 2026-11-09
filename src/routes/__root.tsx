@@ -12,7 +12,7 @@ import {
 import { type ReactNode } from "react";
 
 import { SiteAccessibility } from "@/components/site/AccessibilityPanel";
-import { EvaluationAccessWall } from "@/components/legal/EvaluationAccessWall";
+// import { EvaluationAccessWall } from "@/components/legal/EvaluationAccessWall";
 import { A11Y_BOOT_SCRIPT } from "@/lib/site/a11y";
 import appCss from "../styles.css?url";
 
@@ -127,11 +127,15 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
+      {/* Security layer commented out for now:
       <EvaluationAccessWall>
+      */}
         {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
         <Outlet />
         {!pathname.startsWith("/workspace") && <SiteAccessibility />}
+      {/*
       </EvaluationAccessWall>
+      */}
     </QueryClientProvider>
   );
 }
