@@ -1,46 +1,25 @@
-# LAWMA SmartWaste360 Management & Public Portal (Workspace) — Documentation Suite
+# LAWMA Authority Workspace & Public Portal — Documentation Suite
 
-Welcome to the engineering documentation suite for **LAWMA SmartWaste360 Management & Public Portal (Workspace)**.
-
-## System Overview
-- **System Role:** Regulator Command, Mass-Balance Clearinghouse & Public Transparency Portal
-- **Ecosystem Domain:** Solid Waste Management in Lagos State under the **2017 Environmental Management and Protection Law (EMPL)** & **Polluter-Pay Policy**.
-- **System Summary:** Central regulator command, 10-module TLS lifecycle engine, 20/37 LCDA cleanliness competition, 6-stage lifecycle tracking, Solous II 100/day cap governance, and public verify/report site.
+This folder contains the complete, tailored engineering specifications for the **LAWMA Regulatory Command Room, Mass-Balance Clearinghouse & Public Transparency Portal**.
 
 ---
 
-## 📑 Core Documentation Index
-
-This repository contains the complete specification, research, political economy, and stakeholder defense documents required to implement and operate this system without missing any functional, operational, or legal requirements:
+## 📑 Document Directory
 
 1. **[Product Requirements Document (PRD.md)](PRD.md)**  
-   *The definitive functional and technical specification for this application.*
-   - Canonical entity models, state machines, API contracts, and offline resilience protocols.
-   - Specific user journeys, acceptance criteria, error handling, and performance SLAs.
+   *Core functional specification: Regulatory command, 6-stage lifecycle mass-balance engine, 10-module TLS lifecycle, Solous II 100 compactor/day cap & 45-min turnaround SLA, 80/20 escrow clearinghouse, and 20/37 LCDA cleanliness competition.*
 
-2. **[UX & Field Research Report (research.md)](research.md)**  
-   *Deep-dive ethnographic and technical field research conducted in Lagos State.*
-   - Operator and citizen pain points, connectivity constraints (2G/3G edge fallbacks), physical street realities, and behavioral patterns.
+2. **[Regulatory Control Room Research (research.md)](research.md)**  
+   *Operational findings on phantom weighbridge ticket fraud, LASU-Igando landfill queue paralysis, and Fourth Schedule LGA jurisdiction overlaps.*
 
-3. **[Stakeholder Critiques & Concerns (stakeholder-critiques-and-concerns.md)](stakeholder-critiques-and-concerns.md)**  
-   *Exhaustive 35+ question critique dossier embodying 10 key Lagos stakeholders.*
-   - Detailed operational, financial, legal, and political challenges from Governor Babajide Sanwo-Olu, Hon. Comm. Tokunbo Wahab, MD Dr. Muyiwa Gbadegesin, AWAMN PSPs, Conference 57 LGAs, Market Iyalojas, Informal Cartels, Citizens, LIRS, and the Judiciary.
+3. **[Executive & Regulatory Critiques (stakeholder-critiques-and-concerns.md)](stakeholder-critiques-and-concerns.md)**  
+   *High-level challenges from Hon. Comm. Tokunbo Wahab, MD Dr. Muyiwa Gbadegesin, Governor Babajide Sanwo-Olu, Conference 57 LGAs, LIRS, and Lagos Environmental Mobile Courts.*
 
-4. **[Stakeholder Defense Master Playbook (stakeholder-defense-answers.md)](stakeholder-defense-answers.md)**  
-   *Word-for-word executive defense scripts and statutory answers to all 35+ stakeholder critiques.*
-   - Explains exactly how the technical and economic design answers every criticism, prevents fraud, protects revenue, and enforces statutory compliance.
+4. **[Executive Master Defense Playbook (stakeholder-defense-answers.md)](stakeholder-defense-answers.md)**  
+   *Regulatory & legal mitigations: 45-min SLA queue diversion, mass-balance conservation equations, ₦1.8B annual subsidy recovery, 5% LGA allocations, and Section 84 Evidence Act certification.*
 
-5. **[The Political Economy of the Streets (political-economy-of-the-streets.md)](political-economy-of-the-streets.md)**  
-   *Comprehensive structural analysis of the 5 Power Blocs and 9 street pillars.*
-   - Essential domain reading: Market Iyalojas, Agbero toll-points, Wole-Wole health inspectors, Scavenger Baba Oja cartels, Diesel price volatility, POS agent fees, Midnight cartels, Biohazard containment, and Solous II laterite capping.
+5. **[Street Political Economy (political-economy-of-the-streets.md)](political-economy-of-the-streets.md)**  
+   *Macro governance: Ministry vs LGA dynamics, KAI/Waste Police enforcement, and dumpsite host community laterite capping contracts (`MAT-CAP-*`).*
 
----
-
-## 🌐 Complete Ecosystem Specifications
-
-For cross-system data contracts (`hub-contract.ts` v2), inter-app messaging, and end-to-end integration across all 4 LAWMA applications, refer to the [ecosystem-specs/](ecosystem-specs/) directory:
-
-- **Workspace (Regulator Command & Clearinghouse):** [PRD](ecosystem-specs/PRD-Workspace.md) | [Research](ecosystem-specs/research-Workspace.md)
-- **Partner (AWAMN 400+ PSP Back-Office):** [PRD](ecosystem-specs/PRD-Partner.md) | [Research](ecosystem-specs/research-Partner.md)
-- **Operator (Rugged Field Collection Crew):** [PRD](ecosystem-specs/PRD-Operator.md) | [Research](ecosystem-specs/research-Operator.md)
-- **Resident (Citizen & Compound Customer App):** [PRD](ecosystem-specs/PRD-Resident.md) | [Research](ecosystem-specs/research-Resident.md)
+6. **[API & Message Contract (api-contracts.md)](api-contracts.md)**  
+   *Exact JSON payload schemas and event definitions for authority workspace network synchronization.*
