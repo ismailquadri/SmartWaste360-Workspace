@@ -406,11 +406,11 @@ function renderOverviewKpis() {
 
 function renderOverviewCharts() {
   const facilities = [
-    { name: 'Olusosun (Ojota)', actual: 1420, cap: 1600, pct: 88.8, color: '#f59e0b' },
-    { name: 'Solous (Igando)', actual: 980, cap: 1300, pct: 75.4, color: '#0b7042' },
-    { name: 'Simpson TLS (Island)', actual: 620, cap: 900, pct: 68.9, color: '#0b7042' },
-    { name: 'Oshodi TLS', actual: 510, cap: 850, pct: 60.0, color: '#0b7042' },
-    { name: 'Epe Landfill (Diversion)', actual: 312, cap: 800, pct: 39.0, color: '#0284c7' }
+    { name: 'Olusosun (Ojota)', actual: 1420, cap: 1600, pct: 88.8, color: 'var(--sc-honey, #ecb730)' },
+    { name: 'Solous (Igando)', actual: 980, cap: 1300, pct: 75.4, color: 'var(--sc-forest, #42c366)' },
+    { name: 'Simpson TLS (Island)', actual: 620, cap: 900, pct: 68.9, color: 'var(--sc-forest, #42c366)' },
+    { name: 'Oshodi TLS', actual: 510, cap: 850, pct: 60.0, color: 'var(--sc-forest, #42c366)' },
+    { name: 'Epe Landfill (Diversion)', actual: 312, cap: 800, pct: 39.0, color: 'var(--sc-blue, #2a6dfb)' }
   ];
 
   const maxCap = 1600;
