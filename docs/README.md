@@ -50,3 +50,5 @@ Every module is authored as an exhaustive, courtroom-grade v4.0 Product Level Do
 - [Acceptance criteria and field-validation scenarios](acceptance-criteria-and-field-validation-scenarios.md) — testable behavior for six safeguards, all 11 modules, and end-to-end flows.
 - [Field-validation pilot plan](field-validation-pilot-plan.md) — 4-phase rollout, RACI matrix, evidence protocols, quality gates, and escalation/rollback paths.
 - [Solutions and modules traceability matrix](solutions-and-modules-traceability-matrix.md) — full cross-reference of safeguards, acceptance criteria, modules, scenarios, and open policy decisions.
+- [Field checklists, evidence logs, and incident forms](field-checklists-evidence-logs-and-incident-forms.md) — operational field kit with pre-flight checklists, calibration sheets, Section 84 evidence manifests, Sev 1–4 defect forms, and emergency stop-work protocols.
+- [Leadership briefing: pilot scope, readiness, and governance](leadership-briefing-pilot-scope-readiness-and-governance.md) — concise executive brief covering pilot corridors, 10 policy prerequisites, systemic safeguards, and Go/No-Go decision gates.
