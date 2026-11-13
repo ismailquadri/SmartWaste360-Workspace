@@ -230,64 +230,51 @@ Preserves existing `modules.js` structures while establishing production-grade s
 ## MODULE 1: SOVEREIGN CADASTRAL ASSET & IDENTITY REGISTRY (`MOD-01-CADASTRE`)
 
 > 📄 **Standalone Courtroom-Grade PLD Specification:** [`docs/modules/01-MOD-CADASTRE.md`](modules/01-MOD-CADASTRE.md)  
-> *Full schema, LAGIS/LASRRA APIs, GIVEN/WHEN/THEN user stories, and Section 84 Evidence Act certification gates.*
+> *Full 518-line specification: Uber H3 spatial geohash, async LAGIS snapping, SIM-NIN phone anchors, master compound virtual wallets, Land Use Charge title liens, and Section 84 Evidence Act certificates.*
 
 ### 1. Module Context & Authority
 - **Module ID:** `MOD-01-CADASTRE`
-- **Lead Executive Sponsor:** Dr. Kadri Obafemi Hamzat, Executive Governor of Lagos State (`MANDATE-KOH-02`)
-- **Statutory Foundation:** Lagos State Land Registration Law (2015), Lagos State Residents Registration Agency Law (2011), 2017 EMPL Section 62
-- **Interfacing State Systems:** LAGIS (Lagos State Geographic Information System), Lands Bureau Cadastral Portal, LASRRA Demographic Registry, LASBCA Building Registry
+- **Lead Executive Sponsor:** Dr. Kadri Obafemi Hamzat, Executive Governor of Lagos State (`MANDATE-KOH-02`, `MANDATE-KOH-05`)
+- **Statutory Foundation:** 2017 EMPL Sec. 62–82; 1999 Constitution Fourth Schedule (Tenement Rating Harmonization); Lagos State Land Registration Law (2015); Lagos State Land Use Charge Law (2020) Sec. 14; NDPA 2023 Sec. 39; Evidence Act (2011) Sec. 84.
+- **Interfacing State Systems:** LAGIS Cadastral Portal, LASRRA Demographic Registry, LIRS Land Use Charge Unit, Conference 57 (Local Governments), Environmental Mobile Courts.
 
-### 2. Problem Space & Field Reality
-- **Lagos Ground Truth:** In dense tenement compounds across Lagos (*face-me-I-face-you* buildings in Akowonjo, Agege, Mushin), 8 to 20 families live behind a single gate. Historically, billing agencies printed arbitrary paper bills addressed generically to "The Occupant, 14 Akinremi Street." 
-- **The Failure Vector:** Because the bill was detached from legal land parcels, landlords claimed ignorance, tenants claimed the caretaker took their money, and when LAWMA dragged defaulters to environmental mobile courts, magistrates dismissed cases because "The Occupant" is legally non-actionable.
-- **The KOH Critique:** Creating an unverified property table (`PROP-*`) within a vendor app builds an isolated data island that clashes with the state cadastre and prevents integration with the **Land Use Charge (LUC)**.
+### 2. The Smart Evolutionary Breakthroughs
+Following multi-stakeholder operational stress-testing, the raw mandate was refined into 5 intelligent breakthroughs:
+1. **Spatial-First Geohashing (`GEO-HEX-*`):** Immediate property provisioning via Uber H3 Resolution 10 (15m precision); zero blocking on external API downtime. Asynchronous background queue snaps coordinates to LAGIS parcels (`LASG-CAD-ID`) without delaying utility billing.
+2. **SIM-NIN Phone Anchor + 10% LASRRA Rebate:** 10-second onboarding via phone OTP (leveraging the NCC's federally verified SIM-NIN link) bypassing the 70% LASRRA coverage gap, with a 10% tariff discount rebate for voluntary LASRRA linking.
+3. **Master Compound Virtual Wallet (`MTR-PROP-*`) & Social SMS Broadcast:** Solving the shared-bin dilemma by managing tenements as single collection nodes with shared virtual accounts. Any room can pay fractional amounts; every payment triggers an automated SMS broadcast to all co-tenants, mobilizing peer transparency.
+4. **Graduated Interlocks & Land Use Charge (LUC) Title Liens:** Compound gate padlocking is strictly banned for multi-tenant homes. Unpaid arrears transition buildings to **Prepaid Branded Bags (`BAG-LAWMA-*`)** and attach as a statutory encumbrance on the property's Land Use Charge title. Armed sealing is reserved exclusively for commercial plazas, factories, and markets.
+5. **Unified Premises QR Decal & Deputized Wole-Wole Commissions:** Harmonizing State and Local Government authority under a single physical QR decal (`DECAL-LASG-*`), making parallel cash ticketing illegal, while paying LGA health officers ₦200 enumeration commissions.
 
-### 3. Epics, User Stories & Functional Features
-- **Epic 1.1: Automated LAGIS Cadastral Ingestion:**
-  - *User Story:* As a LAWMA Revenue Officer, I want every waste-billed property to bind to its official digital survey parcel ID, so that billing records are legally linked to land titles.
-  - *Feature 1.1.1:* Ingests 14-digit `LASG-CAD-ID` coordinates via LAGIS REST Gateway.
-  - *Feature 1.1.2:* Resolves discrepancies between street names and historical cadastral lot numbers.
-- **Epic 1.2: Tenancy Fractional Unit Split-Ledger:**
-  - *User Story:* As a tenant in a 12-room compound, I want to pay my exact ₦600/month share directly, so that I cannot be arrested or have my waste abandoned due to non-paying neighbors.
-  - *Feature 1.2.1:* Atomizes property records into sub-units: `PROP-GOWON-41-U01` through `U12`.
-  - *Feature 1.2.2:* Binds each sub-unit to the tenant's mobile phone number and **10-digit LASRRA ID**.
-  - *Feature 1.2.3:* Debt Portability Engine: When a tenant vacates, arrears follow their personal LASRRA identity, exonerating the landlord.
-
-### 4. Technical Architecture & Schemas
+### 3. Key Schemas & API Contracts
 ```typescript
 export interface CadastralPropertyEntity {
-  propertyId: string; // PROP-ALI-0148
-  lagisCadastralId: string; // 14-digit parcel ID: LASG-CAD-2024-098231
-  lasbcaBuildingPermitRef?: string; // BP-2018-9921
+  propertyId: string; // Format: 'PROP-ALM-8A2A1072B34FFFF'
+  h3SpatialIndex: string; // Resolution 10 H3 index
+  lagisCadastralId?: string; // Asynchronously snapped: LASG-CAD-2024-098231
+  lagisSyncStatus: "PENDING_MATCH" | "SYNCED_MATCH" | "UNMATCHED_INFORMAL";
   address: {
-    buildingNumber: string;
-    streetName: string;
-    wardCode: string; // LCDA-ALI-MOS
-    lgaCode: string; // LGA-ALIMOSHO
-    gpsCoordinates: { lat: number; lng: number };
+    streetAddress: string;
+    wardCode: string;
+    lcdaCode: string; // E.g., 'IKOTUN_IGANDO'
+    lgaCode: string;  // E.g., 'ALIMOSHO'
+    coordinates: { lat: number; lng: number };
   };
-  propertyType: "tenement_compound" | "single_family" | "commercial_plaza" | "industrial_facility";
-  tenancyStructure: {
-    totalUnits: number;
-    registeredUnits: Array<{
-      unitId: string; // U01
-      occupantName: string;
-      occupantLasrraId: string; // 10-digit: 9821048291
-      occupantPhone: string;
-      fractionalTariffNgn: number;
-      complianceStatus: "current" | "arrears" | "exempt";
-    }>;
-  };
-  assignedPspId: string; // PAR-ALI-002
-  activeTagId: string; // TAG-HH-ALI-0148
-  updatedAt: string;
+  buildingCategory: "MULTI_TENANT_TENEMENT" | "SINGLE_FAMILY_RESIDENTIAL" | "COMMERCIAL_PLAZA" | "TEMPORARY_ROADSIDE_KIOSK";
+  billingModality: "MASTER_COMPOUND_WALLET" | "INDIVIDUAL_SUB_UNIT" | "PREPAID_BAG_ONLY";
+  monthlyTargetTariffNgn: number;
+  currentWalletBalanceNgn: number;
+  virtualBankAccount: { bankName: string; accountNumber: string; ussdCode: string };
+  primaryContact: { phone: string; lasrraId?: string; identityTier: "TIER_1_PHONE_VERIFIED" | "TIER_2_LASRRA_VERIFIED" };
+  complianceState: "COMPLIANT" | "GRACE_PERIOD" | "SERVICE_DOWNGRADED_BAG_ONLY" | "LUC_TITLE_LIEN_ATTACHED";
+  qrDecalSerial: string;
 }
 ```
 
-### 5. Verification & Statutory Audit Gate
-- **Acceptance Gate 1:** 100% of properties billed in Phase 1 pilot corridor must validate against LAGIS digital survey boundary with $< 5	ext{m}$ geospatial variance.
-- **Acceptance Gate 2:** Environmental mobile court summonses auto-populate legal cadastral parcel descriptions compliant with Section 84 of the Evidence Act.
+### 4. Verification & Statutory Audit Gate
+- **Acceptance Gate 1:** 100% properties provisioned in $<30	ext{ seconds}$ via spatial geohash with zero API dependency.
+- **Acceptance Gate 2:** Zero compound front-gate padlocking on multi-tenant residences; 100% of $>90	ext{ day}$ arrears attached to Land Use Charge title ledgers.
+- **Acceptance Gate 3:** Section 84 Evidence Act Certificates auto-compiled with hardware IMEI and SHA-256 digests for all mobile court filings.
 
 ---
 
