@@ -43,3 +43,8 @@ Every module is authored as an exhaustive, courtroom-grade v4.0 Product Level Do
 | **`MOD-09-MARKET-SEALING`** | **[09-MOD-MARKET-SEALING.md](modules/09-MOD-MARKET-SEALING.md)** | `v4.0` (762 lines) | Hon. Comm. Tokunbo Wahab | Non-compensatory 3-zone spatial gating ($\min(S_A, S_B, S_C)$), sub-stall virtual wallets (`MKT-STALL-*`), 12-hour controlled perishable de-stocking, and tri-factor multi-sig reopening. |
 | **`MOD-10-CITIZEN-CARE`** | **[10-MOD-CITIZEN-CARE.md](modules/10-MOD-CITIZEN-CARE.md)** | `v4.0` (737 lines) | Hon. Rasheed Shabi & Hon. Comm. Wahab | NiMet radar pre-storm surge protocol (250 emergency skips), optical/radar canal trash traps, Section 102 EMPL 5% LGA automated clearing, anonymous whistle vault, and dual-key verification. |
 | **`MOD-11-SOVEREIGN-CLOUD-INFRA`** | **[11-MOD-SOVEREIGN-CLOUD-INFRA.md](modules/11-MOD-SOVEREIGN-CLOUD-INFRA.md)** | `v4.0` (644 lines) | Gov. Dr. Kadri Obafemi Hamzat | Onshore Active-Active Tier III fabric (Alausa + MDXi Lekki, RPO=0, RTO<15s), 2.5% hardware TCO sinking fund escrow, 15-minute depot hot swap, and TPM hardware component fusing. |
+
+## Executive Decisions & Validation
+
+- [Executive policy and operational decisions requiring approval](executive-policy-and-operational-decisions.md) — proposed defaults, tradeoffs, responsible approvers, and verification gates.
+- [Acceptance criteria and field-validation scenarios](acceptance-criteria-and-field-validation-scenarios.md) — testable behavior for six safeguards, all 11 modules, and end-to-end flows.
