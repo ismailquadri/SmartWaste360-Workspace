@@ -177,12 +177,31 @@ From the official **LAWMA Digital Platform Transformation (2026–2029)** master
 └──────────────────────┴──────────────────────┴──────────────────────┴──────────────────────┘
 ```
 
+### CapEx Analysis: Retrofit-First Telematics vs. New Fleet Procurement
+```
+                       CAPITAL EXPENDITURE (CapEx) MODEL: 200 TRUCK FLEET
+┌───────────────────────────────────────────────┬───────────────────────────────────────────────┐
+│ OPTION A: PROCUREMENT OF NEW "SMART FLEETS"   │ OPTION B: MODULAR RETROFIT KITS ON FLEETS     │
+├───────────────────────────────────────────────┼───────────────────────────────────────────────┤
+│ • Unit Cost: $135,000 – $170,000 per truck    │ • Heavy-Duty J1939 CAN-bus GPS Tracker: $85   │
+│ • Naira Equivalent: ~₦216,000,000 per truck   │ • Hydraulic Blade / PTO Pressure Switch: $45  │
+│ • Import Tariffs & Port Demurrage: +25%       │ • Rugged 8-inch Android Driver Tablet: $120   │
+│ • 18–24 Month Import & Clearing Lead Time     │ • Cab Anti-Vibration Dock & 24V Power: $15    │
+│ • Currency Risk: Billed in USD (FX drain)     │ • Local Auto-Electrician Installation: $30    │
+├───────────────────────────────────────────────┼───────────────────────────────────────────────┤
+│ TOTAL COST (200 TRUCKS):                      │ TOTAL COST (200 TRUCKS):                      │
+│               ₦43.2 BILLION                   │                 ₦95.0 MILLION                 │
+│               ($27,000,000 USD)               │                 ($59,000 USD)                 │
+└───────────────────────────────────────────────┴───────────────────────────────────────────────┘
+                SAVINGS TO LAGOS STATE: ₦43.1 BILLION (99.78% CapEx REDUCTION)
+```
+
 | Phase | Timeline | Engineering & Infrastructure Deliverables | Capital & Operational Budget |
 | :--- | :--- | :--- | :--- |
-| **Phase 0: Reconnaissance** | Months -2 to 0 | Technical baseline audit; site surveys of Agege TLS & Solous II; sovereign cloud setup in Lagos Central Data Center; penetration testing. | Baseline verification; sandbox environments. |
-| **Phase 1: Foundation & Pilot** | Months 0 to 12 | Core identity registry (LASRRA/LAGIS sync); compound split-billing engine; 100 compactor OBD-II CAN bus units; Alimosho pilot corridor deployment; 80/20 Co-Treasury clearinghouse. | 100 vehicle IoT units ($25k / ₦33.75M); fintech webhooks ($15k); LASRRA setup ($10k). |
-| **Phase 2: Scale & Enforcement** | Months 12 to 24 | Statewide expansion to all 57 LGAs/LCDAs; 400 compactor units; 1,500 rugged Android handhelds; 5 TLS automated weighbridge load-cells ($5k/site); WhatsApp Cloud API ($15k) & USSD gateway ($20k) live. | 400 compactors ($100k); 1,500 handhelds ($270k); 5 TLS scales ($25k); fleet data ($72k). |
-| **Phase 3: Smart City & WTE** | Months 24 to 36 | Predictive AI routing; Pakam recycling API integration; source-sorting gamification; Epe WTE corridor telemetry; automated carbon credit ledgers. | AI spatial inference; multi-region active-passive sync; fleet IoT data renewal ($72k). |
+| **Phase 0: Reconnaissance** | Months -2 to 0 | Technical baseline audit; site surveys of Solous II & Simpson TLS; RS-232 serial tap testing on Avery/Toledo scales; STO Oracle sandbox integration. | ₦85,000,000 (Baseline verification; sandbox environments). |
+| **Phase 1: Alimosho LGA Beachhead Sprint** | **Months 1 to 3 (90 Days)** | **Retrofit 80 trucks (40 state-owned newly purchased LAWMA compactors + 40 AWAMN Alimosho trucks @ ₦35.6M); Solous II 100/day cap & 45-min SLA via $35 RS-232 bridge; LASU-Iba staging hub; cadastral mapping across 6 Alimosho LCDAs; 48-hr cure escrow; 5% Section 102 LCDA revenue sharing pilot.** | **₦220,000,000** *(Down from ₦850M! Financed locally in Naira).* |
+| **Phase 2: Statewide Scale** | Months 4 to 15 | Ingestion of remaining 19 LGAs / 51 LCDAs; retrofit remaining 400 AWAMN trucks; 5 TLS scale bridges; USSD `*384*22#` and WhatsApp bot statewide rollout. | ₦1,150,000,000 *(Down from ₦2.4B!)* |
+| **Phase 3: Smart City & WTE** | Months 16 to 36 | Automated AI predictive dispatch; integration of Epe Waste-to-Energy (WTE) facility manifests; full NDPA sovereign cloud compliance audit. | ₦850,000,000 |
 
 ---
 

@@ -72,6 +72,10 @@ Enforce end-to-end encryption, role-based anonymization, and immutable audit log
   - **WHEN** viewed by non-adjudication personnel or exported for analytics,
   - **THEN** PII fields are masked (e.g., `LASRRA-***-94`, `+234803****567`); unmasking requires dual-officer justification logged in the WORM audit vault; data residency audits confirm 100% of bytes reside within Nigerian territory.
 
+
+> [!TIP]
+> **Frugal Hardware Architecture & Sinking Fund Efficiency:** By adopting the **Universal Retrofit Telematics Kit model (~₦445,000 per truck)** instead of purchasing new imported smart trucks (~₦216,000,000 per truck), the **2.5% Hardware TCO Sinking Fund** delivers extraordinary purchasing power. Rather than being depleted by high capital amortization, the fund comfortably finances a 30% surplus of pre-configured replacement parts (tablets, J1939 CAN harnesses, PTO sensors) held locally at LAWMA Ijora and Simpson depots, enabling genuine 15-minute field swaps.
+
 ### Epic 11.3: 2.5% Amortized Hardware Sinking Fund & 24-Hour Hot-Swap SLA
 Establish an immutable financial ledger deducting 2.5% of gross collections into a ring-fenced Hardware Sinking Fund, obligating certified OEMs to maintain a 24-hour terminal hot-swap SLA.
 

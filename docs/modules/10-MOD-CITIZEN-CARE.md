@@ -98,6 +98,20 @@ Provide zero-data, low-tech reporting and billing channels accessible to every r
 
 ---
 
+### Epic 10.5: Alimosho 6-LCDA Section 102 Revenue Allocation Pilot
+Execute the inaugural statutory 5% revenue sharing formula across the 6 Local Council Development Areas of Alimosho prior to statewide rollout.
+
+#### User Story 10.5.1: Alimosho LCDA Revenue Distribution
+- **As an** Executive Chairman of Mosan-Okunola or Ikotun-Igando LCDA,
+- **I want** our council to receive verified monthly 5% transfers from all domestic waste collections in our wards,
+- **So that** our local environmental health officers (Wole-Wole) and street sweepers are funded directly by statute.
+- **Acceptance Criteria:**
+  - **GIVEN** monthly settled waste revenues in Alimosho LGA,
+  - **WHEN** the Section 102 clearing runs on the 28th of each month,
+  - **THEN** the system splits the 5% statutory allocation across the 6 LCDAs (Alimosho Central, Agbado/Oke-Odo, Ayobo-Ipaja, Egbe-Idimu, Ikotun-Igando, Mosan-Okunola) strictly based on verified cadastral collections within their spatial polygons, posting transparent ledger summaries to each Council Chairman's portal.
+
+---
+
 ## 4. Technical Architecture, Schemas & Multi-Channel Pipeline
 
 ### 4.1 Multi-Channel Citizen Care & Drainage Telemetry Pipeline

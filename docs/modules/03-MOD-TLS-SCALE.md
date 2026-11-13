@@ -83,6 +83,21 @@ Track compactor trucks and sealed municipal containers through the mandatory 10-
 
 ---
 
+
+### Epic 3.4: Non-Invasive RS-232 Serial Edge Bridge ($35 Micro-Broker)
+Modernize existing physical weighbridge decks without capital expenditure on new scales by tapping the serial data stream of existing Avery Weigh-Tronix and Toledo scale indicators.
+
+#### User Story 3.4.1: Non-Invasive Scale Stream Tapping
+- **As a** LAWMA Scale Maintenance Engineer,
+- **I want** to connect a $35 industrial microcontroller bridge to the existing scale's RS-232 port,
+- **So that** weight captures stream digitally into SQLite without modifying the calibrated scale deck or buying new weighbridges.
+- **Acceptance Criteria:**
+  - **GIVEN** an existing operational mechanical/digital weighbridge at Solous II or Simpson TLS,
+  - **WHEN** the $35 industrial edge bridge (Raspberry Pi Compute Module 4 / ESP32-S3 in IP67 enclosure) is plugged into the RS-232 printer/auxiliary serial port,
+  - **THEN** it reads continuous ASCII string weight broadcasts (baud 9600, 8N1), parses gross/tare weight figures, checks stability flags, and writes cryptographically sealed records directly to the local SQLite database; zero downtime and zero recalibration required.
+
+---
+
 ## 4. Technical Architecture, Schemas & State Machines
 
 ### 4.1 10-Module TLS Physical State Transition Diagram

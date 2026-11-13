@@ -178,6 +178,12 @@ CREATE INDEX idx_turnaround_landfill_date ON turnaround_sla_records(landfill_id,
 
 ---
 
+### 5.3 Alimosho Beachhead Corridor Gating (Solous II Pilot)
+- **Field Reality:** 80% of trucks entering Solous II originate from within Alimosho LGA's 6 LCDAs.
+- **Engineering Mitigation:** The Solous II weighbridge system is linked in real-time to the 80 retrofitted Alimosho compactor trucks. The 100 daily quota slots are partitioned: 70 slots reserved exclusively for Alimosho LCDA compactors (10–12 slots per LCDA), and 30 slots for inter-zonal transfer trailers. Trucks arriving from Alimosho without a verified pre-dispatch token are held at the LASU-Iba staging hub before reaching the landfill access road.
+
+---
+
 ## 6. Statutory Verification & Executive Sign-off Matrix
 
 | Verification Pillar | Legal / Regulatory Benchmark | Acceptance Threshold | Auditing Authority |

@@ -268,6 +268,7 @@
 | **`MANDATE-KOH-02`** | Data Model | Re-architect `PROP-*` to enforce mandatory foreign keys to **LAGIS Cadastre (`LASG-CAD-ID`)** and **LASRRA Resident IDs**. | Lands / LASRRA | Automated cadastre lookup. |
 | **`MANDATE-KOH-03`** | Fintech/TSA | Escrow settlement must route through **Lagos Co-Treasury Escrow** integrated via API into Oracle EBS Financials. | STO / LIRS | Automated WHT receipts. |
 | **`MANDATE-KOH-04`** | Hardware TCO | Establish a **2.5% Amortized Hardware Sinking Fund** and 36-month local OEM hot-swap replacement SLA. | LAWMA / MIST | 24-hr depot swap test. |
+| **`MANDATE-KOH-05`** | Telematics/CapEx | Enforce **Retrofit-First Architecture** on existing state fleets & AWAMN trucks (~₦445k/kit); zero new truck buying; execute 90-day **Alimosho Beachhead Pilot**. | LAWMA / MIST / MOT | 80 trucks retrofitted @ ₦36M; 99.78% CapEx reduction. |
 | **`MANDATE-WAH-01`** | Logistics/GIS | Abolish mid-transit diversions; enforce **5:00 AM Pre-Dispatch Depot Locking** and LASU-Iba Corridor Holding Hub. | LAWMA Ops | Zero mid-transit reroutes. |
 | **`MANDATE-WAH-02`** | Enforcement | Build direct **KAI Taskforce Oshodi Rapid Armed Interception Rail** and vehicle impoundment tracking under EMPL Sec. 88. | LAGESC / KAI | Armed dispatch within 15m. |
 | **`MANDATE-WAH-03`** | Commercial | Create **Executive Market Compliance & Sealing Dashboard** tracking collective skip containment and digital sealing orders. | MEWR / Police | Single-click sealing sync. |
