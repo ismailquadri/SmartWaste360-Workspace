@@ -2,7 +2,7 @@
 (() => {
 'use strict';
 const legacyRender=renderJourney, legacyGo=goJourney, legacyRun=runJourney;
-const ui={partnerQuery:'',partnerType:'All categories',assetTab:'Vehicles',incidentFilter:'Open',facility:'FAC-001'};
+const ui={cadastreQuery:'',cadastreLga:'All LGAs',cadastreTier:'All tiers',partnerQuery:'',partnerType:'All categories',assetTab:'Vehicles',incidentFilter:'Open',facility:'FAC-001'};
 const screens={};
 const visibleFacilities=()=>modules.facilities.filter(f=>journey.role!=='partner'||f.partner===modules.partnerContext);
 const visibleVisits=()=>modules.visits.filter(v=>visibleFacilities().some(f=>f.id===v.facility));
@@ -21,7 +21,7 @@ const moduleFooter='<footer class="journey-footer"><span>Sample data · changes 
 journeyRoles.partner=['Partner coordinator','partner','Organisation records, service responsibilities and follow-ups'];
 journeyRoles.psp[0]='Collection dispatcher (PSP)';
 journeyRoles.admin[2]='Users, partner categories and activity history';
-const pages=['overview','partners','registry','fleet','dispatch','facility','capacity','incidents','compliance','finance','care','connectedService','enforcement','recovery','systems'];
+const pages=['overview','cadastre','partners','registry','fleet','dispatch','facility','capacity','incidents','compliance','finance','care','connectedService','enforcement','recovery','systems'];
 personaPages.management=[...pages,'crew'];
 personaPages.admin=[...pages,'crew'];
 personaPages.operations=['overview','partners','registry','fleet','dispatch','facility','capacity','incidents','compliance','care'];
@@ -33,13 +33,13 @@ personaPages.recovery=['recovery','partners','incidents'];
 personaPages.care=['care','incidents','finance'];
 personaPages.resident=['resident'];
 journeyNav.splice(0,journeyNav.length,...[
- ['overview','Overview','layers'],['partners','Partners','partners'],['partner','My organisation','partners'],['registry','People & vehicles','truck'],
+ ['overview','Overview','layers'],['cadastre','Cadastre & DUID','cadastre'],['partners','Partners','partners'],['partner','My organisation','partners'],['registry','People & vehicles','truck'],
  ['fleet','Fleet map','map'],['dispatch','Collection operations','truck'],['crew','Field shift','pin'],['facility','Facility intake','layers'],
  ['capacity','Site capacity','capacity'],['incidents','Incidents','alert'],['compliance','Compliance','check'],['finance','Revenue','file'],
  ['care','Citizen care','help'],['enforcement','Enforcement','alert'],['recovery','Recovery','recycle'],['resident','My service','help'],['systems','Administration','settings']
 ]);
 const defs=document.querySelector('.symbols defs');
-defs.insertAdjacentHTML('beforeend','<symbol id="i-partners" viewBox="0 0 24 24"><path d="M3 21V5h11v16M14 10h7v11M6 9h5M6 13h5M6 17h5M17 14h1M17 18h1M1 21h22"/></symbol><symbol id="i-capacity" viewBox="0 0 24 24"><path d="M3 21V9l9-6 9 6v12M7 21v-9h10v9M10 12v9M14 12v9M3 21h18"/></symbol><symbol id="i-recycle" viewBox="0 0 24 24"><path d="m9 5 3-3 6 9M14 10l4 1 2-4M20 14v5H9M11 16l-2 3 2 3M5 18l-3-4 6-9M4 5h4l1 4"/></symbol><symbol id="i-settings" viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/><circle cx="8" cy="6" r="2"/><circle cx="16" cy="12" r="2"/><circle cx="9" cy="18" r="2"/></symbol>');
+defs.insertAdjacentHTML('beforeend','<symbol id="i-cadastre" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></symbol><symbol id="i-partners" viewBox="0 0 24 24"><path d="M3 21V5h11v16M14 10h7v11M6 9h5M6 13h5M6 17h5M17 14h1M17 18h1M1 21h22"/></symbol><symbol id="i-capacity" viewBox="0 0 24 24"><path d="M3 21V9l9-6 9 6v12M7 21v-9h10v9M10 12v9M14 12v9M3 21h18"/></symbol><symbol id="i-recycle" viewBox="0 0 24 24"><path d="m9 5 3-3 6 9M14 10l4 1 2-4M20 14v5H9M11 16l-2 3 2 3M5 18l-3-4 6-9M4 5h4l1 4"/></symbol><symbol id="i-settings" viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/><circle cx="8" cy="6" r="2"/><circle cx="16" cy="12" r="2"/><circle cx="9" cy="18" r="2"/></symbol>');
 $('persona').innerHTML=Object.entries(journeyRoles).map(([id,r])=>`<option value="${id}">${esc(r[0])}</option>`).join('');
 document.querySelector('.product').textContent='LAWMA 360';
 
@@ -91,6 +91,129 @@ function partnerRows(){
  `<b>${esc(p.name)}</b><small class="cell-sub">${p.id}</small>`,`${esc(p.type)}<small class="cell-sub">${esc(p.service)}</small>`,esc(p.area),status(p.status),link('View partner','partnerDetail',p.id)
  ])):empty('No matching partners','Change the search or category to see more organisations.');
 }
+
+screens.cadastre = () => {
+  const lga = ui.cadastreLga, tier = ui.cadastreTier, q = ui.cadastreQuery.toLowerCase();
+  const all = modules.properties || [];
+  const rows = all.filter(p => {
+    const matchLga = lga === 'All LGAs' || p.lga === lga;
+    const matchTier = tier === 'All tiers' || p.serviceTier === tier;
+    const matchQ = !q || [p.id, p.name, p.address, p.cadastreId, p.lga, p.ward, p.geohash, p.landlord?.name, ...p.units.map(u => u.duid + ' ' + u.tenant)].join(' ').toLowerCase().includes(q);
+    return matchLga && matchTier && matchQ;
+  });
+
+  const totalUnits = all.reduce((s, p) => s + (p.units?.length || 0), 0);
+  const totalIsolatedDebt = all.reduce((s, p) => s + (p.ownerDebtLedger || []).reduce((ds, d) => ds + d.amount, 0), 0);
+  const totalWalletBal = all.reduce((s, p) => s + (p.wallet?.balance || 0), 0);
+  const totalEncumbered = all.filter(p => p.lucLien?.attached).length;
+
+  const lgas = ['All LGAs', 'Surulere', 'Alimosho', 'Ikeja', 'Eti-Osa', 'Kosofe'];
+  const tiers = ['All tiers', 'Compactor Doorstep', 'Prepaid Branded Bags', 'LUC Statutory Lien Attached'];
+
+  return pageHead('MOD-01: CADASTRE & RESIDENT IDENTITY', 'Sovereign Tenement & DUID Registry', 'Doorstep Dwelling Unit IDs (DUID), compound virtual wallets, and tenant-landlord debt ring-fencing.', isAuthority()?button('Add tenement property', 'addProperty', '', true):'') +
+    stats([
+      ['Registered properties', all.length, 'Master cadastre nodes'],
+      ['Dwelling units (DUID)', totalUnits, 'Individual doorstep flat IDs'],
+      ['Isolated owner arrears', '₦' + totalIsolatedDebt.toLocaleString(), 'Ring-fenced from new tenants'],
+      ['Compound wallets', '₦' + totalWalletBal.toLocaleString(), 'Virtual escrow balance']
+    ]) +
+    panel('Tenement property register', 'Sovereign LAGIS GIS polygon binding with Doorway QR Decals and independent dwelling unit ledgers.',
+      `<div class="module-toolbar">
+        <label for="cadastreLga">LGA</label>
+        <select id="cadastreLga">${selectOptions(lgas, ui.cadastreLga)}</select>
+        <label for="cadastreTier">Service tier</label>
+        <select id="cadastreTier">${selectOptions(tiers, ui.cadastreTier)}</select>
+        <label for="cadastreQuery" class="sr-only">Search</label>
+        <input type="search" id="cadastreQuery" placeholder="Search address, DUID, cadastre ID, geohash..." value="${esc(ui.cadastreQuery)}">
+      </div>` +
+      (rows.length ? table(
+        ['Property & address', 'Cadastre ID / H3 geohash', 'Landlord / LASRRA', 'Compound wallet', 'Units (DUID)', 'Service tier', ''],
+        rows.map(p => [
+          `<b>${esc(p.name)}</b><small class="cell-sub">${esc(p.address)} · <b>${esc(p.lga)}</b> (${esc(p.ward)})</small>`,
+          `<code>${esc(p.cadastreId)}</code><small class="cell-sub">H3: ${esc(p.geohash)}</small>`,
+          `${esc(p.landlord.name)}<small class="cell-sub">${p.landlord.lasrraId ? 'LASRRA: ' + esc(p.landlord.lasrraId) : 'NIN verified'}</small>`,
+          `<b>₦${(p.wallet.balance).toLocaleString()}</b><small class="cell-sub">Target: ₦${(p.wallet.targetMonthly).toLocaleString()}/mo</small>`,
+          `<span>${p.units.length} Flats</span><small class="cell-sub">${p.ownerDebtLedger.length ? '<span class="state-pill amber">' + p.ownerDebtLedger.length + ' debt isolated</span>' : 'Clean ledger'}</small>`,
+          `<span class="state-pill ${p.serviceStatus === 'Active' ? 'good' : p.serviceStatus === 'Encumbered' ? 'red' : 'amber'}">${esc(p.serviceTier)}</span>`,
+          button('Inspect property & DUIDs', 'inspectProperty', p.id, true)
+        ])
+      ) : empty('No matching properties found', 'Change your filter criteria or search query to see more tenement records.'))
+    ) +
+    note('MANDATE-KOH-02 Statutory Foundation: Dwelling Unit IDs (DUID) decouple tenant billing from compound landlords. When an occupant vacates with unpaid arrears, debt is ring-fenced to the owner review ledger, ensuring incoming tenants receive clean bills and zero compactor service refusal.');
+};
+
+function propertyDetail(id) {
+  const p = propertyByID(id);
+  if (!p) { toast('Property not found.'); return; }
+
+  const totalUnitArrears = p.units.reduce((s, u) => s + (u.arrears || 0), 0);
+  const totalIsolated = (p.ownerDebtLedger || []).reduce((s, d) => s + d.amount, 0);
+
+  drawer(p.id + ' · ' + p.name,
+    `<div class="drawer-intro">
+      <span class="state-pill ${p.serviceStatus === 'Active' ? 'good' : p.serviceStatus === 'Encumbered' ? 'red' : 'amber'}">${esc(p.serviceTier)}</span>
+      <span class="state-pill">${esc(p.lga)} · ${esc(p.ward)}</span>
+      <span class="state-pill good">${esc(p.decal.id)}</span>
+    </div>
+    <p><b>Address:</b> ${esc(p.address)}</p>` +
+    rowKV('LAGIS Cadastre ID', `<code>${esc(p.cadastreId)}</code>`) +
+    rowKV('Uber H3 Geohash (Res 10)', `<code>${esc(p.geohash)}</code> (${esc(p.plusCode)})`) +
+    rowKV('Landlord / Trustee', `${esc(p.landlord.name)} (${esc(p.landlord.phone)}) · NIN: ${esc(p.landlord.nin)}`) +
+    rowKV('Landlord LASRRA ID', p.landlord.lasrraId ? `<code>${esc(p.landlord.lasrraId)}</code> (Verified)` : 'Pending LASRRA link') +
+    rowKV('Compound Virtual Wallet', `<code>${esc(p.wallet.id)}</code> · Balance: <b>₦${p.wallet.balance.toLocaleString()}</b> / Target: ₦${p.wallet.targetMonthly.toLocaleString()} mo`) +
+    rowKV('Doorway QR Decal', `Decal ${esc(p.decal.id)} · Affixed ${esc(p.decal.affixedAt)} · Verified by ${esc(p.decal.verifiedBy)}`) +
+    (p.lucLien.attached ? rowKV('Statutory Title Lien', `<span class="state-pill red">Lien Active: ₦${p.lucLien.amount.toLocaleString()}</span> Ref: ${esc(p.lucLien.ref)} · ${esc(p.lucLien.statutoryRef)}`) : '') +
+    
+    `<div class="drawer-actions" style="margin-top:16px;margin-bottom:16px;">
+      ${button('Doorway QR decal', 'viewPropertyDecal', id)}
+      ${button('Record wallet payment', 'recordCompoundPay', id, true)}
+      ${button('Simulate tenant move-out & ring-fence debt', 'moveOutTenant', id)}
+      ${button('Adjust service tier / lien', 'changeServiceTier', id)}
+    </div>` +
+
+    `<h3>Doorstep Dwelling Units (${p.units.length} DUIDs)</h3>` +
+    `<p><small>Individual flat accounts. Doorstep collection clearance is guaranteed even if compound or landlord disputes exist.</small></p>` +
+    table(
+      ['DUID', 'Flat / location', 'Current occupant', 'Phone / LASRRA', 'Tariff', 'Arrears', 'Collection tag'],
+      p.units.map(u => [
+        `<code>${esc(u.duid)}</code>`,
+        `<b>${esc(u.flat)}</b>`,
+        esc(u.tenant),
+        `${esc(u.phone)}<small class="cell-sub">${u.lasrraId ? 'LASRRA: ' + esc(u.lasrraId) : 'SMS verified'}</small>`,
+        `₦${u.tariff.toLocaleString()}`,
+        u.arrears > 0 ? `<b style="color:var(--c-amber,#b45309)">₦${u.arrears.toLocaleString()}</b>` : '₦0',
+        `<span class="state-pill ${u.clearance === 'Clear' ? 'good' : 'amber'}">${esc(u.clearance)}</span>`
+      ])
+    ) +
+
+    `<h3>Owner Debt Review Ledger (${p.ownerDebtLedger.length} ring-fenced debts)</h3>` +
+    `<p><small>Historical tenant debts ring-fenced to prevent service denial to incoming occupants.</small></p>` +
+    (p.ownerDebtLedger.length ? table(
+      ['Debt ref', 'DUID unit', 'Former occupant', 'Isolated debt', 'Isolated at', 'Status'],
+      p.ownerDebtLedger.map(d => [
+        `<code>${esc(d.id)}</code>`,
+        esc(d.duid),
+        esc(d.formerTenant),
+        `<b>₦${d.amount.toLocaleString()}</b>`,
+        stamp(d.isolatedAt),
+        `<span class="state-pill amber">${esc(d.status)}</span>`
+      ])
+    ) : empty('No ring-fenced owner debts', 'When a tenant moves out with unpaid arrears, debt is isolated here.')) +
+
+    `<h3>Compound Wallet Payments & Social Broadcasts (${p.walletPayments.length})</h3>` +
+    (p.walletPayments.length ? table(
+      ['Reference', 'Amount', 'Payer', 'Date', 'Method / social broadcast proof'],
+      p.walletPayments.map(w => [
+        `<code>${esc(w.id)}</code>`,
+        `<b>₦${w.amount.toLocaleString()}</b>`,
+        esc(w.payer),
+        stamp(w.date),
+        `${esc(w.method)}<small class="cell-sub">${esc(w.note)}</small>`
+      ])
+    ) : empty('No payments recorded yet', 'Record a wallet payment to simulate instant SMS broadcast to all occupants.'))
+  );
+}
+
 screens.partners=()=>pageHead('PARTNER MANAGEMENT','One authority. Many partners.','Manage each organisation by its role, service area and responsibilities.',canMaintain()?button('Register partner','registerPartner','',true):'')+
  stats([['Registered partners',modules.partners.length,'All organisation categories'],['PSP partners',modules.partners.filter(p=>p.type==='PSP').length,'Collection is one service responsibility'],['Other partners',modules.partners.filter(p=>p.type!=='PSP').length,'Recovery, facilities, transport and support'],['Awaiting review',modules.partners.filter(p=>p.status==='Pending review').length,'Registration checks pending']])+
  panel('Partner directory','Categories can be managed in Administration.',`<div class="module-toolbar"><label class="module-search"><span class="sr">Search partners</span>${icon('search')}<input id="partnerQuery" aria-label="Search partners" placeholder="Search name, reference or area" value="${esc(ui.partnerQuery)}"></label><label><span class="sr">Partner category</span><select id="partnerType" aria-label="Partner category">${selectOptions(['All categories',...modules.categories],ui.partnerType)}</select></label></div><div id="partnerRows">${partnerRows()}</div>`);
@@ -394,6 +517,11 @@ metrics=function(){
  $('metrics').querySelectorAll('button').forEach(b=>b.onclick=()=>{state.status=b.dataset.status;$('status').value=state.status;changeFilter(false)});
 };
 function bindModules(){
+
+ if($('cadastreLga'))$('cadastreLga').onchange=e=>{ui.cadastreLga=e.target.value;renderJourney();$('cadastreLga').focus()};
+ if($('cadastreTier'))$('cadastreTier').onchange=e=>{ui.cadastreTier=e.target.value;renderJourney();$('cadastreTier').focus()};
+ if($('cadastreQuery'))$('cadastreQuery').oninput=e=>{ui.cadastreQuery=e.target.value;renderJourney();$('cadastreQuery').focus()};
+
  if($('partnerQuery'))$('partnerQuery').oninput=e=>{ui.partnerQuery=e.target.value;$('partnerRows').innerHTML=partnerRows()};
  if($('partnerType'))$('partnerType').onchange=e=>{ui.partnerType=e.target.value;$('partnerRows').innerHTML=partnerRows()};
  if($('incidentFilter'))$('incidentFilter').onchange=e=>{ui.incidentFilter=e.target.value;renderJourney();$('incidentFilter').focus()};
@@ -407,7 +535,7 @@ function bindModules(){
 }
 function renderNav(){
  const groups=[
-  ['Organisation',['overview','partners','partner','registry']],
+  ['Organisation',['overview','cadastre','partners','partner','registry']],
   ['Operations',['fleet','dispatch','serviceLedger','crew','facility','capacity','cameras','partnerWork']],
   ['Service & assurance',['publicReports','incidents','compliance','finance','remittances','commercial','care','connectedService','enforcement','recovery','resident','alerts']],
   ['Governance',['systems','reports','scenarios']]
