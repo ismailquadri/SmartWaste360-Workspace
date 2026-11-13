@@ -12,11 +12,10 @@ This folder contains the complete, tailored engineering specifications for the *
 2. **[Regulatory Control Room Research (research.md)](research.md)**  
    *Operational findings on phantom weighbridge ticket fraud, LASU-Igando landfill queue paralysis, and Fourth Schedule LGA jurisdiction overlaps.*
 
-3. **[Executive & Regulatory Critiques (stakeholder-critiques-and-concerns.md)](stakeholder-critiques-and-concerns.md)**  
+3. **[Stakeholder Critiques & Defense Playbook (stakeholder-critiques-and-defense.md)](stakeholder-critiques-and-defense.md)**
+   *Unified Q&A dossier directly pairing every critical stakeholder objection with its engineering mitigation and statutory defense.*
    *High-level challenges from Hon. Comm. Tokunbo Wahab, MD Dr. Muyiwa Gbadegesin, Governor Babajide Sanwo-Olu, Conference 57 LGAs, LIRS, and Lagos Environmental Mobile Courts.*
 
-4. **[Executive Master Defense Playbook (stakeholder-defense-answers.md)](stakeholder-defense-answers.md)**  
-   *Regulatory & legal mitigations: 45-min SLA queue diversion, mass-balance conservation equations, ₦1.8B annual subsidy recovery, 5% LGA allocations, and Section 84 Evidence Act certification.*
 
 5. **[Street Political Economy (political-economy-of-the-streets.md)](political-economy-of-the-streets.md)**  
    *Macro governance: Ministry vs LGA dynamics, KAI/Waste Police enforcement, and dumpsite host community laterite capping contracts (`MAT-CAP-*`).*

@@ -32,7 +32,6 @@ Complete technical specifications, field research, street political economy, and
 
 - **[Product Requirements Document (PRD)](docs/PRD.md)**: Regulator command, 10-module TLS lifecycle engine, 20/37 LCDA cleanliness competition, 6-stage lifecycle tracking, Solous II 100/day cap governance, and public verify/report site.
 - **[UX & Field Research](docs/research.md)**: Authority control room audit, mass-balance clearinghouse reconciliation, and public dispute triage.
-- **[Stakeholder Critiques & Concerns](docs/stakeholder-critiques-and-concerns.md)**: 35+ questions across 10 key Lagos stakeholders.
-- **[Stakeholder Defense Master Playbook](docs/stakeholder-defense-answers.md)**: Executive defense scripts answering all critiques.
+- **[Stakeholder Critiques & Defense Playbook](docs/stakeholder-critiques-and-defense.md)**: Unified Q&A pairing every critical objection with its verified technical mitigation.
 - **[Political Economy of the Streets](docs/political-economy-of-the-streets.md)**: Inter-agency dynamics, Wole-Wole inspectors, Solous II laterite capping, and LIRS tax data alignment.
 - **[Cross-System Ecosystem Specs](docs/ecosystem-specs/)**: PRDs and data contracts for Partner, Resident, and Operator apps.
