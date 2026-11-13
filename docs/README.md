@@ -48,3 +48,5 @@ Every module is authored as an exhaustive, courtroom-grade v4.0 Product Level Do
 
 - [Executive policy and operational decisions requiring approval](executive-policy-and-operational-decisions.md) — proposed defaults, tradeoffs, responsible approvers, and verification gates.
 - [Acceptance criteria and field-validation scenarios](acceptance-criteria-and-field-validation-scenarios.md) — testable behavior for six safeguards, all 11 modules, and end-to-end flows.
+- [Field-validation pilot plan](field-validation-pilot-plan.md) — 4-phase rollout, RACI matrix, evidence protocols, quality gates, and escalation/rollback paths.
+- [Solutions and modules traceability matrix](solutions-and-modules-traceability-matrix.md) — full cross-reference of safeguards, acceptance criteria, modules, scenarios, and open policy decisions.
