@@ -35,3 +35,4 @@ Complete technical specifications, field research, street political economy, and
 - **[Stakeholder Critiques & Defense Playbook](docs/stakeholder-critiques-and-defense.md)**: Unified Q&A pairing every critical objection with its verified technical mitigation.
 - **[Political Economy of the Streets](docs/political-economy-of-the-streets.md)**: Inter-agency dynamics, Wole-Wole inspectors, Solous II laterite capping, and LIRS tax data alignment.
 - **[Cross-System Ecosystem Specs](docs/ecosystem-specs/)**: PRDs and data contracts for Partner, Resident, and Operator apps.
+- **[Executive Audit & Governance Mandates](docs/executive-audit-and-mandates.md)**: 14 non-negotiable mandates from Governor Hamzat, Comm. Wahab, Hon. Shabi, and MD Gbadegesin.

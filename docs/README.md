@@ -22,3 +22,6 @@ This folder contains the complete, tailored engineering specifications for the *
 
 6. **[API & Message Contract (api-contracts.md)](api-contracts.md)**  
    *Exact JSON payload schemas and event definitions for authority workspace network synchronization.*
+
+7. **[Executive Audit & Governance Mandates (executive-audit-and-mandates.md)](executive-audit-and-mandates.md)**
+   *Comprehensive high-level audit capturing problems, critiques, political economy, and 14 statutory engineering mandates from Governor Kadri Obafemi Hamzat, Comm. Tokunbo Wahab, Hon. Rasheed Shabi, and MD Dr. Muyiwa Gbadegesin.*

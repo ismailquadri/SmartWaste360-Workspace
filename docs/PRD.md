@@ -131,3 +131,21 @@ $$	ext{Mass}_{	ext{Landfill Total}} = 	ext{Mass}_{	ext{Direct Landfill}} + \sum 
 | **Phase 1: Foundation & Pilot** | Months 0 to 12 | Core identity registry (LASRRA sync), compound billing engine, 100 compactor telematics pilot, 80/20 escrow clearinghouse. |
 | **Phase 2: Statewide Scale** | Months 12 to 24 | Full 57 LGA/LCDA rollout, 400 compactors + 1,500 handhelds, 5 TLS weighbridge automation sites, WhatsApp/USSD gateways. |
 | **Phase 3: Smart City Expansion**| Months 24 to 36 | Predictive AI route optimization, Pakam recycling API sync, Epe WTE corridor telemetry. |
+
+---
+
+## 5. Executive Governance & Sovereign Compliance Mandates
+
+Following the Joint Executive Boardroom Audit by **Governor Dr. Kadri Obafemi Hamzat**, **Hon. Comm. Tokunbo Wahab**, **Hon. Rasheed Shabi**, and **MD Dr. Muyiwa Gbadegesin** (detailed in [`docs/executive-audit-and-mandates.md`](executive-audit-and-mandates.md)), Workspace enforces 14 non-negotiable architectural mandates:
+
+1. **Onshore Sovereign Cloud Tier (`MANDATE-KOH-01`):** Primary database, transaction ledgers, and identity registries must terminate in the Lagos State Central Data Center (Alausa / Tier III MDXi Lekki) under NDPA 2023.
+2. **LAGIS Cadastre & LASRRA Binding (`MANDATE-KOH-02`):** Every `PROP-*` property entity must bind to the official `LASG-CAD-ID` digital land parcel ID and the tenant's 10-digit LASRRA key.
+3. **Treasury Single Account (TSA) Co-Banking (`MANDATE-KOH-03`):** 80/20 escrow clearinghouse operates via a designated State Co-Treasury Escrow account integrated via API with Oracle EBS Financials.
+4. **Pre-Dispatch Depot Route Locking (`MANDATE-WAH-01`):** Abolish mid-transit long-distance diversions; lock northern Alimosho to Agege TLS at 5:00 AM dispatch and utilize LASU-Iba corridor holding pads.
+5. **KAI Taskforce Oshodi Armed Rapid Interception (`MANDATE-WAH-02`):** Real-time automated dispatch of armed LAGESC/KAI patrol squads and vehicle impoundment tracking under EMPL Section 88.
+6. **Executive Market Sealing Dashboard (`MANDATE-WAH-03`):** Tracking collective market skip containment (`MKT-EXEC-*`) and single-click ministerial sealing orders.
+7. **Joint LASEPA-LAWMA Statutory Handshake (`MANDATE-SHB-01`):** Mandate digital LASEPA laboratory clearance tokens for all hazardous, toxic, chemical, and medical specialized waste (`SPL-*`, `INC-BIO-*`).
+8. **Ecotoxicity & Aquifer Protection Dashboard (`MANDATE-SHB-02`):** Continuous telemetry of groundwater test boreholes around dumpsites, methane gas migration sensors, and daily 15cm laterite capping depth logs (`MAT-CAP-*`).
+9. **48-Hour Operational Grace & Cure Window (`MANDATE-GBD-01`):** Replace rigid Saturday-noon freeze with a 48-hour operational grace window to prevent statewide AWAMN strikes.
+10. **Zero-Downtime Local Edge Survivability (`MANDATE-GBD-02`):** Local SQLite/K3s broker issuing cryptographically signed offline scale tickets (`TCK-OFFLINE-*`) backed by 72-hour solar-inverter power.
+11. **Automated Emergency Hazmat Evacuation (`MANDATE-GBD-03`):** Instant dispatch of LAWMA Specialized Medical Waste Fleet within 4 hours of any biohazard rejection, auto-billing the offending clinic via HEFAMAA.
