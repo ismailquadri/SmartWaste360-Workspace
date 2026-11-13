@@ -301,11 +301,277 @@ screens.crew=()=>pageHead('FIELD SHIFT','Your assigned collections','Capture sta
 const priorFacility=screens.facility;
 screens.facility=()=>pageHead('FACILITY INTAKE','Receive and verify each load.','Gate arrival, weighing, unloading and a traceable receipt.',routeButton('View site capacity','capacity'))+panel('Connected arrivals','Collected services can arrive here. Confirm gross and tare before issuing a receipt.',simOrderTable(ownedOrders().filter(o=>['Collected','At facility','Verified'].includes(o.stage))))+
  panel('Occupancy','Open arrivals contribute to the site count; receipt completion records departure.',`<div class="module-pad">${visibleFacilities().map(f=>`<div class="capacity-line"><span>${esc(f.name)}</span><b>${occupancy(f)} / ${f.capacity}</b></div>`).join('')}</div>`);
-screens.overview=()=>pageHead('SmartWaste360','Today at a glance','Partners, service delivery and exceptions across Lagos.',simulatedNote())+
- stats([['Fleet in view',fleet.length,'Vehicles reporting position'],['Partners',modules.partners.length,'Across '+modules.categories.length+' categories'],['Service records',sim.orders.length,'Connected assignments'],['Open incidents',modules.incidents.filter(i=>i.status!=='Resolved').length,'Supervisor follow-up']])+
- panel('Needs attention','Open a record to take the next action.',`<div class="module-pad">${routeButton('Service records · '+sim.orders.filter(o=>o.stage!=='Verified').length+' in progress','serviceLedger')}${routeButton('Site capacity · '+modules.facilities.filter(f=>occupancy(f)>f.capacity).length+' above limit','capacity')}${routeButton('Partner registration · '+modules.partners.filter(p=>p.status==='Pending review').length+' pending','partners')}${routeButton('Review incidents','incidents')}</div>`)+
- panel('Follow a complete collection','From dispatch to a verified disposal receipt.',simOrderTable(sim.orders.slice(0,3)))+
- panel('Scenarios','Manage daily work and exception handling.',`<div class="module-pad">${routeButton('Open scenarios','scenarios')}${routeButton('Camera and sensor observations','cameras')}${routeButton('Performance report','reports')}</div>`);
+function renderOverviewHero() {
+  const onRouteCount = fleet.filter(v => v.status === 'On route').length;
+  return `
+  <section class="overview-hero-banner">
+    <div class="overview-hero-top">
+      <span class="overview-hero-kicker"><i class="pulse-dot"></i> Lagos State Waste Management Authority · Sovereign Operations Command</span>
+      <span class="overview-hero-coord">6.5244° N, 3.3792° E · Lagos Grid</span>
+    </div>
+    <div class="overview-hero-content">
+      <h1>Statewide Waste & Concession Assurance Console</h1>
+      <p>Real-time compactor telemetry, weighbridge tonnage ingestion, concessionaire SLA assurance, and compound tenement billing across 20 Local Government Areas.</p>
+    </div>
+    <div class="overview-hero-strip">
+      <span class="overview-hero-chip"><b>Residency:</b> Verified Onshore Sovereign Cloud</span>
+      <span class="overview-hero-chip"><b>Active Fleet:</b> ${onRouteCount} / ${fleet.length} Compactors On Grid</span>
+      <span class="overview-hero-chip"><b>Today's Net Intake:</b> 3,842 Tonnes Reconciled</span>
+      <span class="overview-hero-chip"><b>Weather Exemption:</b> Clear Skies · No Flood Grace Active</span>
+    </div>
+    <div class="overview-hero-actions">
+      <button class="btn banner-btn-accent" data-go="cadastre">${swGlyph('household', 16)} Tenement Cadastre (MOD-01)</button>
+      <button class="btn" data-go="fleet">${swGlyph('collection-truck', 16)} Live Fleet Map</button>
+      <button class="btn" data-go="capacity">${swGlyph('weighbridge', 16)} Weighbridge Queues</button>
+      <button class="btn-ghost" data-module="sim-telemetry">${icon('refresh')} Refresh Telemetry</button>
+    </div>
+  </section>`;
+}
+
+function renderOverviewKpis() {
+  const onRoute = fleet.filter(v => v.status === 'On route').length;
+  const onRoutePct = Math.round((onRoute / (fleet.length || 1)) * 100);
+  const openIncidents = modules.incidents.filter(i => i.status !== 'Resolved').length;
+  const propCount = modules.properties ? modules.properties.length : 5;
+  const unitCount = modules.properties ? modules.properties.reduce((n, p) => n + (p.units ? p.units.length : 0), 0) : 37;
+
+  return `
+  <div class="kpi-cards-grid">
+    <div class="kpi-card">
+      <div class="kpi-card-header">
+        <span class="kpi-card-icon">${swGlyph('collection-truck', 26)}</span>
+        <span class="kpi-card-badge">${onRoutePct}% on route</span>
+      </div>
+      <div>
+        <div class="kpi-card-num">${onRoute} <small style="font-size:14px;color:#6b7280;font-weight:600">/ ${fleet.length}</small></div>
+        <div class="kpi-card-label">Active Compactor Fleet</div>
+        <div class="kpi-card-sub">Real-time GPS telemetry active across Lagos roads</div>
+      </div>
+      <div class="kpi-card-progress"><div style="width:${onRoutePct}%"></div></div>
+    </div>
+
+    <div class="kpi-card">
+      <div class="kpi-card-header">
+        <span class="kpi-card-icon amber">${swGlyph('weighbridge', 26)}</span>
+        <span class="kpi-card-badge amber">76.8% Target</span>
+      </div>
+      <div>
+        <div class="kpi-card-num">3,842 <small style="font-size:14px;color:#6b7280;font-weight:600">Tonnes</small></div>
+        <div class="kpi-card-label">Daily Tonnage Ingested</div>
+        <div class="kpi-card-sub">Olusosun, Solous, Simpson TLS & Oshodi TLS</div>
+      </div>
+      <div class="kpi-card-progress"><div class="amber" style="width:76.8%"></div></div>
+    </div>
+
+    <div class="kpi-card">
+      <div class="kpi-card-header">
+        <span class="kpi-card-icon">${swGlyph('household', 26)}</span>
+        <span class="kpi-card-badge">MOD-01 Active</span>
+      </div>
+      <div>
+        <div class="kpi-card-num">${propCount} <small style="font-size:14px;color:#6b7280;font-weight:600">(${unitCount} DUIDs)</small></div>
+        <div class="kpi-card-label">Tenement Cadastre & DUIDs</div>
+        <div class="kpi-card-sub">Ring-fenced tenant billing & virtual wallets</div>
+      </div>
+      <div class="kpi-card-progress"><div style="width:92%"></div></div>
+    </div>
+
+    <div class="kpi-card">
+      <div class="kpi-card-header">
+        <span class="kpi-card-icon blue">${swGlyph('partner', 26)}</span>
+        <span class="kpi-card-badge blue">100% SLA</span>
+      </div>
+      <div>
+        <div class="kpi-card-num">${modules.partners.length} <small style="font-size:14px;color:#6b7280;font-weight:600">Operators</small></div>
+        <div class="kpi-card-label">Accredited PSP Partners</div>
+        <div class="kpi-card-sub">Across ${modules.categories.length} concession zones</div>
+      </div>
+      <div class="kpi-card-progress"><div class="blue" style="width:100%"></div></div>
+    </div>
+
+    <div class="kpi-card">
+      <div class="kpi-card-header">
+        <span class="kpi-card-icon ${openIncidents > 0 ? 'amber' : ''}">${swGlyph('incident', 26)}</span>
+        <span class="kpi-card-badge ${openIncidents > 0 ? 'amber' : ''}">${openIncidents > 0 ? openIncidents + ' Pending' : 'All Clear'}</span>
+      </div>
+      <div>
+        <div class="kpi-card-num">${openIncidents} <small style="font-size:14px;color:#6b7280;font-weight:600">Exceptions</small></div>
+        <div class="kpi-card-label">Supervisor Triage Queue</div>
+        <div class="kpi-card-sub">24m average resolution time today</div>
+      </div>
+      <div class="kpi-card-progress"><div class="amber" style="width:${Math.min(100, openIncidents * 20)}%"></div></div>
+    </div>
+  </div>`;
+}
+
+function renderOverviewCharts() {
+  const facilities = [
+    { name: 'Olusosun (Ojota)', actual: 1420, cap: 1600, pct: 88.8, color: '#f59e0b' },
+    { name: 'Solous (Igando)', actual: 980, cap: 1300, pct: 75.4, color: '#0b7042' },
+    { name: 'Simpson TLS (Island)', actual: 620, cap: 900, pct: 68.9, color: '#0b7042' },
+    { name: 'Oshodi TLS', actual: 510, cap: 850, pct: 60.0, color: '#0b7042' },
+    { name: 'Epe Landfill (Diversion)', actual: 312, cap: 800, pct: 39.0, color: '#0284c7' }
+  ];
+
+  const maxCap = 1600;
+  const barSvg = `
+    <svg class="svg-bar-chart" viewBox="0 0 540 210" role="img" aria-label="Facility Intake vs Capacity Chart">
+      <line x1="160" y1="15" x2="520" y2="15" stroke="#f1f5f9" stroke-width="1" />
+      <line x1="160" y1="53" x2="520" y2="53" stroke="#f1f5f9" stroke-width="1" />
+      <line x1="160" y1="91" x2="520" y2="91" stroke="#f1f5f9" stroke-width="1" />
+      <line x1="160" y1="129" x2="520" y2="129" stroke="#f1f5f9" stroke-width="1" />
+      <line x1="160" y1="167" x2="520" y2="167" stroke="#f1f5f9" stroke-width="1" />
+      <line x1="160" y1="8" x2="160" y2="185" stroke="#cbd5e1" stroke-width="1.5" />
+      ${facilities.map((f, i) => {
+        const y = 14 + i * 36;
+        const barWidth = Math.round((f.actual / maxCap) * 310);
+        const capWidth = Math.round((f.cap / maxCap) * 310);
+        return `
+          <text x="152" y="${y + 13}" text-anchor="end" font-size="10.5" font-weight="650" fill="#374151">${f.name}</text>
+          <rect x="160" y="${y}" width="${capWidth}" height="17" rx="3" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1" />
+          <rect x="160" y="${y}" width="${barWidth}" height="17" rx="3" fill="${f.color}" />
+          <text x="${166 + barWidth}" y="${y + 12}" font-size="10" font-weight="750" fill="${f.color}">${f.actual} T <tspan font-size="8.5" fill="#64748b" font-weight="500">(${f.pct}%)</tspan></text>
+        `;
+      }).join('')}
+    </svg>
+  `;
+
+  return `
+  <div class="overview-charts-grid">
+    <div class="chart-box">
+      <div class="chart-box-header">
+        <div>
+          <h2 class="chart-box-title">Facility Tonnage Ingestion vs Daily Capacity</h2>
+          <div class="chart-box-sub">Net weighed intake recorded at weighbridge scales today</div>
+        </div>
+        <div class="chart-legend">
+          <span><i style="background:#0b7042"></i> Normal Flow</span>
+          <span><i style="background:#f59e0b"></i> Near Capacity</span>
+          <span><i style="background:#f8fafc;border:1px solid #cbd5e1"></i> Headroom</span>
+        </div>
+      </div>
+      ${barSvg}
+    </div>
+
+    <div class="chart-box">
+      <div class="chart-box-header">
+        <div>
+          <h2 class="chart-box-title">End-to-End Service Assurance Pipeline</h2>
+          <div class="chart-box-sub">From scheduled doorstep stop to verified Friday escrow settlement</div>
+        </div>
+        <span class="state-pill good" style="font-size:10px">Active Pipeline</span>
+      </div>
+      <div class="pipeline-list">
+        <div class="pipeline-step">
+          <div class="pipeline-step-head">
+            <span class="pipeline-step-title">${swGlyph('route', 18)} 1. Scheduled Stops on Route</span>
+            <span class="pipeline-step-val">1,840 stops <small style="color:#6b7280;font-weight:500">(100%)</small></span>
+          </div>
+          <div class="pipeline-track"><div class="pipeline-fill" style="width:100%"></div></div>
+          <div class="pipeline-sub"><span>Dispatched to 24 compactor routes</span><span>20 LGAs</span></div>
+        </div>
+
+        <div class="pipeline-step">
+          <div class="pipeline-step-head">
+            <span class="pipeline-step-title">${swGlyph('crew', 18)} 2. Doorstep Tag Scans & Pickups</span>
+            <span class="pipeline-step-val">1,612 pickups <small style="color:#6b7280;font-weight:500">(87.6%)</small></span>
+          </div>
+          <div class="pipeline-track"><div class="pipeline-fill" style="width:87.6%"></div></div>
+          <div class="pipeline-sub"><span>GPS proximity & timestamp logged</span><span>228 in progress</span></div>
+        </div>
+
+        <div class="pipeline-step">
+          <div class="pipeline-step-head">
+            <span class="pipeline-step-title">${swGlyph('weighbridge', 18)} 3. Weighbridge Receipts Issued</span>
+            <span class="pipeline-step-val">1,390 loads <small style="color:#6b7280;font-weight:500">(75.5%)</small></span>
+          </div>
+          <div class="pipeline-track"><div class="pipeline-fill" style="width:75.5%"></div></div>
+          <div class="pipeline-sub"><span>Gross / Tare delta matched to manifest</span><span>12 in queue</span></div>
+        </div>
+
+        <div class="pipeline-step">
+          <div class="pipeline-step-head">
+            <span class="pipeline-step-title">${swGlyph('digital-transfer', 18)} 4. Reconciled Friday Escrow Payouts</span>
+            <span class="pipeline-step-val">1,240 verified <small style="color:#6b7280;font-weight:500">(67.4%)</small></span>
+          </div>
+          <div class="pipeline-track"><div class="pipeline-fill" style="width:67.4%"></div></div>
+          <div class="pipeline-sub"><span>5% LIRS WHT withheld · Tonnage audited</span><span>₦32.4M value</span></div>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderOverviewLaunchpad() {
+  return `
+  <div class="module-launchpad">
+    <div class="launch-tile" data-go="cadastre">
+      <div class="launch-tile-top">
+        <span class="launch-tile-icon">${swGlyph('household', 32)}</span>
+        <div class="launch-tile-info">
+          <h3>MOD-01: Cadastre & DUIDs</h3>
+          <p>Tenement property registry, doorstep flat tags, and virtual compound wallets.</p>
+        </div>
+      </div>
+      <div class="launch-tile-foot">
+        <span>Open Tenement Register</span>
+        ${icon('arrow')}
+      </div>
+    </div>
+
+    <div class="launch-tile" data-go="fleet">
+      <div class="launch-tile-top">
+        <span class="launch-tile-icon">${swGlyph('collection-truck', 32)}</span>
+        <div class="launch-tile-info">
+          <h3>MOD-02: Fleet Telemetry</h3>
+          <p>Live compactor GPS tracking, route breadcrumbs, speed alerts, and missed stops.</p>
+        </div>
+      </div>
+      <div class="launch-tile-foot">
+        <span>View Live Fleet Map</span>
+        ${icon('arrow')}
+      </div>
+    </div>
+
+    <div class="launch-tile" data-go="capacity">
+      <div class="launch-tile-top">
+        <span class="launch-tile-icon">${swGlyph('weighbridge', 32)}</span>
+        <div class="launch-tile-info">
+          <h3>MOD-03: Weighbridge & TLS</h3>
+          <p>Automated gross/tare weighing, queue times, and traceable disposal scale receipts.</p>
+        </div>
+      </div>
+      <div class="launch-tile-foot">
+        <span>Inspect Site Queues</span>
+        ${icon('arrow')}
+      </div>
+    </div>
+
+    <div class="launch-tile" data-go="finance">
+      <div class="launch-tile-top">
+        <span class="launch-tile-icon">${swGlyph('daily-balance', 32)}</span>
+        <div class="launch-tile-info">
+          <h3>MOD-05: Escrow & Settlements</h3>
+          <p>Verified tonnage payments, LIRS statutory deductions, and partner statements.</p>
+        </div>
+      </div>
+      <div class="launch-tile-foot">
+        <span>View Finance Ledger</span>
+        ${icon('arrow')}
+      </div>
+    </div>
+  </div>`;
+}
+
+screens.overview = () => {
+  return renderOverviewHero() +
+    renderOverviewKpis() +
+    renderOverviewCharts() +
+    renderOverviewLaunchpad() +
+    panel('Operational attention', 'Open a record or facility to take immediate action.', `<div class="module-pad">${routeButton('Service records · ' + sim.orders.filter(o => o.stage !== 'Verified').length + ' in progress', 'serviceLedger')}${routeButton('Site capacity · ' + modules.facilities.filter(f => occupancy(f) > f.capacity).length + ' above limit', 'capacity')}${routeButton('Partner registration · ' + modules.partners.filter(p => p.status === 'Pending review').length + ' pending', 'partners')}${routeButton('Review incidents · ' + modules.incidents.filter(i => i.status !== 'Resolved').length + ' active', 'incidents')}</div>`) +
+    panel('Follow a complete collection', 'From dispatch to a verified disposal receipt.', simOrderTable(sim.orders.slice(0, 3))) +
+    panel('Scenarios & controls', 'Simulate field handoffs, camera detections, and offline edge recovery.', `<div class="module-pad">${routeButton('Open scenarios', 'scenarios')}${routeButton('Camera and sensor observations', 'cameras')}${routeButton('Performance report', 'reports')}</div>`);
+};
 // Preserve the existing citizen-care journey while generating matching resident notifications.
 const simRenderBase=renderJourney;
 renderJourney=function(){
