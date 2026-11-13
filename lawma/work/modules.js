@@ -24,7 +24,7 @@ journeyRoles.admin[2]='Users, partner categories and activity history';
 const pages=['overview','cadastre','partners','registry','fleet','dispatch','facility','capacity','incidents','compliance','finance','care','connectedService','enforcement','recovery','systems'];
 personaPages.management=[...pages,'crew'];
 personaPages.admin=[...pages,'crew'];
-personaPages.operations=['overview','partners','registry','fleet','dispatch','facility','capacity','incidents','compliance','care'];
+personaPages.operations=['overview','cadastre','partners','registry','fleet','dispatch','facility','capacity','incidents','compliance','care'];
 personaPages.partner=['partner','incidents'];
 personaPages.psp=['partner','dispatch','fleet','crew','incidents'];
 personaPages.facility=['facility','capacity','incidents'];
@@ -108,16 +108,16 @@ screens.cadastre = () => {
   const totalEncumbered = all.filter(p => p.lucLien?.attached).length;
 
   const lgas = ['All LGAs', 'Surulere', 'Alimosho', 'Ikeja', 'Eti-Osa', 'Kosofe'];
-  const tiers = ['All tiers', 'Compactor Doorstep', 'Prepaid Branded Bags', 'LUC Statutory Lien Attached'];
+  const tiers = ['All tiers', 'Illustrative doorstep collection option', 'Hypothetical prepaid-bag option', 'Hypothetical policy review state'];
 
-  return pageHead('MOD-01: CADASTRE & RESIDENT IDENTITY', 'Sovereign Tenement & DUID Registry', 'Doorstep Dwelling Unit IDs (DUID), compound virtual wallets, and tenant-landlord debt ring-fencing.', isAuthority()?button('Add tenement property', 'addProperty', '', true):'') +
+  return pageHead('MOD-01: CADASTRE & RESIDENT IDENTITY · SIMULATION', 'Illustrative Tenement & DUID Registry', 'DEMO DATA ONLY: addresses, identities, IDs, balances, tariffs, decals and policy states are invented and unverified. No real payment, identity check, service action, lien or legal effect occurs.', isAuthority()?button('Add tenement property', 'addProperty', '', true):'') +
     stats([
       ['Registered properties', all.length, 'Master cadastre nodes'],
       ['Dwelling units (DUID)', totalUnits, 'Individual doorstep flat IDs'],
       ['Isolated owner arrears', '₦' + totalIsolatedDebt.toLocaleString(), 'Ring-fenced from new tenants'],
       ['Compound wallets', '₦' + totalWalletBal.toLocaleString(), 'Virtual escrow balance']
     ]) +
-    panel('Tenement property register', 'Sovereign LAGIS GIS polygon binding with Doorway QR Decals and independent dwelling unit ledgers.',
+    panel('Illustrative property register', 'Illustrative property records and independent dwelling-unit ledgers. LAGIS links, QR decals and all policy rules are unverified examples.',
       `<div class="module-toolbar">
         <label for="cadastreLga">LGA</label>
         <select id="cadastreLga">${selectOptions(lgas, ui.cadastreLga)}</select>
@@ -131,7 +131,7 @@ screens.cadastre = () => {
         rows.map(p => [
           `<b>${esc(p.name)}</b><small class="cell-sub">${esc(p.address)} · <b>${esc(p.lga)}</b> (${esc(p.ward)})</small>`,
           `<code>${esc(p.cadastreId)}</code><small class="cell-sub">H3: ${esc(p.geohash)}</small>`,
-          `${esc(p.landlord.name)}<small class="cell-sub">${p.landlord.lasrraId ? 'LASRRA: ' + esc(p.landlord.lasrraId) : 'NIN verified'}</small>`,
+          `${esc(p.landlord.name)}<small class="cell-sub">${p.landlord.lasrraId ? 'LASRRA: ' + esc(p.landlord.lasrraId) : 'Sample record only'}</small>`,
           `<b>₦${(p.wallet.balance).toLocaleString()}</b><small class="cell-sub">Target: ₦${(p.wallet.targetMonthly).toLocaleString()}/mo</small>`,
           `<span>${p.units.length} Flats</span><small class="cell-sub">${p.ownerDebtLedger.length ? '<span class="state-pill amber">' + p.ownerDebtLedger.length + ' debt isolated</span>' : 'Clean ledger'}</small>`,
           `<span class="state-pill ${p.serviceStatus === 'Active' ? 'good' : p.serviceStatus === 'Encumbered' ? 'red' : 'amber'}">${esc(p.serviceTier)}</span>`,
@@ -139,80 +139,8 @@ screens.cadastre = () => {
         ])
       ) : empty('No matching properties found', 'Change your filter criteria or search query to see more tenement records.'))
     ) +
-    note('MANDATE-KOH-02 Statutory Foundation: Dwelling Unit IDs (DUID) decouple tenant billing from compound landlords. When an occupant vacates with unpaid arrears, debt is ring-fenced to the owner review ledger, ensuring incoming tenants receive clean bills and zero compactor service refusal.');
+    note('SIMULATION ONLY · POLICY NOT APPROVED: this screen demonstrates a possible tenant move-out and arrears-review workflow. It does not determine legal liability or authorize service refusal, tariff changes, a lien, or enforcement.');
 };
-
-function propertyDetail(id) {
-  const p = propertyByID(id);
-  if (!p) { toast('Property not found.'); return; }
-
-  const totalUnitArrears = p.units.reduce((s, u) => s + (u.arrears || 0), 0);
-  const totalIsolated = (p.ownerDebtLedger || []).reduce((s, d) => s + d.amount, 0);
-
-  drawer(p.id + ' · ' + p.name,
-    `<div class="drawer-intro">
-      <span class="state-pill ${p.serviceStatus === 'Active' ? 'good' : p.serviceStatus === 'Encumbered' ? 'red' : 'amber'}">${esc(p.serviceTier)}</span>
-      <span class="state-pill">${esc(p.lga)} · ${esc(p.ward)}</span>
-      <span class="state-pill good">${esc(p.decal.id)}</span>
-    </div>
-    <p><b>Address:</b> ${esc(p.address)}</p>` +
-    rowKV('LAGIS Cadastre ID', `<code>${esc(p.cadastreId)}</code>`) +
-    rowKV('Uber H3 Geohash (Res 10)', `<code>${esc(p.geohash)}</code> (${esc(p.plusCode)})`) +
-    rowKV('Landlord / Trustee', `${esc(p.landlord.name)} (${esc(p.landlord.phone)}) · NIN: ${esc(p.landlord.nin)}`) +
-    rowKV('Landlord LASRRA ID', p.landlord.lasrraId ? `<code>${esc(p.landlord.lasrraId)}</code> (Verified)` : 'Pending LASRRA link') +
-    rowKV('Compound Virtual Wallet', `<code>${esc(p.wallet.id)}</code> · Balance: <b>₦${p.wallet.balance.toLocaleString()}</b> / Target: ₦${p.wallet.targetMonthly.toLocaleString()} mo`) +
-    rowKV('Doorway QR Decal', `Decal ${esc(p.decal.id)} · Affixed ${esc(p.decal.affixedAt)} · Verified by ${esc(p.decal.verifiedBy)}`) +
-    (p.lucLien.attached ? rowKV('Statutory Title Lien', `<span class="state-pill red">Lien Active: ₦${p.lucLien.amount.toLocaleString()}</span> Ref: ${esc(p.lucLien.ref)} · ${esc(p.lucLien.statutoryRef)}`) : '') +
-    
-    `<div class="drawer-actions" style="margin-top:16px;margin-bottom:16px;">
-      ${button('Doorway QR decal', 'viewPropertyDecal', id)}
-      ${button('Record wallet payment', 'recordCompoundPay', id, true)}
-      ${button('Simulate tenant move-out & ring-fence debt', 'moveOutTenant', id)}
-      ${button('Adjust service tier / lien', 'changeServiceTier', id)}
-    </div>` +
-
-    `<h3>Doorstep Dwelling Units (${p.units.length} DUIDs)</h3>` +
-    `<p><small>Individual flat accounts. Doorstep collection clearance is guaranteed even if compound or landlord disputes exist.</small></p>` +
-    table(
-      ['DUID', 'Flat / location', 'Current occupant', 'Phone / LASRRA', 'Tariff', 'Arrears', 'Collection tag'],
-      p.units.map(u => [
-        `<code>${esc(u.duid)}</code>`,
-        `<b>${esc(u.flat)}</b>`,
-        esc(u.tenant),
-        `${esc(u.phone)}<small class="cell-sub">${u.lasrraId ? 'LASRRA: ' + esc(u.lasrraId) : 'SMS verified'}</small>`,
-        `₦${u.tariff.toLocaleString()}`,
-        u.arrears > 0 ? `<b style="color:var(--c-amber,#b45309)">₦${u.arrears.toLocaleString()}</b>` : '₦0',
-        `<span class="state-pill ${u.clearance === 'Clear' ? 'good' : 'amber'}">${esc(u.clearance)}</span>`
-      ])
-    ) +
-
-    `<h3>Owner Debt Review Ledger (${p.ownerDebtLedger.length} ring-fenced debts)</h3>` +
-    `<p><small>Historical tenant debts ring-fenced to prevent service denial to incoming occupants.</small></p>` +
-    (p.ownerDebtLedger.length ? table(
-      ['Debt ref', 'DUID unit', 'Former occupant', 'Isolated debt', 'Isolated at', 'Status'],
-      p.ownerDebtLedger.map(d => [
-        `<code>${esc(d.id)}</code>`,
-        esc(d.duid),
-        esc(d.formerTenant),
-        `<b>₦${d.amount.toLocaleString()}</b>`,
-        stamp(d.isolatedAt),
-        `<span class="state-pill amber">${esc(d.status)}</span>`
-      ])
-    ) : empty('No ring-fenced owner debts', 'When a tenant moves out with unpaid arrears, debt is isolated here.')) +
-
-    `<h3>Compound Wallet Payments & Social Broadcasts (${p.walletPayments.length})</h3>` +
-    (p.walletPayments.length ? table(
-      ['Reference', 'Amount', 'Payer', 'Date', 'Method / social broadcast proof'],
-      p.walletPayments.map(w => [
-        `<code>${esc(w.id)}</code>`,
-        `<b>₦${w.amount.toLocaleString()}</b>`,
-        esc(w.payer),
-        stamp(w.date),
-        `${esc(w.method)}<small class="cell-sub">${esc(w.note)}</small>`
-      ])
-    ) : empty('No payments recorded yet', 'Record a wallet payment to simulate instant SMS broadcast to all occupants.'))
-  );
-}
 
 screens.partners=()=>pageHead('PARTNER MANAGEMENT','One authority. Many partners.','Manage each organisation by its role, service area and responsibilities.',canMaintain()?button('Register partner','registerPartner','',true):'')+
  stats([['Registered partners',modules.partners.length,'All organisation categories'],['PSP partners',modules.partners.filter(p=>p.type==='PSP').length,'Collection is one service responsibility'],['Other partners',modules.partners.filter(p=>p.type!=='PSP').length,'Recovery, facilities, transport and support'],['Awaiting review',modules.partners.filter(p=>p.status==='Pending review').length,'Registration checks pending']])+
@@ -476,6 +404,74 @@ screens.dispatch=()=>{
 };
 const moduleRun=runModule;
 runModule=function(cmd,id){
+ if(cmd==='inspectProperty'){
+  const p=propertyByID(id);if(!p)return;
+  const totalDebt=(p.ownerDebtLedger||[]).reduce((sum,d)=>sum+d.amount,0);
+  drawer('Sample property · '+p.name,
+   '<div class="drawer-intro">'+pill('SIMULATION ONLY · NOT VERIFIED','amber')+'</div>'+note('Invented sample record. No registry, payment, SMS, service change or lien is connected.')+
+   rowKV('Sample property reference','<code>'+esc(p.id)+'</code>')+
+   rowKV('Illustrative address',esc(p.address)+', '+esc(p.lga))+
+   rowKV('Sample spatial / cadastre references','<code>'+esc(p.cadastreId)+'</code><br>Illustrative geohash: <code>'+esc(p.geohash)+'</code>')+
+   rowKV('Sample owner / contact',esc(p.landlord.name)+' · '+esc(p.landlord.phone))+
+   rowKV('Sample compound wallet',esc(p.wallet.id)+' · ₦'+Number(p.wallet.balance).toLocaleString()+' (fictional balance)')+
+   rowKV('Hypothetical service state',esc(p.serviceTier)+' · '+esc(p.serviceStatus))+
+   rowKV('Hypothetical arrears separated', '₦'+totalDebt.toLocaleString()+' · no real debt or lien')+
+   '<div class="drawer-actions" style="margin:16px 0">'+button('View sample decal','viewPropertyDecal',id)+button('Simulate wallet entry','recordCompoundPay',id,true)+button('Simulate tenant move-out','moveOutTenant',id)+button('Preview hypothetical service state','changeServiceTier',id)+'</div>'+
+   '<h3>Dwelling units · sample IDs</h3>'+table(['Sample ID','Unit','Occupant alias','Sample balance','Status'],p.units.map(u=>['<code>'+esc(u.duid)+'</code>',esc(u.flat),esc(u.tenant),'₦'+Number(u.arrears||0).toLocaleString(),pill(esc(u.clearance))]))+
+   '<h3>Owner review ledger · fictional</h3>'+(p.ownerDebtLedger.length?table(['Ref','Sample unit','Former occupant alias','Amount','Review state'],p.ownerDebtLedger.map(d=>[esc(d.id),esc(d.duid),esc(d.formerTenant),'₦'+Number(d.amount).toLocaleString(),esc(d.status)])):empty('No sample entries','Fictional arrears-separation entries appear here.'))+
+   '<h3>Wallet entries · fictional</h3>'+(p.walletPayments.length?table(['Sample ref','Amount','Payer alias','Date','Channel'],p.walletPayments.map(w=>[esc(w.id),'₦'+Number(w.amount).toLocaleString(),esc(w.payer),stamp(w.date),esc(w.method)])):empty('No sample entries','A simulated entry does not move funds or send a message.'))
+  );return;
+ }
+ if(cmd==='viewPropertyDecal'){
+  const p=propertyByID(id);if(!p)return;
+  dialog('SAMPLE QR-STYLE DECAL · '+esc(p.decal.id),'<div class="decal-modal-view"><div class="decal-header"><span class="decal-state-crest">ILLUSTRATIVE WORKSPACE DEMONSTRATION</span><h3>LAWMA-360 · SAMPLE SIMULATION</h3><small>NON-FUNCTIONAL SAMPLE · NOT AN OFFICIAL QR DECAL</small></div><div class="decal-body"><div class="decal-qr-box"><div class="decal-fake-qr"><div class="qr-corner tl"></div><div class="qr-corner tr"></div><div class="qr-corner bl"></div><div class="qr-center-text"><b>DEMO ONLY</b><br><small>'+esc(p.id)+'</small></div></div><span class="decal-qr-caption">NOT SCANNABLE · NO GOVERNMENT SERVICE CONNECTED</span></div><div class="decal-info-table"><div><b>Sample reference:</b> <code>'+esc(p.id)+'</code></div><div><b>Illustrative location:</b> '+esc(p.address)+'</div><div><b>Sample unit count:</b> '+p.units.length+'</div><div><b>Sample decal label:</b> '+esc(p.decal.id)+'</div></div></div><div class="decal-footer"><small>Demonstration only. Not an official decal, clearance certificate, legal notice, identity credential or enforcement record. All legal references and policy proposals require independent verification and approval.</small></div></div>');return;
+ }
+ if(cmd==='recordCompoundPay'){
+  const p=propertyByID(id);if(!p)return;
+  const units=[{value:'Sample landlord / compound contribution',label:'Sample landlord / compound contribution'},...p.units.map(u=>({value:u.duid+' ('+u.tenant+')',label:u.flat+' · '+u.tenant}))];
+  openForm('Simulate a compound-wallet entry','SIMULATION ONLY: no funds move and no SMS is sent. This records a fictional entry in browser storage.',[
+   field('amount','Sample amount (₦)',{type:'number',min:1,max:1000000,step:1,value:6000}),field('payer','Sample payer',{options:units}),field('method','Illustrative channel',{options:['Illustrative bank transfer','Illustrative USSD','Illustrative POS','Illustrative web payment']})
+  ],'Save sample entry',d=>{
+   const amount=Number(d.amount);if(!Number.isFinite(amount)||amount<=0)return'Enter a positive sample amount.';
+   p.wallet.balance+=amount;p.wallet.lastPaid=new Date().toISOString();p.walletPayments.unshift({id:moduleID('PAY',p.walletPayments),amount,payer:d.payer,date:new Date().toISOString(),method:d.method,note:'Fictional local entry only. No funds moved and no notification sent.'});
+   recordModuleAction('Fictional wallet entry of ₦'+amount.toLocaleString()+' added for '+p.id+'; no funds moved and no SMS sent.');
+  });return;
+ }
+ if(cmd==='moveOutTenant'){
+  const p=propertyByID(id);if(!p)return;
+  const options=p.units.map(u=>({value:u.duid,label:u.flat+' · '+u.tenant+(u.arrears?' · sample arrears ₦'+Number(u.arrears).toLocaleString():' · ₦0 sample balance')}));
+  const chosen=p.units.find(u=>u.arrears>0)||p.units[0];
+  openForm('Simulate tenancy change','SIMULATION ONLY: this is not a legal decision on liability or service eligibility. The demo illustrates moving a fictional prior balance to a review ledger.',[
+   field('duid','Sample dwelling unit',{options,value:chosen?.duid}),textField('newTenant','Incoming occupant alias','Sample incoming occupant'),textField('newPhone','Sample contact number','+234 800 000 0099'),field('newLasrra','Sample identity reference (optional)',{value:'',optional:true})
+  ],'Save sample transition',d=>{
+   const unit=p.units.find(u=>u.duid===d.duid);if(!unit)return'Select a valid sample unit.';
+   if(!d.newTenant.trim())return'Enter a sample occupant alias.';
+   const oldName=unit.tenant,amount=Number(unit.arrears)||0;
+   if(amount>0)p.ownerDebtLedger.unshift({id:moduleID('DEBT',p.ownerDebtLedger),duid:unit.duid,formerTenant:oldName,amount,isolatedAt:new Date().toISOString(),status:'Illustrative review only',note:'Fictional scenario; no debt assignment or legal determination.'});
+   unit.tenant=d.newTenant.trim();unit.phone=d.newPhone||'Sample contact not supplied';unit.lasrraId=d.newLasrra||'';unit.arrears=0;unit.clearance='Clear';unit.status='Sample active';
+   recordModuleAction('Simulated tenancy change on '+unit.duid+'; sample balance separated for review. No legal or service action occurred.');
+  });return;
+ }
+ if(cmd==='changeServiceTier'){
+  const p=propertyByID(id);if(!p)return;
+  openForm('Preview hypothetical service policy','SIMULATION ONLY: this selection is a mock policy state. It does not affect actual collection, impose a lien, change legal status or trigger enforcement.',[
+   field('targetTier','Hypothetical display state',{options:['Compactor Doorstep','Prepaid Branded Bags','LUC Statutory Lien Attached'],value:p.serviceTier})
+  ],'Save sample state',d=>{
+   p.serviceTier=d.targetTier;p.serviceStatus=d.targetTier==='Compactor Doorstep'?'Sample active':d.targetTier==='Prepaid Branded Bags'?'Sample review state · bag option':'Sample review state · no lien';
+   if(p.lucLien){p.lucLien.attached=false;p.lucLien.amount=0;}
+   recordModuleAction('Hypothetical display state set for '+p.id+'; no real service change or lien.');
+  });return;
+ }
+ if(cmd==='addProperty'){
+  openForm('Add illustrative property record','DEMO ONLY: fields are fictional and references are not verified against government registries.',[
+   textField('name','Sample property name','Sample Tenement'),textField('address','Illustrative address','Illustrative address, Lagos'),field('lga','Sample LGA',{options:['Surulere','Alimosho','Ikeja','Eti-Osa','Kosofe']}),textField('ward','Illustrative ward','Sample ward'),textField('landlord','Owner alias','Sample owner'),field('unitsCount','Sample unit count',{type:'number',min:1,max:50,step:1,value:4})
+  ],'Create sample property',d=>{
+   const count=Number(d.unitsCount);if(!Number.isInteger(count)||count<1||count>50)return'Enter a sample unit count from 1 to 50.';
+   const id=moduleID('PROP',modules.properties),code=id.split('-').pop(),units=Array.from({length:count},(_,i)=>({duid:'SAMPLE-'+code+'-U'+String(i+1).padStart(2,'0'),flat:'Sample unit '+(i+1),tenant:'Unassigned sample occupant',phone:'Sample only',lasrraId:'',tariff:3000,arrears:0,clearance:'Clear',status:'Sample'}));
+   modules.properties.unshift({id,name:d.name,address:d.address,lga:d.lga,ward:d.ward,cadastreId:'SAMPLE-CAD-'+code,geohash:'SAMPLE-GEO-'+code,plusCode:'Sample location only',type:'Illustrative property',unitsCount:count,landlord:{name:d.landlord,phone:'Sample only',nin:'SAMPLE-ONLY',lasrraId:''},wallet:{id:'SAMPLE-WALLET-'+code,balance:0,targetMonthly:count*3000,lastPaid:new Date().toISOString(),smsAlertsCount:0},decal:{id:'SAMPLE-DECAL-'+code,affixedAt:new Date().toISOString().slice(0,10),verifiedBy:'Not verified'},serviceTier:'Compactor Doorstep',serviceStatus:'Sample state',lucLien:{attached:false,ref:'SAMPLE-REVIEW-'+code,amount:0,statutoryRef:'Unverified policy concept; no legal effect'},units,ownerDebtLedger:[],walletPayments:[]});
+   recordModuleAction('Illustrative property '+id+' created locally; sample only.');
+  });return;
+ }
  if(cmd==='assignRoute'){
   if(!permitted('dispatch'))return;
   const choices=modules.partners.filter(p=>p.status==='Active'&&p.service==='Collection'&&(!['partner','psp'].includes(journey.role)||p.id===modules.partnerContext));
@@ -520,7 +516,7 @@ function bindModules(){
 
  if($('cadastreLga'))$('cadastreLga').onchange=e=>{ui.cadastreLga=e.target.value;renderJourney();$('cadastreLga').focus()};
  if($('cadastreTier'))$('cadastreTier').onchange=e=>{ui.cadastreTier=e.target.value;renderJourney();$('cadastreTier').focus()};
- if($('cadastreQuery'))$('cadastreQuery').oninput=e=>{ui.cadastreQuery=e.target.value;renderJourney();$('cadastreQuery').focus()};
+ if($('cadastreQuery'))$('cadastreQuery').oninput=e=>{const value=e.target.value,caret=e.target.selectionStart;ui.cadastreQuery=value;renderJourney();const input=$('cadastreQuery');input?.focus();input?.setSelectionRange(caret,caret)};
 
  if($('partnerQuery'))$('partnerQuery').oninput=e=>{ui.partnerQuery=e.target.value;$('partnerRows').innerHTML=partnerRows()};
  if($('partnerType'))$('partnerType').onchange=e=>{ui.partnerType=e.target.value;$('partnerRows').innerHTML=partnerRows()};
