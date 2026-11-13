@@ -281,48 +281,50 @@ export interface CadastralPropertyEntity {
 ## MODULE 2: SPLIT-OPERATIONAL FLEET & CORRIDOR PRE-DISPATCH ENGINE (`MOD-02-FLEET-LOGISTICS`)
 
 > 📄 **Standalone Courtroom-Grade PLD Specification:** [`docs/modules/02-MOD-FLEET-LOGISTICS.md`](modules/02-MOD-FLEET-LOGISTICS.md)  
-> *Full schema, 5:00 AM depot pre-dispatch locking, geofenced corridor state machines, and LASU-Iba staging hub protocols.*
+> *Full 540-line specification: Universal retrofit telematics (~₦445k/kit), dual-shift dispatch, JIT dumpsite slots, ultrasonic fuel theft guards, geofenced tailgate solenoid locks, mother-vessel mud transshipment, and Section 84 Evidence Act certificates.*
 
 ### 2.1 Module Context & Authority
 - **Module ID:** `MOD-02-FLEET-LOGISTICS`
-- **Lead Executive Sponsor:** Hon. Tokunbo Wahab, Commissioner for the Environment (`MANDATE-WAH-01`)
-- **Statutory Foundation:** 2017 EMPL Section 71 (Franchise Allocation), Lagos State Transport Sector Reform Law (2018)
-- **Target Users:** 400+ AWAMN PSP SMEs, LAWMA Operations Control, Compactor Drivers, Tricycle Crews
+- **Lead Executive Sponsors:** Hon. Tokunbo Wahab, Commissioner for the Environment (`MANDATE-WAH-01`) & Dr. Kadri Obafemi Hamzat, Executive Governor (`MANDATE-KOH-05`)
+- **Statutory Foundation:** 2017 EMPL Sections 68–74 & 88–92; Lagos State Road Traffic Law (2012); Lagos State Public Procurement Law (2021); Evidence Act (2011) Section 84.
+- **Target Fleets:** 102 State-Owned Newly Purchased Compactors, 400+ AWAMN Private Compactors, 1,500+ Motorized Tricycles (Keke Waste), Mini-Tippers.
 
-### 2.2 Problem Space & Field Reality
-- **Lagos Ground Truth:** Diesel in Lagos costs between ₦1,250 and ₦1,400 per liter. A 20-ton compactor burns 65–85 liters per shift. The road network connecting Northern Alimosho to dumpsites in Igando or Ojota is choked by persistent bottlenecks (Iyana-Iba, Ikotun roundabout, Oshodi-Isolo).
-- **The Wahab Critique:** Algorithmic mid-transit diversions that order a driver stuck in Igando traffic to reroute to Olusosun burns 40L of diesel across 4 hours of gridlock. The driver will abandon the route, kill the telematics unit, and dump 20 tons of rotting garbage onto expressway medians.
+### 2.2 The 11 Street-Hardened Breakthroughs
+Following forensic multi-stakeholder operational stress-testing, the raw mandate was refined into 11 intelligent breakthroughs:
+1. **The Frugal CapEx Retrofit Architecture:** Replaces ₦43.2 Billion imported "smart truck" proposals with **Universal Modular Retrofit Telematics Kits (~₦445,000 / $280)** installed on existing fleets (a 99.73% CapEx reduction).
+2. **The Split-Operational Dual-Shift Engine:** Separates commercial market clearing (**Shift A: 22:00–05:00 WAT**) from residential collection (**Shift B: 08:30–15:30 WAT**), keeping heavy compactors off commuter expressways during morning rush hours while respecting residential community quiet hours.
+3. **05:00 AM Lock + 60-Minute Depot Hot-Swap Window:** Locks 100% of manifests at 05:00 AM, but grants depot supervisors an authenticated 60-minute window to reassign routes from broken trucks to active standby vehicles, preventing ward abandonment.
+4. **Virtual Dumpsite Slot Reservation & JIT Metering:** Eliminates physical holding hub queueing and idling fuel waste by reserving 15-minute landing slots (`SLOT-JIT-*`) at Solous II while trucks are still on route.
+5. **Tri-Factor Collection Verification:** Combines dwell-time geofencing ($>45	ext{s}$), hydraulic load curve profiling ($>120	ext{ bar}$ vs empty $<40	ext{ bar}$), and dumpsite mass-balance sanity checks.
+6. **Keke Waste / Tricycle Proximity Scans:** Extends verification to the 40% of inner-street fleets that lack hydraulic pumps via mobile QR decal scans within 15 meters.
+7. **Ultrasonic Fuel Tank Telemetry (`FUEL-GUARD-*`):** Non-invasive bottom-mounted sensors detect sudden drops ($>15	ext{L}$), stopping ₦280k/month diesel theft per truck.
+8. **Cryptographic Geofenced Tailgate Solenoid Lock (`LOCK-TAILGATE-*`):** Physically prevents the compactor tailgate from opening outside authorized dumpsites or transfer stations, eradicating the private swamp land reclamation "black tipping" cartel.
+9. **Mother-Vessel Transshipment & Mud Road Gating:** Unpaved mud streets are closed to heavy 25-ton trucks during rain; light tricycles shuttle waste to the compactor parked safely at the tarred junction.
+10. **Biometric Shift Handshake & ₦25,000/Month Safety Bonus:** In-cab facial recognition eliminates teenage motor boy substitutions, paired with monthly cash bonuses for safe, sober driving.
+11. **Electronic Leachate Valve Sensors (`LEACH-VALVE-*`) & Flood No-Go Gating:** Detects unauthorized expressway leachate dumping (₦50,000 fine) and auto-routes trucks away from drowned corridors ($>35	ext{cm}$ floodwater).
 
-### 2.3 Epics, User Stories & Functional Features
-- **Epic 2.1: 5:00 AM Pre-Dispatch Depot Locking:**
-  - *User Story:* As a Fleet Dispatcher, I want trucks assigned to specific disposal facilities *before* leaving the depot, so that no truck is diverted mid-transit through city traffic.
-  - *Feature 2.1.1:* Geographic Corridor Rules: Northern Alimosho (`LCDA-ALI-AGO`, `LCDA-ALI-AYO`, `LCDA-ALI-COR`) locked to Agege TLS (`FAC-AGE`). Southern Alimosho (`LCDA-ALI-IKO`, `LCDA-ALI-EGB`, `LCDA-ALI-MOS`) assigned to Solous II (`DS-SOL`).
-  - *Feature 2.1.2:* Live Google Traffic API & LASG Traffic Radio API integration locks dispatch routes based on morning road clearance.
-- **Epic 2.2: LASU-Iba Corridor Holding Hub & Call-Up Protocol:**
-  - *User Story:* As a Compactor Driver, I want a designated off-highway holding bay to wait for dumpsite entry, so that I do not block traffic on the expressway or burn diesel idling.
-  - *Feature 2.2.1:* Designated off-expressway holding pad in LASU-Iba axis with virtual electronic queue tokens (`CALLUP-SOL-*`).
-  - *Feature 2.2.2:* Trucks wait with engines off; app alerts driver 15 minutes before their weighbridge window opens.
-- **Epic 2.3: Two-Tier Fleet & Zone Micro-Collector Handoff:**
-  - *User Story:* As a Tricycle Micro-Collector, I want my inner-lane collections credited at consolidation skips, so that I can hand off waste to heavy compactors without road harassment.
-  - *Feature 2.3.1:* Scans transfer skips (`TAG-SKIP-*`) to verify batch handoff between tricycle and 20-ton compactor.
-
-### 2.4 Technical Architecture & State Machine
+### 2.3 Key Schemas & Hardware Contracts
+```typescript
+export interface FleetTelemetryEvent {
+  vehicleId: string; // E.g., 'TRK-ALM-0042'
+  recordedAt: string;
+  coordinates: { lat: number; lng: number };
+  speedKmh: number;
+  engineRpm: number;
+  fuelLevelLiters: number;
+  fuelSiphonAlert: boolean;
+  hydraulicPressureBar: number; // Must exceed 120 bar for compaction credit
+  tailgateSolenoidOpen: boolean; // Locked outside authorized geofenced polygon
+  leachateValveOpen: boolean; // Triggers fine if open on highway corridor
+  corridorBreachActive: boolean;
+}
 ```
-                       COMPACTOR DISPATCH STATE MACHINE
-┌──────────────────┐       Pre-Dispatch        ┌──────────────────┐
-│  At Depot (5 AM) │ ────────────────────────▶ │  Route En Route  │
-└──────────────────┘       Facility Locked     └────────┬─────────┘
-                                                        │
-                                                        ▼
-┌──────────────────┐       Gate Window Open    ┌──────────────────┐
-│  Dumpsite Scale  │ ◀──────────────────────── │  Holding Hub     │
-│  Intake Bay      │       Token Called        │  (Engine Off)    │
-└──────────────────┘                           └──────────────────┘
-```
 
-### 2.5 Verification & Statutory Audit Gate
-- **Acceptance Gate 1:** Zero mid-transit reroute orders issued across Alimosho West corridor.
-- **Acceptance Gate 2:** Compactor queue wait time on active carriage lanes of LASU-Igando expressway maintained at zero minutes (all queues held off-highway).
+### 2.4 Verification & Statutory Audit Gate
+- **Acceptance Gate 1:** 100% of residential compactors off high-speed bridges between 06:30 and 08:30 AM WAT.
+- **Acceptance Gate 2:** Zero compactor truck queueing on active lanes of the LASU-Igando expressway outside Solous II.
+- **Acceptance Gate 3:** Section 84 Evidence Act Digital Certificates generated for 100% of speed, leachate, and breach citations.
+- **Acceptance Gate 4:** Retrofit kit execution ceiling maintained strictly $\le ₦450,000$ per truck (99.73% CapEx savings).
 
 ---
 
