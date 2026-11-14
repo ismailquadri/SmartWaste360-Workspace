@@ -301,29 +301,68 @@ screens.crew=()=>pageHead('FIELD SHIFT','Your assigned collections','Capture sta
 const priorFacility=screens.facility;
 screens.facility=()=>pageHead('FACILITY INTAKE','Receive and verify each load.','Gate arrival, weighing, unloading and a traceable receipt.',routeButton('View site capacity','capacity'))+panel('Connected arrivals','Collected services can arrive here. Confirm gross and tare before issuing a receipt.',simOrderTable(ownedOrders().filter(o=>['Collected','At facility','Verified'].includes(o.stage))))+
  panel('Occupancy','Open arrivals contribute to the site count; receipt completion records departure.',`<div class="module-pad">${visibleFacilities().map(f=>`<div class="capacity-line"><span>${esc(f.name)}</span><b>${occupancy(f)} / ${f.capacity}</b></div>`).join('')}</div>`);
+function scIcon(name, size = 16) {
+  const icons = {
+    truck: `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M14 18h4l3-4v-4h-7"/><path d="M14 18H9"/><circle cx="7" cy="18" r="2"/><circle cx="19" cy="18" r="2"/></svg>`,
+    scale: `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M2 16l3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h18"/></svg>`,
+    home: `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5 12 3l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5Z"/><path d="M9 21V12h6v9"/></svg>`,
+    shield: `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>`,
+    alert: `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>`,
+    refresh: `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/><path d="M3 21v-5h5"/></svg>`,
+    arrowRight: `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>`,
+    route: `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="19" r="3"/><circle cx="18" cy="5" r="3"/><path d="M12 19h4.5a3.5 3.5 0 0 0 0-7h-9a3.5 3.5 0 0 1 0-7H12"/></svg>`,
+    scan: `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M7 12h10"/></svg>`,
+    receipt: `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z"/><path d="M16 8h-8"/><path d="M16 12h-8"/><path d="M11 16h-3"/></svg>`,
+    banknote: `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="12" x="2" y="6" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></svg>`,
+    layers: `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>`
+  };
+  return icons[name] || icons.arrowRight;
+}
+
 function renderOverviewHero() {
   const onRouteCount = fleet.filter(v => v.status === 'On route').length;
+  const onRoutePct = Math.round((onRouteCount / (fleet.length || 1)) * 100);
   return `
   <section class="overview-hero-banner">
     <div class="overview-hero-top">
-      <span class="overview-hero-kicker"><i class="pulse-dot"></i> Lagos State Waste Management Authority · Sovereign Operations Command</span>
-      <span class="overview-hero-coord">6.5244° N, 3.3792° E · Lagos Grid</span>
+      <div class="overview-hero-kicker">
+        <span class="pulse-dot"></span>
+        <span>LAGOS STATE WASTE MANAGEMENT AUTHORITY · SOVEREIGN OPERATIONS COMMAND</span>
+      </div>
+      <div class="overview-hero-meta">
+        <span class="overview-hero-coord">6.5244° N · 3.3792° E · 20 LGAs</span>
+        <span class="overview-hero-status-pill"><i class="status-dot-green"></i> ONSHORE TIER III</span>
+      </div>
     </div>
-    <div class="overview-hero-content">
-      <h1>Statewide Waste & Concession Assurance Console</h1>
-      <p>Real-time compactor telemetry, weighbridge tonnage ingestion, concessionaire SLA assurance, and compound tenement billing across 20 Local Government Areas.</p>
+    <div class="overview-hero-main">
+      <div class="overview-hero-headline">
+        <h1>Statewide Waste & Concession Assurance Console</h1>
+        <p>Real-time compactor GPS telemetry, weighbridge scale ingestion, compound tenement cadastre billing, and concessionaire SLA settlement across 20 Local Government Areas.</p>
+      </div>
+      <div class="overview-hero-actions">
+        <button class="btn primary" data-go="cadastre">${scIcon('home', 14)} Tenement Cadastre (MOD-01)</button>
+        <button class="btn" data-go="fleet">${scIcon('truck', 14)} Live Fleet Map</button>
+        <button class="btn" data-go="capacity">${scIcon('scale', 14)} Weighbridge Queues</button>
+        <button class="btn-ghost" data-module="sim-telemetry">${scIcon('refresh', 13)} Refresh Telemetry</button>
+      </div>
     </div>
     <div class="overview-hero-strip">
-      <span class="overview-hero-chip"><b>Residency:</b> Verified Onshore Sovereign Cloud</span>
-      <span class="overview-hero-chip"><b>Active Fleet:</b> ${onRouteCount} / ${fleet.length} Compactors On Grid</span>
-      <span class="overview-hero-chip"><b>Today's Net Intake:</b> 3,842 Tonnes Reconciled</span>
-      <span class="overview-hero-chip"><b>Weather Exemption:</b> Clear Skies · No Flood Grace Active</span>
-    </div>
-    <div class="overview-hero-actions">
-      <button class="btn banner-btn-accent" data-go="cadastre">${swGlyph('household', 16)} Tenement Cadastre (MOD-01)</button>
-      <button class="btn" data-go="fleet">${swGlyph('collection-truck', 16)} Live Fleet Map</button>
-      <button class="btn" data-go="capacity">${swGlyph('weighbridge', 16)} Weighbridge Queues</button>
-      <button class="btn-ghost" data-module="sim-telemetry">${icon('refresh')} Refresh Telemetry</button>
+      <div class="overview-hero-chip">
+        <span class="chip-label">Data Residency</span>
+        <span class="chip-val">Verified Onshore Sovereign Cloud</span>
+      </div>
+      <div class="overview-hero-chip">
+        <span class="chip-label">Active Grid Fleet</span>
+        <span class="chip-val">${onRouteCount} / ${fleet.length} Compactors (${onRoutePct}%)</span>
+      </div>
+      <div class="overview-hero-chip">
+        <span class="chip-label">Today's Certified Intake</span>
+        <span class="chip-val">3,842 Tonnes · 5 Primary Sites</span>
+      </div>
+      <div class="overview-hero-chip">
+        <span class="chip-label">Weather Protocol</span>
+        <span class="chip-val">Dry Conditions · No Flood Grace Active</span>
+      </div>
     </div>
   </section>`;
 }
@@ -338,164 +377,261 @@ function renderOverviewKpis() {
   return `
   <div class="kpi-cards-grid">
     <div class="kpi-card">
-      <div class="kpi-card-header">
-        <span class="kpi-card-icon">${swGlyph('collection-truck', 26)}</span>
-        <span class="kpi-card-badge">${onRoutePct}% on route</span>
+      <div class="kpi-card-head">
+        <div class="kpi-card-title-group">
+          <span class="kpi-card-tag">FLEET TELEMETRY</span>
+          <span class="kpi-card-title">Active Compactors</span>
+        </div>
+        <span class="sc-pill sc-pill-forest">${onRoutePct}% ON GRID</span>
       </div>
-      <div>
-        <div class="kpi-card-num">${onRoute} <small style="font-size:14px;color:#6b7280;font-weight:600">/ ${fleet.length}</small></div>
-        <div class="kpi-card-label">Active Compactor Fleet</div>
-        <div class="kpi-card-sub">Real-time GPS telemetry active across Lagos roads</div>
+      <div class="kpi-card-metric">
+        <span class="kpi-card-num">${onRoute}</span>
+        <span class="kpi-card-denom">/ ${fleet.length} TRUCKS</span>
       </div>
-      <div class="kpi-card-progress"><div style="width:${onRoutePct}%"></div></div>
+      <div class="kpi-card-breakdown">
+        <span>598 en route</span> · <span>86 at scale</span> · <span>316 depot</span>
+      </div>
+      <div class="kpi-card-progress">
+        <div class="progress-fill" style="width:${onRoutePct}%"></div>
+      </div>
+      <div class="kpi-card-foot">
+        ${scIcon('truck', 13)}
+        <span>GPS breadcrumbs active across Lagos</span>
+      </div>
     </div>
 
     <div class="kpi-card">
-      <div class="kpi-card-header">
-        <span class="kpi-card-icon amber">${swGlyph('weighbridge', 26)}</span>
-        <span class="kpi-card-badge amber">76.8% Target</span>
+      <div class="kpi-card-head">
+        <div class="kpi-card-title-group">
+          <span class="kpi-card-tag">SCALE INGESTION</span>
+          <span class="kpi-card-title">Daily Net Tonnage</span>
+        </div>
+        <span class="sc-pill sc-pill-honey">76.8% TARGET</span>
       </div>
-      <div>
-        <div class="kpi-card-num">3,842 <small style="font-size:14px;color:#6b7280;font-weight:600">Tonnes</small></div>
-        <div class="kpi-card-label">Daily Tonnage Ingested</div>
-        <div class="kpi-card-sub">Olusosun, Solous, Simpson TLS & Oshodi TLS</div>
+      <div class="kpi-card-metric">
+        <span class="kpi-card-num">3,842</span>
+        <span class="kpi-card-denom">TONNES RECONCILED</span>
       </div>
-      <div class="kpi-card-progress"><div class="amber" style="width:76.8%"></div></div>
+      <div class="kpi-card-breakdown">
+        <span>Target: 5,000 T</span> · <span>312 loads</span> · <span>12.4 T avg</span>
+      </div>
+      <div class="kpi-card-progress">
+        <div class="progress-fill progress-honey" style="width:76.8%"></div>
+      </div>
+      <div class="kpi-card-foot">
+        ${scIcon('scale', 13)}
+        <span>Olusosun, Solous, Simpson, Oshodi, Epe</span>
+      </div>
     </div>
 
     <div class="kpi-card">
-      <div class="kpi-card-header">
-        <span class="kpi-card-icon">${swGlyph('household', 26)}</span>
-        <span class="kpi-card-badge">MOD-01 Active</span>
+      <div class="kpi-card-head">
+        <div class="kpi-card-title-group">
+          <span class="kpi-card-tag">MOD-01 CADASTRE</span>
+          <span class="kpi-card-title">Dwelling Unit IDs</span>
+        </div>
+        <span class="sc-pill sc-pill-forest">RING-FENCED</span>
       </div>
-      <div>
-        <div class="kpi-card-num">${propCount} <small style="font-size:14px;color:#6b7280;font-weight:600">(${unitCount} DUIDs)</small></div>
-        <div class="kpi-card-label">Tenement Cadastre & DUIDs</div>
-        <div class="kpi-card-sub">Ring-fenced tenant billing & virtual wallets</div>
+      <div class="kpi-card-metric">
+        <span class="kpi-card-num">${propCount}</span>
+        <span class="kpi-card-denom">PROPERTIES (${unitCount} DUIDs)</span>
       </div>
-      <div class="kpi-card-progress"><div style="width:92%"></div></div>
+      <div class="kpi-card-breakdown">
+        <span>37 Wallets</span> · <span>₦1.84M balance</span> · <span>0 suspended</span>
+      </div>
+      <div class="kpi-card-progress">
+        <div class="progress-fill progress-forest" style="width:100%"></div>
+      </div>
+      <div class="kpi-card-foot">
+        ${scIcon('home', 13)}
+        <span>Unit-level billing isolated from landlord debt</span>
+      </div>
     </div>
 
     <div class="kpi-card">
-      <div class="kpi-card-header">
-        <span class="kpi-card-icon blue">${swGlyph('partner', 26)}</span>
-        <span class="kpi-card-badge blue">100% SLA</span>
+      <div class="kpi-card-head">
+        <div class="kpi-card-title-group">
+          <span class="kpi-card-tag">CONCESSIONS</span>
+          <span class="kpi-card-title">Accredited PSPs</span>
+        </div>
+        <span class="sc-pill sc-pill-blue">100% SLA LOCK</span>
       </div>
-      <div>
-        <div class="kpi-card-num">${modules.partners.length} <small style="font-size:14px;color:#6b7280;font-weight:600">Operators</small></div>
-        <div class="kpi-card-label">Accredited PSP Partners</div>
-        <div class="kpi-card-sub">Across ${modules.categories.length} concession zones</div>
+      <div class="kpi-card-metric">
+        <span class="kpi-card-num">${modules.partners.length}</span>
+        <span class="kpi-card-denom">OPERATORS ASSURED</span>
       </div>
-      <div class="kpi-card-progress"><div class="blue" style="width:100%"></div></div>
+      <div class="kpi-card-breakdown">
+        <span>24 Active routes</span> · <span>99.1% telemetry</span> · <span>₦32.4M escrow</span>
+      </div>
+      <div class="kpi-card-progress">
+        <div class="progress-fill progress-blue" style="width:100%"></div>
+      </div>
+      <div class="kpi-card-foot">
+        ${scIcon('shield', 13)}
+        <span>Covering 5 major Lagos concession zones</span>
+      </div>
     </div>
 
     <div class="kpi-card">
-      <div class="kpi-card-header">
-        <span class="kpi-card-icon ${openIncidents > 0 ? 'amber' : ''}">${swGlyph('incident', 26)}</span>
-        <span class="kpi-card-badge ${openIncidents > 0 ? 'amber' : ''}">${openIncidents > 0 ? openIncidents + ' Pending' : 'All Clear'}</span>
+      <div class="kpi-card-head">
+        <div class="kpi-card-title-group">
+          <span class="kpi-card-tag">SUPERVISOR QUEUE</span>
+          <span class="kpi-card-title">Active Exceptions</span>
+        </div>
+        <span class="sc-pill ${openIncidents > 0 ? 'sc-pill-honey' : 'sc-pill-forest'}">${openIncidents > 0 ? openIncidents + ' PENDING' : 'ALL CLEAR'}</span>
       </div>
-      <div>
-        <div class="kpi-card-num">${openIncidents} <small style="font-size:14px;color:#6b7280;font-weight:600">Exceptions</small></div>
-        <div class="kpi-card-label">Supervisor Triage Queue</div>
-        <div class="kpi-card-sub">24m average resolution time today</div>
+      <div class="kpi-card-metric">
+        <span class="kpi-card-num">${openIncidents}</span>
+        <span class="kpi-card-denom">TRIAGE CASES</span>
       </div>
-      <div class="kpi-card-progress"><div class="amber" style="width:${Math.min(100, openIncidents * 20)}%"></div></div>
+      <div class="kpi-card-breakdown">
+        <span>1 Illegal dumping</span> · <span>18m avg dispatch time</span>
+      </div>
+      <div class="kpi-card-progress">
+        <div class="progress-fill ${openIncidents > 0 ? 'progress-honey' : 'progress-forest'}" style="width:${Math.max(10, openIncidents * 20)}%"></div>
+      </div>
+      <div class="kpi-card-foot">
+        ${scIcon('alert', 13)}
+        <span>Section 84 evidence certificate ready</span>
+      </div>
     </div>
   </div>`;
 }
 
 function renderOverviewCharts() {
   const facilities = [
-    { name: 'Olusosun (Ojota)', actual: 1420, cap: 1600, pct: 88.8, color: 'var(--sc-honey, #ecb730)' },
-    { name: 'Solous (Igando)', actual: 980, cap: 1300, pct: 75.4, color: 'var(--sc-forest, #42c366)' },
-    { name: 'Simpson TLS (Island)', actual: 620, cap: 900, pct: 68.9, color: 'var(--sc-forest, #42c366)' },
-    { name: 'Oshodi TLS', actual: 510, cap: 850, pct: 60.0, color: 'var(--sc-forest, #42c366)' },
-    { name: 'Epe Landfill (Diversion)', actual: 312, cap: 800, pct: 39.0, color: 'var(--sc-blue, #2a6dfb)' }
+    { name: 'Olusosun Landfill (Ojota)', queue: '4 in queue · 14m turnaround', actual: 1420, cap: 1600, pct: 88.8, status: 'near' },
+    { name: 'Solous Landfill (Igando)', queue: '2 in queue · 11m turnaround', actual: 980, cap: 1300, pct: 75.4, status: 'ok' },
+    { name: 'Simpson TLS (Lagos Island)', queue: '1 in queue · 8m turnaround', actual: 620, cap: 900, pct: 68.9, status: 'ok' },
+    { name: 'Oshodi TLS (Oshodi-Isolo)', queue: '2 in queue · 9m turnaround', actual: 510, cap: 850, pct: 60.0, status: 'ok' },
+    { name: 'Epe Landfill (Diversion Reserve)', queue: 'Open intake · Rain diversion', actual: 312, cap: 800, pct: 39.0, status: 'reserve' }
   ];
 
   const maxCap = 1600;
   const barSvg = `
-    <svg class="svg-bar-chart" viewBox="0 0 540 210" role="img" aria-label="Facility Intake vs Capacity Chart">
-      <line x1="160" y1="15" x2="520" y2="15" stroke="#f1f5f9" stroke-width="1" />
-      <line x1="160" y1="53" x2="520" y2="53" stroke="#f1f5f9" stroke-width="1" />
-      <line x1="160" y1="91" x2="520" y2="91" stroke="#f1f5f9" stroke-width="1" />
-      <line x1="160" y1="129" x2="520" y2="129" stroke="#f1f5f9" stroke-width="1" />
-      <line x1="160" y1="167" x2="520" y2="167" stroke="#f1f5f9" stroke-width="1" />
-      <line x1="160" y1="8" x2="160" y2="185" stroke="#cbd5e1" stroke-width="1.5" />
+    <svg class="sc-tremor-chart" viewBox="0 0 600 230" role="img" aria-label="Facility Intake vs Daily Capacity">
+      <!-- Grid guidelines -->
+      <line x1="195" y1="10" x2="195" y2="195" stroke="var(--sc-border-faint)" stroke-width="1" stroke-dasharray="3 3" />
+      <line x1="265" y1="10" x2="265" y2="195" stroke="var(--sc-border-faint)" stroke-width="1" stroke-dasharray="3 3" />
+      <line x1="335" y1="10" x2="335" y2="195" stroke="var(--sc-border-faint)" stroke-width="1" stroke-dasharray="3 3" />
+      <line x1="405" y1="10" x2="405" y2="195" stroke="var(--sc-border-faint)" stroke-width="1" stroke-dasharray="3 3" />
+      <line x1="475" y1="10" x2="475" y2="195" stroke="var(--sc-border-faint)" stroke-width="1" />
+
       ${facilities.map((f, i) => {
         const y = 14 + i * 36;
-        const barWidth = Math.round((f.actual / maxCap) * 310);
-        const capWidth = Math.round((f.cap / maxCap) * 310);
+        const capWidth = Math.round((f.cap / maxCap) * 280);
+        const actualWidth = Math.round((f.actual / maxCap) * 280);
+        const barColor = f.status === 'near' ? 'var(--sc-heat, #f47707)' : f.status === 'reserve' ? 'var(--sc-blue, #2a6dfb)' : 'var(--sc-forest, #42c366)';
         return `
-          <text x="152" y="${y + 13}" text-anchor="end" font-size="10.5" font-weight="650" fill="#374151">${f.name}</text>
-          <rect x="160" y="${y}" width="${capWidth}" height="17" rx="3" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1" />
-          <rect x="160" y="${y}" width="${barWidth}" height="17" rx="3" fill="${f.color}" />
-          <text x="${166 + barWidth}" y="${y + 12}" font-size="10" font-weight="750" fill="${f.color}">${f.actual} T <tspan font-size="8.5" fill="#64748b" font-weight="500">(${f.pct}%)</tspan></text>
+          <text x="185" y="${y + 11}" text-anchor="end" font-size="11" font-weight="500" fill="var(--sc-fg)">${f.name}</text>
+          <text x="185" y="${y + 22}" text-anchor="end" font-size="9" font-family="var(--sc-mono)" fill="var(--sc-fg-muted)">${f.queue}</text>
+
+          <!-- Capacity Track -->
+          <rect x="195" y="${y + 2}" width="${capWidth}" height="16" rx="4" fill="var(--sc-a4)" stroke="var(--sc-border-faint)" stroke-width="1" />
+
+          <!-- Actual Ingestion Bar -->
+          <rect x="195" y="${y + 2}" width="${actualWidth}" height="16" rx="4" fill="${barColor}" />
+
+          <!-- Ingestion Metric readout in right column -->
+          <text x="488" y="${y + 14}" font-size="11" font-family="var(--sc-mono)" font-weight="500" fill="var(--sc-fg)">${f.actual} T <tspan font-size="9.5" fill="var(--sc-fg-muted)">(${f.pct}%)</tspan></text>
         `;
       }).join('')}
+
+      <!-- Bottom Axis Scale -->
+      <line x1="195" y1="198" x2="475" y2="198" stroke="var(--sc-border)" stroke-width="1" />
+      <text x="195" y="214" font-size="10" font-family="var(--sc-mono)" fill="var(--sc-fg-muted)">0 T</text>
+      <text x="335" y="214" text-anchor="middle" font-size="10" font-family="var(--sc-mono)" fill="var(--sc-fg-muted)">800 T (50%)</text>
+      <text x="475" y="214" text-anchor="end" font-size="10" font-family="var(--sc-mono)" fill="var(--sc-fg)">1,600 T Cap</text>
     </svg>
   `;
 
   return `
   <div class="overview-charts-grid">
-    <div class="chart-box">
-      <div class="chart-box-header">
+    <div class="sc-data-card">
+      <div class="sc-card-header">
         <div>
-          <h2 class="chart-box-title">Facility Tonnage Ingestion vs Daily Capacity</h2>
-          <div class="chart-box-sub">Net weighed intake recorded at weighbridge scales today</div>
+          <div class="sc-card-tag">INFRASTRUCTURE INTAKE</div>
+          <h2 class="sc-card-title">Facility Tonnage Ingestion vs Daily Capacity</h2>
+          <div class="sc-card-sub">Net weighed gross-tare receipts recorded at certified scales today</div>
         </div>
-        <div class="chart-legend">
-          <span><i style="background:#0b7042"></i> Normal Flow</span>
-          <span><i style="background:#f59e0b"></i> Near Capacity</span>
-          <span><i style="background:#f8fafc;border:1px solid #cbd5e1"></i> Headroom</span>
+        <div class="sc-chart-legend">
+          <span><i style="background:var(--sc-forest, #42c366)"></i> Normal Flow</span>
+          <span><i style="background:var(--sc-heat, #f47707)"></i> >85% Near Cap</span>
+          <span><i style="background:var(--sc-a4);border:1px solid var(--sc-border-faint)"></i> Design Headroom</span>
         </div>
       </div>
       ${barSvg}
     </div>
 
-    <div class="chart-box">
-      <div class="chart-box-header">
+    <div class="sc-data-card">
+      <div class="sc-card-header">
         <div>
-          <h2 class="chart-box-title">End-to-End Service Assurance Pipeline</h2>
-          <div class="chart-box-sub">From scheduled doorstep stop to verified Friday escrow settlement</div>
+          <div class="sc-card-tag">SETTLEMENT PIPELINE</div>
+          <h2 class="sc-card-title">End-to-End Service Assurance Pipeline</h2>
+          <div class="sc-card-sub">Physical doorstep scan to audited Friday escrow settlement chain</div>
         </div>
-        <span class="state-pill good" style="font-size:10px">Active Pipeline</span>
+        <span class="sc-pill sc-pill-forest">ESCROW CHAIN ACTIVE</span>
       </div>
-      <div class="pipeline-list">
-        <div class="pipeline-step">
-          <div class="pipeline-step-head">
-            <span class="pipeline-step-title">${swGlyph('route', 18)} 1. Scheduled Stops on Route</span>
-            <span class="pipeline-step-val">1,840 stops <small style="color:#6b7280;font-weight:500">(100%)</small></span>
+
+      <div class="sc-pipeline-container">
+        <div class="sc-pipeline-item">
+          <div class="sc-pipeline-row">
+            <div class="sc-pipeline-title">
+              ${scIcon('route', 15)}
+              <span>01. Dispatched Stops on Route</span>
+            </div>
+            <span class="sc-pipeline-metric">1,840 stops <small>(100%)</small></span>
           </div>
-          <div class="pipeline-track"><div class="pipeline-fill" style="width:100%"></div></div>
-          <div class="pipeline-sub"><span>Dispatched to 24 compactor routes</span><span>20 LGAs</span></div>
+          <div class="sc-pipeline-bar"><div class="sc-pipeline-fill" style="width:100%"></div></div>
+          <div class="sc-pipeline-meta">
+            <span>24 Compactor routes active across 20 LGAs</span>
+            <span>Dry conditions · Level 0</span>
+          </div>
         </div>
 
-        <div class="pipeline-step">
-          <div class="pipeline-step-head">
-            <span class="pipeline-step-title">${swGlyph('crew', 18)} 2. Doorstep Tag Scans & Pickups</span>
-            <span class="pipeline-step-val">1,612 pickups <small style="color:#6b7280;font-weight:500">(87.6%)</small></span>
+        <div class="sc-pipeline-item">
+          <div class="sc-pipeline-row">
+            <div class="sc-pipeline-title">
+              ${scIcon('scan', 15)}
+              <span>02. Doorstep Tag Scans & Pickups</span>
+            </div>
+            <span class="sc-pipeline-metric">1,612 pickups <small>(87.6%)</small></span>
           </div>
-          <div class="pipeline-track"><div class="pipeline-fill" style="width:87.6%"></div></div>
-          <div class="pipeline-sub"><span>GPS proximity & timestamp logged</span><span>228 in progress</span></div>
+          <div class="sc-pipeline-bar"><div class="sc-pipeline-fill" style="width:87.6%"></div></div>
+          <div class="sc-pipeline-meta">
+            <span>GPS proximity & timestamp cryptographic log</span>
+            <span>228 stops remaining</span>
+          </div>
         </div>
 
-        <div class="pipeline-step">
-          <div class="pipeline-step-head">
-            <span class="pipeline-step-title">${swGlyph('weighbridge', 18)} 3. Weighbridge Receipts Issued</span>
-            <span class="pipeline-step-val">1,390 loads <small style="color:#6b7280;font-weight:500">(75.5%)</small></span>
+        <div class="sc-pipeline-item">
+          <div class="sc-pipeline-row">
+            <div class="sc-pipeline-title">
+              ${scIcon('receipt', 15)}
+              <span>03. Weighbridge Receipts Certified</span>
+            </div>
+            <span class="sc-pipeline-metric">1,390 loads <small>(75.5%)</small></span>
           </div>
-          <div class="pipeline-track"><div class="pipeline-fill" style="width:75.5%"></div></div>
-          <div class="pipeline-sub"><span>Gross / Tare delta matched to manifest</span><span>12 in queue</span></div>
+          <div class="sc-pipeline-bar"><div class="sc-pipeline-fill" style="width:75.5%"></div></div>
+          <div class="sc-pipeline-meta">
+            <span>Gross / tare delta matched to digital manifest</span>
+            <span>11 in scale queue</span>
+          </div>
         </div>
 
-        <div class="pipeline-step">
-          <div class="pipeline-step-head">
-            <span class="pipeline-step-title">${swGlyph('digital-transfer', 18)} 4. Reconciled Friday Escrow Payouts</span>
-            <span class="pipeline-step-val">1,240 verified <small style="color:#6b7280;font-weight:500">(67.4%)</small></span>
+        <div class="sc-pipeline-item">
+          <div class="sc-pipeline-row">
+            <div class="sc-pipeline-title">
+              ${scIcon('banknote', 15)}
+              <span>04. Reconciled Friday Escrow Payouts</span>
+            </div>
+            <span class="sc-pipeline-metric">1,240 verified <small>(67.4%)</small></span>
           </div>
-          <div class="pipeline-track"><div class="pipeline-fill" style="width:67.4%"></div></div>
-          <div class="pipeline-sub"><span>5% LIRS WHT withheld · Tonnage audited</span><span>₦32.4M value</span></div>
+          <div class="sc-pipeline-bar"><div class="sc-pipeline-fill" style="width:67.4%"></div></div>
+          <div class="sc-pipeline-meta">
+            <span>5% LIRS statutory WHT withheld · Tonnage audited</span>
+            <span>₦32.41M accrued value</span>
+          </div>
         </div>
       </div>
     </div>
@@ -507,57 +643,61 @@ function renderOverviewLaunchpad() {
   <div class="module-launchpad">
     <div class="launch-tile" data-go="cadastre">
       <div class="launch-tile-top">
-        <span class="launch-tile-icon">${swGlyph('household', 32)}</span>
-        <div class="launch-tile-info">
-          <h3>MOD-01: Cadastre & DUIDs</h3>
-          <p>Tenement property registry, doorstep flat tags, and virtual compound wallets.</p>
-        </div>
+        <div class="launch-tile-tag">MODULE 01 · IDENTITY</div>
+        <h3>Tenement Cadastre & DUIDs</h3>
+        <p>Tenement property registry, doorstep dwelling unit IDs (DUIDs), ring-fenced tenant billing, and virtual compound wallets.</p>
+      </div>
+      <div class="launch-tile-stats">
+        <span>5 Properties</span> · <span>37 DUIDs</span> · <span>₦1.84M Balance</span>
       </div>
       <div class="launch-tile-foot">
         <span>Open Tenement Register</span>
-        ${icon('arrow')}
+        ${scIcon('arrowRight', 14)}
       </div>
     </div>
 
     <div class="launch-tile" data-go="fleet">
       <div class="launch-tile-top">
-        <span class="launch-tile-icon">${swGlyph('collection-truck', 32)}</span>
-        <div class="launch-tile-info">
-          <h3>MOD-02: Fleet Telemetry</h3>
-          <p>Live compactor GPS tracking, route breadcrumbs, speed alerts, and missed stops.</p>
-        </div>
+        <div class="launch-tile-tag">MODULE 02 · LOGISTICS</div>
+        <h3>Fleet Telemetry & Routes</h3>
+        <p>Live compactor GPS tracking, geofenced route breadcrumbs, speed threshold alerts, and automated missed-stop alarms.</p>
+      </div>
+      <div class="launch-tile-stats">
+        <span>24 Active Routes</span> · <span>684 Trucks</span> · <span>99.1% Signal</span>
       </div>
       <div class="launch-tile-foot">
         <span>View Live Fleet Map</span>
-        ${icon('arrow')}
+        ${scIcon('arrowRight', 14)}
       </div>
     </div>
 
     <div class="launch-tile" data-go="capacity">
       <div class="launch-tile-top">
-        <span class="launch-tile-icon">${swGlyph('weighbridge', 32)}</span>
-        <div class="launch-tile-info">
-          <h3>MOD-03: Weighbridge & TLS</h3>
-          <p>Automated gross/tare weighing, queue times, and traceable disposal scale receipts.</p>
-        </div>
+        <div class="launch-tile-tag">MODULE 03 · WEIGHBRIDGE</div>
+        <h3>Scale Queues & Receipts</h3>
+        <p>Automated gross/tare weighing, queue turnaround times, anti-tailgating scale interlocks, and traceable receipts.</p>
+      </div>
+      <div class="launch-tile-stats">
+        <span>4 Scale Lanes</span> · <span>14m Turnaround</span> · <span>3,842 T Net</span>
       </div>
       <div class="launch-tile-foot">
         <span>Inspect Site Queues</span>
-        ${icon('arrow')}
+        ${scIcon('arrowRight', 14)}
       </div>
     </div>
 
     <div class="launch-tile" data-go="finance">
       <div class="launch-tile-top">
-        <span class="launch-tile-icon">${swGlyph('daily-balance', 32)}</span>
-        <div class="launch-tile-info">
-          <h3>MOD-05: Escrow & Settlements</h3>
-          <p>Verified tonnage payments, LIRS statutory deductions, and partner statements.</p>
-        </div>
+        <div class="launch-tile-tag">MODULE 05 · SETTLEMENT</div>
+        <h3>Escrow & Friday Payouts</h3>
+        <p>Verified tonnage payments, LIRS statutory deductions, 48-hour dispute cure windows, and automated PSP statements.</p>
+      </div>
+      <div class="launch-tile-stats">
+        <span>25 Operators</span> · <span>₦32.4M Accrued</span> · <span>5% WHT Withheld</span>
       </div>
       <div class="launch-tile-foot">
         <span>View Finance Ledger</span>
-        ${icon('arrow')}
+        ${scIcon('arrowRight', 14)}
       </div>
     </div>
   </div>`;
