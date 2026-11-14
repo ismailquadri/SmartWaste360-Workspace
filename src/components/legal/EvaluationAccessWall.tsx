@@ -193,7 +193,7 @@ prima facie evidence of acceptance.
         <div className="fixed bottom-3 right-3 z-50 print:hidden">
           <button
             onClick={() => setShowViewer(true)}
-            className="flex items-center gap-2 rounded-full border border-emerald-200 bg-white/95 px-3 py-1.5 text-xs font-semibold text-emerald-800 shadow-md backdrop-blur-md transition-all hover:bg-emerald-50 hover:scale-105"
+            className="flex items-center gap-2 rounded-full border border-emerald-200 bg-white/95 px-3 py-1.5 text-xs font-semibold text-emerald-800 shadow-md backdrop-blur-md transition-colors hover:bg-emerald-50"
             title="View signed platform evaluation agreement"
           >
             <ShieldCheck className="size-3.5 text-emerald-600" />

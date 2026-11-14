@@ -39,7 +39,7 @@ function Services() {
               <Reveal as="li" key={s.id} delay={(i % 3) * 80}>
                 <Link to="/services/$serviceId" params={{ serviceId: s.id }} className="group block">
                   <div className="aspect-[4/3] overflow-hidden rounded-xl bg-paper-2">
-                    <img src={s.image} alt="" loading="lazy" className="h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.04]" />
+                    <img src={s.image} alt="" loading="lazy" className="h-full w-full object-cover" />
                   </div>
                   <div className="mt-4 flex items-start justify-between gap-4">
                     <div>

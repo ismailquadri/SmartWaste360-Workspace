@@ -475,7 +475,7 @@ export function SiteAccessibility() {
           onClick={() => setOpen(true)}
           aria-label="Open accessibility adjustments"
           aria-expanded={open}
-          className="a11y-ui fixed left-[15px] top-1/2 z-[60] grid size-[56px] -translate-y-1/2 place-items-center rounded-full border-[3px] border-card bg-lemon text-lemon-foreground shadow-[0_8px_24px_-8px_oklch(0.17_0.004_260/0.45)] transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ink/40"
+          className="a11y-ui fixed left-[15px] top-1/2 z-[60] grid size-[56px] -translate-y-1/2 place-items-center rounded-full border-[3px] border-card bg-lemon text-lemon-foreground shadow-[0_8px_24px_-8px_oklch(0.17_0.004_260/0.45)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ink/40"
         >
           <Accessibility className="size-[28px]" strokeWidth={2} />
         </button>

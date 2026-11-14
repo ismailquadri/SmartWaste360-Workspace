@@ -31,7 +31,7 @@ export function NewsList({ items, tone = "light" }: { items: NewsItem[]; tone?: 
             >
               <span className={cn("eyebrow md:col-span-2", dark ? "text-mist" : "text-stone")}>{formatNewsDate(n.date)}</span>
               <span className="eyebrow text-ember-text md:col-span-1">{n.category}</span>
-              <span className="text-[1.0625rem] font-medium leading-snug tracking-tight transition-transform duration-500 group-hover:translate-x-2 md:col-span-8 md:text-[1.1875rem]">
+              <span className="text-[1.0625rem] font-medium leading-snug tracking-tight md:col-span-8 md:text-[1.1875rem]">
                 {n.title}
               </span>
               <ArrowUpRight className="hidden size-5 justify-self-end opacity-40 transition group-hover:opacity-100 md:col-span-1 md:block" />

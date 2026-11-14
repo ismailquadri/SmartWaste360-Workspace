@@ -126,7 +126,7 @@ html[data-theme=dark]:root:not(#sc) {
 html[data-theme]:root:not(#sc) body {
   font-family: var(--sc-font);
   font-size: 13px;
-  letter-spacing: -.003em;
+  letter-spacing: 0;
   background: var(--sc-bg);
   color: var(--sc-fg);
   -webkit-font-smoothing: antialiased;
@@ -322,7 +322,7 @@ html[data-theme]:root:not(#sc) :is(.btn.primary, .product-button, .entry-form bu
 }
 html[data-theme]:root:not(#sc) :is(.btn.primary, .product-button, .entry-form button[type=submit]):hover {
   background-color: var(--sc-heat-hover);
-  box-shadow: var(--sc-shadow-primary-hover);
+  box-shadow: var(--sc-shadow-primary);
 }
 html[data-theme]:root:not(#sc) :is(.btn.primary, .product-button):active:not(:disabled) { scale: .995; box-shadow: var(--sc-shadow-primary); }
 html[data-theme]:root:not(#sc) .btn:disabled { opacity: .45; }
@@ -805,3 +805,202 @@ html[data-theme]:root:not(#sc) .hub-map-toggle {
 html[data-theme]:root:not(#sc) .hub-map-toggle[aria-pressed="true"] { background: color-mix(in srgb, var(--sc-heat) 14%, var(--sc-surface)); color: var(--sc-heat-text); box-shadow: 0 0 0 1px var(--sc-heat-40), 0 2px 6px -2px rgba(0, 0, 0, .12); }
 html[data-theme]:root:not(#sc) .hub-map-layers { position: absolute; z-index: 3; left: 14px; top: 96px; display: flex; gap: 6px; }
 @media (max-width: 850px) { html[data-theme]:root:not(#sc) .hub-map-layers { top: auto; bottom: 120px; } }
+
+/* UX Manifesto: surfaces stay grounded. No hover lift or hover shadow on any card, panel or button. */
+html[data-theme]:root:not(#sc) .ov-table tr[data-fleet-district] { cursor: pointer; }
+html[data-theme]:root:not(#sc) .ov-table tr[data-fleet-district]:is(:hover, :focus-within) { background: var(--sc-heat-8); }
+html[data-theme]:root:not(#sc) :is(.ov-metric, .ov-panel, .work-panel, .btn, .product-button, .metric, .hub-area):hover { transform: none; }
+html[data-theme]:root:not(#sc) :is(.ov-metric, .ov-panel, .work-panel):hover { box-shadow: 0 1px 2px 0 rgba(0,0,0,.05); }
+
+/* MOD-01 arrears ladder: one row of calm steps, no borders. */
+html[data-theme]:root:not(#sc) .cad-ladder{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}
+html[data-theme]:root:not(#sc) .cad-step{display:grid;gap:2px;text-align:left;padding:12px 14px;border:0;border-radius:var(--sc-r,8px);background:var(--sc-bg-lighter);color:var(--sc-fg);cursor:pointer;min-height:44px;font:inherit}
+html[data-theme]:root:not(#sc) .cad-step span{font-size:12px;font-weight:600}
+html[data-theme]:root:not(#sc) .cad-step b{font-family:var(--sc-mono);font-variant-numeric:tabular-nums;font-size:22px}
+html[data-theme]:root:not(#sc) .cad-step small{font-size:11px;color:var(--sc-fg-muted,inherit);opacity:.8}
+html[data-theme]:root:not(#sc) .cad-step.is-on{background:var(--sc-heat-12);color:var(--sc-heat-text)}
+html[data-theme]:root:not(#sc) .cad-step.is-on small{color:inherit}
+html[data-theme]:root:not(#sc) .cad-step:focus-visible{outline:2px solid var(--sc-heat);outline-offset:2px}
+html[data-theme]:root:not(#sc) .cad-hash{word-break:break-all;font-size:11px}
+html[data-theme]:root:not(#sc) .num{font-family:var(--sc-mono);font-variant-numeric:tabular-nums}
+html[data-theme]:root:not(#sc) .cad-policy{display:flex;align-items:flex-start;gap:12px;padding:16px 0;color:var(--sc-fg)}
+html[data-theme]:root:not(#sc) .cad-policy svg{flex:none;width:20px;height:20px;color:var(--sc-forest-text)}
+html[data-theme]:root:not(#sc) .cad-policy span{display:grid;gap:4px;font-size:13px}
+html[data-theme]:root:not(#sc) .cad-policy small{color:var(--sc-fg-muted);font-size:12px;line-height:1.5}
+html[data-theme]:root:not(#sc) .cad-ladder{margin:8px 0 24px}
+html[data-theme]:root:not(#sc) .cad-tabs{display:flex;flex-wrap:wrap;gap:4px;margin:20px 0}
+html[data-theme]:root:not(#sc) .drain-map{display:block;width:100%;max-width:460px;height:auto;margin:16px auto;background:var(--sc-bg-lighter)}
+html[data-theme]:root:not(#sc) .drain-map polygon{fill:var(--sc-blue-bg);stroke:var(--sc-blue);stroke-width:2}
+html[data-theme]:root:not(#sc) .drain-map text{fill:var(--sc-fg);font:12px var(--sc-font)}
+html[data-theme]:root:not(#sc) .drain-map circle{fill:var(--sc-heat);stroke:var(--sc-surface);stroke-width:2}
+html[data-theme]:root:not(#sc) .cad-tabs button{font:inherit;font-size:12px;min-height:44px;padding:8px 12px;border:0;border-radius:var(--sc-r-sm);background:var(--sc-bg-lighter);color:var(--sc-fg-dim);cursor:pointer}
+html[data-theme]:root:not(#sc) .cad-tabs button[aria-selected=true]{background:var(--sc-heat-12);color:var(--sc-heat-text);font-weight:600}
+html[data-theme]:root:not(#sc) .cad-tabs button:focus-visible{outline:2px solid var(--sc-heat);outline-offset:2px}
+html[data-theme]:root:not(#sc) .cad-qr{max-width:240px;margin:20px auto;background:var(--sc-surface);padding:12px}
+html[data-theme]:root:not(#sc) .cad-qr svg{width:100%;height:auto}
+html[data-theme]:root:not(#sc) .cad-parcel{display:block;width:100%;max-width:420px;height:auto;margin:8px 0 16px;background:var(--sc-surface);border-radius:8px}
+html[data-theme]:root:not(#sc) .cad-parcel text{font:11px var(--font-mono,monospace);fill:var(--sc-muted,currentColor)}
+html[data-theme]:root:not(#sc) .cad-parcel-shape{fill:color-mix(in srgb,#f47707 12%,transparent);stroke:#f47707;stroke-width:2}
+html[data-theme]:root:not(#sc) .cad-parcel-beacon{fill:#f47707}
+html[data-theme]:root:not(#sc) .cad-parcel-gps{fill:var(--sc-text,currentColor)}
+html[data-theme]:root:not(#sc) .practice-menu{display:none}
+html[data-theme]:root:not(#sc) .app-menu h3{font-size:14px;margin:20px 0 8px;color:var(--sc-fg-muted)}
+html[data-theme]:root:not(#sc) .app-menu button{display:flex;align-items:center;gap:12px;width:100%;min-height:44px;background:var(--sc-surface);color:var(--sc-fg);border:0;padding:12px;font:inherit;text-align:left}
+html[data-theme]:root:not(#sc) .app-menu button span{flex:1}
+/* Fleet oversight: unframed workspace, grounded exceptions and a phone truck sheet. */
+html[data-theme]:root:not(#sc) #fleetMain .workspace{border-radius:0;box-shadow:none;grid-template-columns:minmax(300px,360px) minmax(0,1fr);height:900px;max-height:calc(100dvh - 240px);min-height:580px}
+html[data-theme]:root:not(#sc) .fm-controls{display:grid;grid-template-columns:1fr;gap:6px;margin-top:12px}
+html[data-theme]:root:not(#sc) .fm-controls label{font-size:11px;color:var(--sc-fg-muted)}
+html[data-theme]:root:not(#sc) .fm-controls select{height:38px;width:100%;min-width:0}
+html[data-theme]:root:not(#sc) .fm-controls .fm-check{display:flex;align-items:center;gap:8px;font-size:12px;min-height:36px;color:var(--sc-fg)}
+html[data-theme]:root:not(#sc) #fmDistrictSearch{width:100%;height:38px;margin:8px 0}
+html[data-theme]:root:not(#sc) .fm-modes{display:none;gap:8px;margin:12px 0}
+html[data-theme]:root:not(#sc) .fm-modes button[aria-pressed=true]{background:var(--sc-heat-12);color:var(--sc-heat-text)}
+html[data-theme]:root:not(#sc) #fleetMain .metrics{grid-template-columns:repeat(4,minmax(0,1fr));display:grid}
+html[data-theme]:root:not(#sc) #fleetMain .metric{min-width:0}
+html[data-theme]:root:not(#sc) #fleetMain .vehicle-row{min-height:108px;grid-template-columns:32px minmax(0,1fr);padding:12px;border-bottom:2px solid var(--sc-border-faint)}
+html[data-theme]:root:not(#sc) #fleetMain .row-top{flex-wrap:wrap;gap:6px}
+html[data-theme]:root:not(#sc) #fleetMain :is(.row-sub,.row-bottom){white-space:normal;overflow-wrap:anywhere}
+html[data-theme]:root:not(#sc) .fm-position{display:block;margin-top:5px;font-size:11px;color:var(--sc-fg-muted)}
+html[data-theme]:root:not(#sc) .fm-warning{color:var(--sc-honey-text)}
+html[data-theme]:root:not(#sc) .fm-exception{padding:10px 0;border-bottom:2px solid var(--sc-border-faint)}
+html[data-theme]:root:not(#sc) .fm-exception b{color:var(--sc-crimson-text)}
+html[data-theme]:root:not(#sc) .fm-exception p{margin:5px 0;font-size:12px;line-height:1.5}
+html[data-theme]:root:not(#sc) .fm-detail-actions{display:flex;flex-wrap:wrap;gap:8px;padding:12px 18px}
+html[data-theme]:root:not(#sc) .fm-followup{padding:12px 0;border-bottom:2px solid var(--sc-border-faint);overflow-wrap:anywhere}
+html[data-theme]:root:not(#sc) .fm-followup small{color:var(--sc-fg-muted)}
+html[data-theme]:root:not(#sc) .fm-progress{width:100%;height:8px;accent-color:var(--sc-heat)}
+html[data-theme]:root:not(#sc) #fleetMain .layers-pop{max-height:65dvh;overflow-y:auto;width:240px;padding:16px;border-radius:8px}
+html[data-theme]:root:not(#sc) #fleetMain .layers-pop label{min-height:36px;display:flex;align-items:center;gap:10px;font-size:12px}
+html[data-theme]:root:not(#sc) #fleetMain .layers-pop .hub-map-toggle{display:block;width:100%;text-align:left;margin:6px 0;min-height:40px;box-shadow:none}
+html[data-theme]:root:not(#sc) #fleetMain .detail{width:340px;max-width:100%;z-index:6}
+html[data-theme]:root:not(#sc) #fleetMain .detail-head p{overflow-wrap:anywhere}
+html[data-theme]:root:not(#sc) #fleetMain .detail-tabs button{font-size:11px;min-height:44px}
+html[data-theme]:root:not(#sc) #fleetMain .map-caption{max-width:280px}
+html[data-theme]:root:not(#sc) #fleetMain .map-caption small{white-space:normal}
+@media(min-width:851px){
+ html[data-theme]:root:not(#sc) #fleetMain .fm-has-detail .map-top{right:350px;flex-wrap:wrap;gap:8px}
+ html[data-theme]:root:not(#sc) #fleetMain .fm-has-detail .map-caption{max-width:100%}
+ html[data-theme]:root:not(#sc) #fleetMain .fm-has-detail .map-actions{margin:0}
+ html[data-theme]:root:not(#sc) #fleetMain .fm-has-detail .layers-pop{right:350px;z-index:8}
+}
+@media(max-width:850px){
+ html[data-theme]:root:not(#sc) .fm-modes{display:flex}
+ html[data-theme]:root:not(#sc) #fleetMain .workspace{display:block;min-height:620px;height:auto;max-height:none;overflow:visible}
+ html[data-theme]:root:not(#sc) #fleetMain .workspace[data-fleet-mode=map] .fleet-list{display:none}
+ html[data-theme]:root:not(#sc) #fleetMain .workspace[data-fleet-mode=list] .map-region{display:none}
+ html[data-theme]:root:not(#sc) #fleetMain .fleet-list{height:850px;width:100%;max-width:none}
+ html[data-theme]:root:not(#sc) #fleetMain .map-region{height:720px;min-height:620px;width:100%}
+ html[data-theme]:root:not(#sc) #fleetMain .detail{position:absolute;top:auto;bottom:0;left:0;right:0;width:100%;height:390px;max-height:58%;border-top:2px solid var(--sc-border-loud);border-radius:8px 8px 0 0;box-shadow:none}
+ html[data-theme]:root:not(#sc) #fleetMain .map-top{flex-wrap:wrap;gap:8px;left:10px;right:10px}
+ html[data-theme]:root:not(#sc) #fleetMain .map-actions{margin:0;gap:8px}
+ html[data-theme]:root:not(#sc) #fleetMain .mapbtn{min-width:44px;min-height:44px}
+ html[data-theme]:root:not(#sc) #fleetMain .layers-pop{top:110px;right:10px;z-index:8}
+ html[data-theme]:root:not(#sc) #fleetMain .metrics{grid-template-columns:repeat(2,minmax(0,1fr))}
+ html[data-theme]:root:not(#sc) #fleetMain .map-bottom{flex-wrap:wrap;bottom:10px;gap:4px}
+ html[data-theme]:root:not(#sc) #fleetMain .legend{flex-wrap:wrap}
+ html[data-theme]:root:not(#sc) #fleetMain .btn{min-height:44px;white-space:normal}
+ html[data-theme]:root:not(#sc) #fleetMain .page-actions{flex-wrap:wrap}
+}
+@media(max-width:600px){
+ html[data-theme]:root:not(#sc) .practice-menu{display:flex;align-items:center;gap:8px;margin:12px 15px}
+ html[data-theme]:root:not(#sc) .journey-nav{display:none}
+ html[data-theme]:root:not(#sc) .journey-switch{flex-wrap:wrap}
+ html[data-theme]:root:not(#sc) .journey-switch [data-module=ready-official]{max-width:100%;white-space:normal}
+ html[data-theme]:root:not(#sc) .table-scroll{overflow:visible;max-width:100%}
+ html[data-theme]:root:not(#sc) table.mobile-records{display:block;min-width:0!important;width:100%!important;table-layout:auto}
+ html[data-theme]:root:not(#sc) table.mobile-records thead{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+ html[data-theme]:root:not(#sc) table.mobile-records tbody{display:block;width:100%}
+ html[data-theme]:root:not(#sc) table.mobile-records tbody tr{display:grid;grid-template-columns:minmax(0,1fr);padding:14px 16px;border-bottom:2px solid var(--sc-border);width:100%}
+ html[data-theme]:root:not(#sc) table.mobile-records tbody td{display:grid;grid-template-columns:minmax(90px,.7fr) minmax(0,1.3fr);gap:12px;padding:8px 0!important;border:0!important;white-space:normal!important;overflow-wrap:anywhere;width:auto!important;min-width:0!important}
+ html[data-theme]:root:not(#sc) table.mobile-records tbody td::before{content:attr(data-label);font-size:12px;color:var(--sc-fg-muted)}
+ html[data-theme]:root:not(#sc) table.mobile-records tbody td.record-action{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+ html[data-theme]:root:not(#sc) table.mobile-records tbody td.record-action::before{display:block;flex-basis:100%}
+ html[data-theme]:root:not(#sc) table.mobile-records .btn{min-height:44px}
+ html[data-theme]:root:not(#sc) .modal{max-height:100dvh;overflow-y:auto}
+ html[data-theme]:root:not(#sc) .form-footer{position:sticky;bottom:0;background:var(--sc-surface);padding:12px 0;z-index:2}
+}
+
+/* Shared workspace rhythm: one page edge, readable rows, no nested surfaces. */
+html[data-theme]:root:not(#sc) {
+ --sc-space-xs: 8px;
+ --sc-space-sm: 12px;
+ --sc-space-md: 16px;
+ --sc-space-lg: 24px;
+ --sc-page-gutter: 32px;
+}
+html[data-theme]:root:not(#sc) :is(h1,h2,h3,h4,.eyebrow,.journey-stats strong,.metric b) {letter-spacing:0}
+html[data-theme]:root:not(#sc) #journeyMain {padding:var(--sc-space-lg) var(--sc-page-gutter) var(--sc-space-lg);min-width:0}
+html[data-theme]:root:not(#sc) #fleetMain .page-head {padding:var(--sc-space-lg) var(--sc-page-gutter)}
+html[data-theme]:root:not(#sc) #fleetMain :is(.metrics,.workspace,.fm-modes) {margin-inline:var(--sc-page-gutter)}
+html[data-theme]:root:not(#sc) :is(.journey-head,.page-head) {gap:var(--sc-space-md);align-items:flex-start}
+html[data-theme]:root:not(#sc) :is(.journey-head,.journey-stats,.cad-tabs,.module-tabs) {margin-bottom:var(--sc-space-lg)}
+html[data-theme]:root:not(#sc) :is(.head-buttons,.page-actions,.drawer-actions) {display:flex;flex-wrap:wrap;gap:var(--sc-space-xs);max-width:100%}
+html[data-theme]:root:not(#sc) :is(.journey-head,.page-head)>div {min-width:0}
+html[data-theme]:root:not(#sc) :is(.journey-head p,.work-panel header p,.ov-panel-head p) {line-height:1.6}
+html[data-theme]:root:not(#sc) :is(.journey-grid,.journey-grid.wide,.ov-panels) {gap:var(--sc-space-lg);grid-template-columns:repeat(2,minmax(0,1fr))}
+html[data-theme]:root:not(#sc) :is(.work-panel,.ov-panel) {min-width:0;border-radius:0;box-shadow:none;background:var(--sc-surface);margin-bottom:var(--sc-space-lg)}
+html[data-theme]:root:not(#sc) :is(.work-panel,.ov-panel):hover {box-shadow:none}
+html[data-theme]:root:not(#sc) .ov-panel {padding:0}
+html[data-theme]:root:not(#sc) .ov-panel-head {margin:0}
+html[data-theme]:root:not(#sc) .ov-panel>table {margin:0}
+html[data-theme]:root:not(#sc) :is(.work-panel>header,.ov-panel-head) {padding:var(--sc-space-lg) var(--sc-space-lg) var(--sc-space-md)}
+html[data-theme]:root:not(#sc) :is(.work-panel,.ov-panel) :is(.work-panel,.record-banner,.context-note) {box-shadow:none;border-radius:0}
+html[data-theme]:root:not(#sc) :is(th,td) {padding:var(--sc-space-md) var(--sc-space-lg);vertical-align:top}
+html[data-theme]:root:not(#sc) .ov-table {width:100%;min-width:0;table-layout:fixed}
+html[data-theme]:root:not(#sc) .ov-table :is(th,td) {white-space:normal;overflow-wrap:anywhere;padding:var(--sc-space-sm)}
+html[data-theme]:root:not(#sc) :is(.ov-panel-head,.ov-metric) {min-width:0;overflow-wrap:anywhere}
+html[data-theme]:root:not(#sc) .ov-panel-head :is(h2,p) {max-width:100%;white-space:normal}
+html[data-theme]:root:not(#sc) .module-toolbar {gap:var(--sc-space-sm);padding:0 var(--sc-space-lg) var(--sc-space-md)}
+html[data-theme]:root:not(#sc) .module-toolbar :is(input,select,.module-search) {min-width:0;max-width:100%}
+html[data-theme]:root:not(#sc) :is(.btn,.text-action) {white-space:normal;line-height:1.4}
+html[data-theme]:root:not(#sc) .state-pill {white-space:normal;line-height:1.4;max-width:100%;overflow-wrap:anywhere}
+html[data-theme]:root:not(#sc) .modal {padding:var(--sc-space-lg);max-width:calc(100vw - 32px);border-radius:var(--sc-r)}
+html[data-theme]:root:not(#sc) .modal-head {margin-bottom:var(--sc-space-lg);align-items:flex-start}
+html[data-theme]:root:not(#sc) .module-field {margin:var(--sc-space-md) 0}
+html[data-theme]:root:not(#sc) .module-field label {margin-bottom:var(--sc-space-xs);line-height:1.5}
+html[data-theme]:root:not(#sc) .form-footer {flex-wrap:wrap;gap:var(--sc-space-xs)}
+html[data-theme]:root:not(#sc) .drawer-back .modal {max-width:min(570px,100vw)}
+html[data-theme]:root:not(#sc) #fleetMain .detail-tabs {flex-wrap:wrap;gap:4px 12px;padding-inline:var(--sc-space-md)}
+html[data-theme]:root:not(#sc) #fleetMain .detail-section {padding:var(--sc-space-md);overflow-wrap:anywhere}
+html[data-theme]:root:not(#sc) #fleetMain .kv {gap:var(--sc-space-sm);align-items:flex-start}
+html[data-theme]:root:not(#sc) #fleetMain .kv>* {min-width:0;overflow-wrap:anywhere}
+html[data-theme]:root:not(#sc) #fleetMain .fleet-list {overflow-y:auto}
+html[data-theme]:root:not(#sc) #fleetMain .list-tools {flex-shrink:0}
+html[data-theme]:root:not(#sc) #fleetMain .record-list {flex:1 0 180px}
+html[data-theme]:root:not(#sc) #fleetMain {padding-inline:0}
+@media (min-width:851px) {
+ html[data-theme]:root:not(#sc) #fleetMain .workspace {min-height:600px;max-height:none;height:max(600px,calc(100dvh - 350px))}
+}
+@media (max-width:1100px) {
+ html[data-theme]:root:not(#sc) {--sc-page-gutter:24px}
+ html[data-theme]:root:not(#sc) .journey-nav {display:none}
+ html[data-theme]:root:not(#sc) .practice-menu {display:flex;align-items:center;gap:var(--sc-space-xs);margin:var(--sc-space-sm) var(--sc-page-gutter)}
+}
+@media (max-width:850px) {
+ html[data-theme]:root:not(#sc) :is(.journey-grid,.journey-grid.wide,.ov-panels) {grid-template-columns:minmax(0,1fr)}
+ html[data-theme]:root:not(#sc) #fleetMain .page-head {flex-direction:column}
+ html[data-theme]:root:not(#sc) #fleetMain .map-region {height:720px}
+}
+@media (max-width:600px) {
+ html[data-theme]:root:not(#sc) {--sc-page-gutter:16px;--sc-space-lg:20px}
+ html[data-theme]:root:not(#sc) :is(.work-panel,.ov-panel,.ov-panels,.ov-wide) {width:100%;max-width:100%;min-width:0}
+ html[data-theme]:root:not(#sc) .ov-metrics {grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--sc-space-sm)}
+ html[data-theme]:root:not(#sc) .ov-metric {padding:var(--sc-space-md)}
+ html[data-theme]:root:not(#sc) .ov-table {min-width:0;table-layout:auto}
+ html[data-theme]:root:not(#sc) .ov-table :is(th,td) {min-width:0}
+ html[data-theme]:root:not(#sc) .ov-table.mobile-records {overflow:visible}
+ html[data-theme]:root:not(#sc) .top .account>.btn {white-space:nowrap;font-size:10px;padding-inline:8px}
+ html[data-theme]:root:not(#sc) .journey-stats {gap:var(--sc-space-md)}
+ html[data-theme]:root:not(#sc) .module-toolbar {align-items:stretch}
+ html[data-theme]:root:not(#sc) .module-toolbar>label {flex-basis:100%}
+ html[data-theme]:root:not(#sc) .module-toolbar :is(input,select,.module-search) {width:100%;flex:1 1 100%}
+ html[data-theme]:root:not(#sc) :is(.cad-tabs,.module-tabs) {flex-wrap:wrap;gap:var(--sc-space-xs)}
+ html[data-theme]:root:not(#sc) :is(.btn,.text-action,.iconbtn) {min-height:44px}
+ html[data-theme]:root:not(#sc) .modal-back {padding:var(--sc-space-xs)}
+ html[data-theme]:root:not(#sc) .modal {max-width:100%;max-height:calc(100dvh - 16px);padding:var(--sc-space-md)}
+ html[data-theme]:root:not(#sc) .drawer-back .modal {max-height:100dvh}
+ html[data-theme]:root:not(#sc) .form-footer .btn {flex:1 1 auto}
+ html[data-theme]:root:not(#sc) table.mobile-records tbody td {grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:var(--sc-space-sm)}
+ html[data-theme]:root:not(#sc) #fleetMain .detail {max-height:65%;height:440px}
+}

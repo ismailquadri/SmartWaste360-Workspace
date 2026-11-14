@@ -1,0 +1,25 @@
+/* MOD-02 proposed fleet rules. Sample workflow only; LAWMA fleet directorate approval is required. */
+const FLEET_SHIFTS={Commercial:['22:00','05:00'],Residential:['08:30','15:30']};
+const DEPOT_LOCK='05:00';
+const HOT_SWAP_MINUTES=60;
+const FUEL_DROP_LITRES=15;
+const PTO_MIN_BAR=120;
+const PROXIMITY_METRES=30;
+const SLOT_MINUTES=15;
+const SLOT_CAPACITY=4;
+const FLEET_MANAGE_ROLES=['management','operations','admin'];
+const hhmm=s=>{const [h,m]=String(s).split(':').map(Number);return h*60+m};
+const clockText=m=>String(Math.floor(((m%1440)+1440)%1440/60)).padStart(2,'0')+':'+String(((m%60)+60)%60).padStart(2,'0');
+const inShift=(zone,min)=>{const [a,b]=FLEET_SHIFTS[zone].map(hhmm);return a<b?min>=a&&min<b:min>=a||min<b};
+const shiftFits=(zone,start)=>inShift(zone,hhmm(start));
+const manifestLocked=min=>min>=hhmm(DEPOT_LOCK)&&min<hhmm(FLEET_SHIFTS.Commercial[0]);
+const hotSwapOpen=min=>min>=hhmm(DEPOT_LOCK)&&min<hhmm(DEPOT_LOCK)+HOT_SWAP_MINUTES;
+const hotSwapCheck=(m,standby,min,d)=>!hotSwapOpen(min)?'The 60-minute hot-swap window (05:00–06:00) is closed.':!standby||standby.status!=='Standby'?'Choose a standby vehicle that is ready.':standby.type!==m.type?'The replacement must be the same vehicle type.':!d.reason?'State the breakdown.':!d.evidence?'Add the depot evidence reference.':!d.supervisor?'A depot supervisor must confirm the swap.':m.swaps?.length?'This manifest has already been swapped once today.':'';
+const rerouteCheck=d=>!/^LASTMA-\d{4,}$/.test(d.incident||'')?'Enter the LASTMA incident reference (LASTMA- and at least 4 digits).':!d.confirmed?'Control room must confirm the emergency.':'';
+const fuelAlerts=readings=>readings.slice(1).map((r,i)=>({from:readings[i],to:r,drop:readings[i].litres-r.litres})).filter(x=>x.drop>FUEL_DROP_LITRES&&x.to.speed===0&&!x.to.atPump&&x.to.minute-x.from.minute<=10);
+const compactionVerified=curve=>Math.max(0,...curve)>=PTO_MIN_BAR;
+const proximityVerified=(scan,bin)=>!!scan&&scan.token===bin.token&&scan.metres<=PROXIMITY_METRES;
+const collectionProof=v=>v.type==='Compactor'?compactionVerified(v.pto||[]):(v.scans||[]).some(s=>s.ok);
+const nextSlot=(bookings,site,earliest)=>{let s=Math.ceil(earliest/SLOT_MINUTES)*SLOT_MINUTES;while(bookings.filter(b=>b.site===site&&b.slot===s).length>=SLOT_CAPACITY)s+=SLOT_MINUTES;return s};
+const releaseAt=(slot,travel)=>slot-travel;
+const corridorHold=(now,release)=>Math.max(0,release-now);

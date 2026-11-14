@@ -34,7 +34,7 @@ document.querySelector('.entry-form>p').textContent='Choose your role to begin.'
 if('serviceWorker' in navigator&&location.protocol!=='file:')navigator.serviceWorker.register('./sw.js').catch(()=>{});
 mobileTabs();
 function mobileRecordLists(root){
- root.querySelectorAll('.table-scroll table').forEach(t=>{
+ root.querySelectorAll('.table-scroll table, table.ov-table').forEach(t=>{
   const labels=[...t.querySelectorAll('thead th')].map(x=>x.textContent.trim());t.classList.add('mobile-records');t.setAttribute('role','table');
   t.querySelectorAll('tr').forEach(r=>r.setAttribute('role','row'));
   t.querySelectorAll('th').forEach(th=>th.setAttribute('role','columnheader'));

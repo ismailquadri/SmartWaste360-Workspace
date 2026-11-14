@@ -23,6 +23,7 @@ import { Route as AboutDepartmentsRouteImport } from './routes/about.departments
 import { Route as AboutMdCeoRouteImport } from './routes/about.md-ceo'
 import { Route as AboutPastMdCeosRouteImport } from './routes/about.past-md-ceos'
 import { Route as AboutPrincipalOfficersRouteImport } from './routes/about.principal-officers'
+import { Route as ApiLgaBriefRouteImport } from './routes/api/lga-brief'
 import { Route as ServicesIndexRouteImport } from './routes/services.index'
 import { Route as ServicesServiceIdRouteImport } from './routes/services.$serviceId'
 
@@ -96,6 +97,11 @@ const AboutPrincipalOfficersRoute = AboutPrincipalOfficersRouteImport.update({
   path: '/principal-officers',
   getParentRoute: () => AboutRoute,
 } as any)
+const ApiLgaBriefRoute = ApiLgaBriefRouteImport.update({
+  id: '/api/lga-brief',
+  path: '/api/lga-brief',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ServicesIndexRoute = ServicesIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -121,6 +127,7 @@ export interface FileRoutesByFullPath {
   '/about/md-ceo': typeof AboutMdCeoRoute
   '/about/past-md-ceos': typeof AboutPastMdCeosRoute
   '/about/principal-officers': typeof AboutPrincipalOfficersRoute
+  '/api/lga-brief': typeof ApiLgaBriefRoute
   '/services/$serviceId': typeof ServicesServiceIdRoute
   '/about/': typeof AboutIndexRoute
   '/services/': typeof ServicesIndexRoute
@@ -137,6 +144,7 @@ export interface FileRoutesByTo {
   '/about/md-ceo': typeof AboutMdCeoRoute
   '/about/past-md-ceos': typeof AboutPastMdCeosRoute
   '/about/principal-officers': typeof AboutPrincipalOfficersRoute
+  '/api/lga-brief': typeof ApiLgaBriefRoute
   '/services/$serviceId': typeof ServicesServiceIdRoute
   '/about': typeof AboutIndexRoute
   '/services': typeof ServicesIndexRoute
@@ -156,6 +164,7 @@ export interface FileRoutesById {
   '/about/md-ceo': typeof AboutMdCeoRoute
   '/about/past-md-ceos': typeof AboutPastMdCeosRoute
   '/about/principal-officers': typeof AboutPrincipalOfficersRoute
+  '/api/lga-brief': typeof ApiLgaBriefRoute
   '/services/$serviceId': typeof ServicesServiceIdRoute
   '/about/': typeof AboutIndexRoute
   '/services/': typeof ServicesIndexRoute
@@ -176,6 +185,7 @@ export interface FileRouteTypes {
     | '/about/md-ceo'
     | '/about/past-md-ceos'
     | '/about/principal-officers'
+    | '/api/lga-brief'
     | '/services/$serviceId'
     | '/about/'
     | '/services/'
@@ -192,6 +202,7 @@ export interface FileRouteTypes {
     | '/about/md-ceo'
     | '/about/past-md-ceos'
     | '/about/principal-officers'
+    | '/api/lga-brief'
     | '/services/$serviceId'
     | '/about'
     | '/services'
@@ -210,6 +221,7 @@ export interface FileRouteTypes {
     | '/about/md-ceo'
     | '/about/past-md-ceos'
     | '/about/principal-officers'
+    | '/api/lga-brief'
     | '/services/$serviceId'
     | '/about/'
     | '/services/'
@@ -224,6 +236,7 @@ export interface RootRouteChildren {
   ServicesRoute: typeof ServicesRouteWithChildren
   Smartwaste360Route: typeof Smartwaste360Route
   WorkspaceRoute: typeof WorkspaceRoute
+  ApiLgaBriefRoute: typeof ApiLgaBriefRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -326,6 +339,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutPrincipalOfficersRouteImport
       parentRoute: typeof AboutRoute
     }
+    '/api/lga-brief': {
+      id: '/api/lga-brief'
+      path: '/api/lga-brief'
+      fullPath: '/api/lga-brief'
+      preLoaderRoute: typeof ApiLgaBriefRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/services/': {
       id: '/services/'
       path: '/'
@@ -386,6 +406,7 @@ const rootRouteChildren: RootRouteChildren = {
   ServicesRoute: ServicesRouteWithChildren,
   Smartwaste360Route: Smartwaste360Route,
   WorkspaceRoute: WorkspaceRoute,
+  ApiLgaBriefRoute: ApiLgaBriefRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -137,7 +137,7 @@ function Home() {
                       src={SERVICE_IMAGES[s.id]}
                       alt=""
                       loading="lazy"
-                      className="h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.04]"
+                      className="h-full w-full object-cover"
                     />
                   </div>
                   <div className="mt-5 flex items-start justify-between gap-4">

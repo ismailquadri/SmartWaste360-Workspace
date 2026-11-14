@@ -193,15 +193,16 @@ runModule=function(cmd,id){
  if(a==='connection'){sim.online=!sim.online;simSave(sim.online?'Simulated connection restored. Queued records can sync.':'Offline simulation enabled. Captures remain queued.');if(!$('modalBack').hidden&&activeService)openService(activeService);return}
  if(a==='assign'){
   if(!permitted('dispatch'))return;
-  const partners=modules.partners.filter(p=>p.status==='Active'&&p.service==='Collection'&&(!isPartnerRole()||p.id===modules.partnerContext));
-  if(!partners.length){toast('An active collection partner is needed.');return}
+  const free=pid=>partnerFleet(pid).filter(v=>!sim.orders.some(o=>o.vehicle===v.code&&o.stage!=='Verified'));
+  const partners=modules.partners.filter(p=>/active/i.test(p.status)&&p.service==='Collection'&&free(p.id).length&&(!isPartnerRole()||p.id===modules.partnerContext));
+  if(!partners.length){toast('No collection partner has a free vehicle right now.');return}
   const preferred=partners.find(p=>p.id==='PAR-006')||partners[0];
   const options=pid=>partnerFleet(pid).filter(v=>!sim.orders.some(o=>o.vehicle===v.code&&o.stage!=='Verified')).map(v=>({value:v.code,label:v.code+' · '+v.district}));
   openForm('Create service assignment','Dummy crews, property checkpoints and a sample road route will be linked automatically.',[field('partner','Collection partner',{options:partners.map(p=>({value:p.id,label:p.name})),value:preferred.id}),field('vehicle','Available vehicle',{options:options(preferred.id)}),field('area','Route area',{options:ROUTES.map(r=>r.name)}),field('facility','Disposal destination',{options:modules.facilities.map(f=>({value:f.id,label:f.name}))})],'Create assignment',d=>{
    const v=fleet.find(v=>v.code===d.vehicle);if(!v||v.partnerId!==d.partner)return'Choose a vehicle belonging to this partner.';
    if(sim.orders.some(o=>o.vehicle===d.vehicle&&o.stage!=='Verified'))return'This vehicle is already assigned.';
    const crew=modules.personnel.find(p=>p.partner===d.partner&&p.status==='Available');if(!crew)return'Add an available crew member to this organisation first.';
-   const job=seedOrder(d.partner,d.vehicle,d.area,crew.name);job.facility=d.facility;simNotice('Route assigned',job.id+' · '+job.vehicle,'serviceLedger');sim.notices[0].partner=d.partner;recordModuleAction(job.id+' created with route and property checkpoints');
+   const job=seedOrder(d.partner,d.vehicle,d.area,crew.name);job.facility=d.facility;job.by=cadOfficer();job.created=new Date().toISOString();simNotice('Route assigned',job.id+' · '+job.vehicle,'serviceLedger');sim.notices[0].partner=d.partner;recordModuleAction(job.id+' created with route and property checkpoints');
   });$('mf-partner').onchange=e=>$('mf-vehicle').innerHTML=selectOptions(options(e.target.value));return;
  }
  if(a==='map'){
@@ -320,397 +321,174 @@ function scIcon(name, size = 16) {
 }
 
 function renderOverviewHero() {
-  const onRouteCount = fleet.filter(v => v.status === 'On route').length;
-  const onRoutePct = Math.round((onRouteCount / (fleet.length || 1)) * 100);
   return `
-  <section class="overview-hero-banner">
-    <div class="overview-hero-top">
-      <div class="overview-hero-kicker">
-        <span class="status-dot-solid"></span>
-        <span>LAGOS STATE WASTE MANAGEMENT AUTHORITY · SOVEREIGN OPERATIONS COMMAND</span>
-      </div>
-      <div class="overview-hero-meta">
-        <span class="overview-hero-coord">6.5244° N · 3.3792° E · 20 LGAs</span>
-        <span class="overview-hero-status-pill"><i class="status-dot-green"></i> ONSHORE TIER III</span>
-      </div>
+  <section class="ov-hero">
+    <div class="ov-hero-text">
+      <div class="ov-eyebrow">Lagos State · 20 LGAs, 37 LCDAs</div>
+      <h1>Command Center</h1>
+      <p>Today's collections, dumpsite tipping, billing and PSP operators across Lagos.</p>
     </div>
-    <div class="overview-hero-main">
-      <div class="overview-hero-headline">
-        <h1>Statewide Waste & Concession Assurance Console</h1>
-        <p>Live compactor GPS telemetry, weighbridge scale ingestion, compound tenement cadastre billing, and concessionaire SLA settlement across 20 Local Government Areas.</p>
-      </div>
-      <div class="overview-hero-actions">
-        <button class="btn primary" data-go="cadastre">${scIcon('home', 14)} Tenement Cadastre (MOD-01)</button>
-        <button class="btn" data-go="fleet">${scIcon('truck', 14)} Live Fleet Map</button>
-        <button class="btn" data-go="capacity">${scIcon('scale', 14)} Weighbridge Queues</button>
-        <button class="btn-ghost" data-module="sim-telemetry">${scIcon('refresh', 13)} Refresh Telemetry</button>
-      </div>
-    </div>
-    <div class="overview-hero-strip">
-      <div class="overview-hero-chip">
-        <span class="chip-label">Data Residency</span>
-        <span class="chip-val">Verified Onshore Sovereign Cloud</span>
-      </div>
-      <div class="overview-hero-chip">
-        <span class="chip-label">Active Grid Fleet</span>
-        <span class="chip-val">${onRouteCount} / ${fleet.length} Compactors (${onRoutePct}%)</span>
-      </div>
-      <div class="overview-hero-chip">
-        <span class="chip-label">Today's Certified Intake</span>
-        <span class="chip-val">3,842 Tonnes · 5 Primary Sites</span>
-      </div>
-      <div class="overview-hero-chip">
-        <span class="chip-label">Weather Protocol</span>
-        <span class="chip-val">Dry Conditions · No Flood Grace Active</span>
-      </div>
+    <div class="ov-hero-actions">
+      <button class="btn primary" data-go="cadastre">Open cadastre</button>
+      <button class="btn" data-go="fleet">Truck tracker</button>
     </div>
   </section>`;
 }
 
 function renderOverviewKpis() {
   const onRoute = fleet.filter(v => v.status === 'On route').length;
-  const onRoutePct = Math.round((onRoute / (fleet.length || 1)) * 100);
   const openIncidents = modules.incidents.filter(i => i.status !== 'Resolved').length;
   const propCount = modules.properties ? modules.properties.length : 5;
   const unitCount = modules.properties ? modules.properties.reduce((n, p) => n + (p.units ? p.units.length : 0), 0) : 37;
-
+  const metric = (label, value, note, go) => `
+    <button class="ov-metric" data-go="${go}">
+      <span class="ov-metric-label">${label}</span>
+      <span class="ov-metric-value">${value}</span>
+      <span class="ov-metric-note">${note}</span>
+    </button>`;
   return `
-  <div class="kpi-cards-grid">
-    <div class="kpi-card">
-      <div class="kpi-card-head">
-        <div class="kpi-card-title-group">
-          <span class="kpi-card-tag">FLEET TELEMETRY</span>
-          <span class="kpi-card-title">Active Compactors</span>
-        </div>
-        <span class="sc-pill sc-pill-forest">${onRoutePct}% ON GRID</span>
-      </div>
-      <div class="kpi-card-metric">
-        <span class="kpi-card-num">${onRoute}</span>
-        <span class="kpi-card-denom">/ ${fleet.length} TRUCKS</span>
-      </div>
-      <div class="kpi-card-breakdown">
-        <span>598 en route</span> · <span>86 at scale</span> · <span>316 depot</span>
-      </div>
-      <div class="kpi-card-progress">
-        <div class="progress-fill" style="width:${onRoutePct}%"></div>
-      </div>
-      <div class="kpi-card-foot">
-        ${scIcon('truck', 13)}
-        <span>GPS breadcrumbs active across Lagos</span>
-      </div>
-    </div>
-
-    <div class="kpi-card">
-      <div class="kpi-card-head">
-        <div class="kpi-card-title-group">
-          <span class="kpi-card-tag">SCALE INGESTION</span>
-          <span class="kpi-card-title">Daily Net Tonnage</span>
-        </div>
-        <span class="sc-pill sc-pill-honey">76.8% TARGET</span>
-      </div>
-      <div class="kpi-card-metric">
-        <span class="kpi-card-num">3,842</span>
-        <span class="kpi-card-denom">TONNES RECONCILED</span>
-      </div>
-      <div class="kpi-card-breakdown">
-        <span>Target: 5,000 T</span> · <span>312 loads</span> · <span>12.4 T avg</span>
-      </div>
-      <div class="kpi-card-progress">
-        <div class="progress-fill progress-honey" style="width:76.8%"></div>
-      </div>
-      <div class="kpi-card-foot">
-        ${scIcon('scale', 13)}
-        <span>Olusosun, Solous, Simpson, Oshodi, Epe</span>
-      </div>
-    </div>
-
-    <div class="kpi-card">
-      <div class="kpi-card-head">
-        <div class="kpi-card-title-group">
-          <span class="kpi-card-tag">MOD-01 CADASTRE</span>
-          <span class="kpi-card-title">Dwelling Unit IDs</span>
-        </div>
-        <span class="sc-pill sc-pill-forest">RING-FENCED</span>
-      </div>
-      <div class="kpi-card-metric">
-        <span class="kpi-card-num">${propCount}</span>
-        <span class="kpi-card-denom">PROPERTIES (${unitCount} DUIDs)</span>
-      </div>
-      <div class="kpi-card-breakdown">
-        <span>37 Wallets</span> · <span>₦1.84M balance</span> · <span>0 suspended</span>
-      </div>
-      <div class="kpi-card-progress">
-        <div class="progress-fill progress-forest" style="width:100%"></div>
-      </div>
-      <div class="kpi-card-foot">
-        ${scIcon('home', 13)}
-        <span>Unit-level billing isolated from landlord debt</span>
-      </div>
-    </div>
-
-    <div class="kpi-card">
-      <div class="kpi-card-head">
-        <div class="kpi-card-title-group">
-          <span class="kpi-card-tag">CONCESSIONS</span>
-          <span class="kpi-card-title">Accredited PSPs</span>
-        </div>
-        <span class="sc-pill sc-pill-blue">100% SLA LOCK</span>
-      </div>
-      <div class="kpi-card-metric">
-        <span class="kpi-card-num">${modules.partners.length}</span>
-        <span class="kpi-card-denom">OPERATORS ASSURED</span>
-      </div>
-      <div class="kpi-card-breakdown">
-        <span>24 Active routes</span> · <span>99.1% telemetry</span> · <span>₦32.4M escrow</span>
-      </div>
-      <div class="kpi-card-progress">
-        <div class="progress-fill progress-blue" style="width:100%"></div>
-      </div>
-      <div class="kpi-card-foot">
-        ${scIcon('shield', 13)}
-        <span>Covering 5 major Lagos concession zones</span>
-      </div>
-    </div>
-
-    <div class="kpi-card">
-      <div class="kpi-card-head">
-        <div class="kpi-card-title-group">
-          <span class="kpi-card-tag">SUPERVISOR QUEUE</span>
-          <span class="kpi-card-title">Active Exceptions</span>
-        </div>
-        <span class="sc-pill ${openIncidents > 0 ? 'sc-pill-honey' : 'sc-pill-forest'}">${openIncidents > 0 ? openIncidents + ' PENDING' : 'ALL CLEAR'}</span>
-      </div>
-      <div class="kpi-card-metric">
-        <span class="kpi-card-num">${openIncidents}</span>
-        <span class="kpi-card-denom">TRIAGE CASES</span>
-      </div>
-      <div class="kpi-card-breakdown">
-        <span>1 Illegal dumping</span> · <span>18m avg dispatch time</span>
-      </div>
-      <div class="kpi-card-progress">
-        <div class="progress-fill ${openIncidents > 0 ? 'progress-honey' : 'progress-forest'}" style="width:${Math.max(10, openIncidents * 20)}%"></div>
-      </div>
-      <div class="kpi-card-foot">
-        ${scIcon('alert', 13)}
-        <span>Section 84 evidence certificate ready</span>
-      </div>
-    </div>
+  <div class="ov-metrics">
+    ${metric('Trucks on route', onRoute.toLocaleString('en-GB'), 'of ' + fleet.length.toLocaleString('en-GB') + ' rolled out', 'fleet')}
+    ${metric('Tonnes tipped today', '3,842', '77% of 5,000 t target', 'capacity')}
+    ${metric('Dwelling units billed', unitCount.toLocaleString('en-GB'), 'across ' + propCount + ' properties', 'cadastre')}
+    ${metric('Open complaints', openIncidents.toLocaleString('en-GB'), openIncidents ? 'waiting for a supervisor' : 'nothing waiting', 'incidents')}
   </div>`;
 }
 
 function renderOverviewCharts() {
   const facilities = [
-    { name: 'Olusosun Landfill (Ojota)', queue: '4 in queue · 14m turnaround', actual: 1420, cap: 1600, pct: 88.8, status: 'near' },
-    { name: 'Solous Landfill (Igando)', queue: '2 in queue · 11m turnaround', actual: 980, cap: 1300, pct: 75.4, status: 'ok' },
-    { name: 'Simpson TLS (Lagos Island)', queue: '1 in queue · 8m turnaround', actual: 620, cap: 900, pct: 68.9, status: 'ok' },
-    { name: 'Oshodi TLS (Oshodi-Isolo)', queue: '2 in queue · 9m turnaround', actual: 510, cap: 850, pct: 60.0, status: 'ok' },
-    { name: 'Epe Landfill (Diversion Reserve)', queue: 'Open intake · Rain diversion', actual: 312, cap: 800, pct: 39.0, status: 'reserve' }
+    { name: 'Olusosun Landfill', area: 'Ojota', queue: 4, turn: 14, actual: 1420, cap: 1600 },
+    { name: 'Solous Landfill', area: 'Igando', queue: 2, turn: 11, actual: 980, cap: 1300 },
+    { name: 'Simpson TLS', area: 'Lagos Island', queue: 1, turn: 8, actual: 620, cap: 900 },
+    { name: 'Oshodi TLS', area: 'Oshodi-Isolo', queue: 2, turn: 9, actual: 510, cap: 850 },
+    { name: 'Epe Landfill', area: 'Reserve site', queue: 0, turn: 0, actual: 312, cap: 800 }
   ];
-
-  const maxCap = 1600;
-  const barSvg = `
-    <svg class="sc-tremor-chart" viewBox="0 0 600 230" role="img" aria-label="Facility Intake vs Daily Capacity">
-      <!-- Grid guidelines -->
-      <line x1="195" y1="10" x2="195" y2="195" stroke="var(--sc-border-faint)" stroke-width="1" stroke-dasharray="3 3" />
-      <line x1="265" y1="10" x2="265" y2="195" stroke="var(--sc-border-faint)" stroke-width="1" stroke-dasharray="3 3" />
-      <line x1="335" y1="10" x2="335" y2="195" stroke="var(--sc-border-faint)" stroke-width="1" stroke-dasharray="3 3" />
-      <line x1="405" y1="10" x2="405" y2="195" stroke="var(--sc-border-faint)" stroke-width="1" stroke-dasharray="3 3" />
-      <line x1="475" y1="10" x2="475" y2="195" stroke="var(--sc-border-faint)" stroke-width="1" />
-
-      ${facilities.map((f, i) => {
-        const y = 14 + i * 36;
-        const capWidth = Math.round((f.cap / maxCap) * 280);
-        const actualWidth = Math.round((f.actual / maxCap) * 280);
-        const barColor = f.status === 'near' ? 'var(--sc-heat, #f47707)' : f.status === 'reserve' ? 'var(--sc-blue, #2a6dfb)' : 'var(--sc-forest, #42c366)';
-        return `
-          <text x="185" y="${y + 11}" text-anchor="end" font-size="11" font-weight="500" fill="var(--sc-fg)">${f.name}</text>
-          <text x="185" y="${y + 22}" text-anchor="end" font-size="9" font-family="var(--sc-mono)" fill="var(--sc-fg-muted)">${f.queue}</text>
-
-          <!-- Capacity Track -->
-          <rect x="195" y="${y + 2}" width="${capWidth}" height="16" rx="4" fill="var(--sc-a4)" />
-
-          <!-- Actual Ingestion Bar -->
-          <rect x="195" y="${y + 2}" width="${actualWidth}" height="16" rx="4" fill="${barColor}" />
-
-          <!-- Ingestion Metric readout in right column -->
-          <text x="488" y="${y + 14}" font-size="11" font-family="var(--sc-mono)" font-weight="500" fill="var(--sc-fg)">${f.actual} T <tspan font-size="9.5" fill="var(--sc-fg-muted)">(${f.pct}%)</tspan></text>
-        `;
-      }).join('')}
-
-      <!-- Bottom Axis Scale -->
-      <line x1="195" y1="198" x2="475" y2="198" stroke="var(--sc-border)" stroke-width="1" />
-      <text x="195" y="214" font-size="10" font-family="var(--sc-mono)" fill="var(--sc-fg-muted)">0 T</text>
-      <text x="335" y="214" text-anchor="middle" font-size="10" font-family="var(--sc-mono)" fill="var(--sc-fg-muted)">800 T (50%)</text>
-      <text x="475" y="214" text-anchor="end" font-size="10" font-family="var(--sc-mono)" fill="var(--sc-fg)">1,600 T Cap</text>
-    </svg>
-  `;
-
+  const pipeline = [
+    ['Stops rolled out', 1840, 'stops'],
+    ['Waste collected at the door', 1612, 'pickups'],
+    ['Tipped with weighbridge ticket', 1390, 'loads'],
+    ['PSP operators paid', 1240, 'payments']
+  ];
+  const n = v => v.toLocaleString('en-GB');
+  const pct = (a, b) => Math.round((a / b) * 100);
+  const bar = (p, tone) => `<span class="ov-bar"><span class="ov-bar-fill${tone ? ' ' + tone : ''}" style="width:${Math.min(100, p)}%"></span></span>`;
   return `
-  <div class="overview-charts-grid">
-    <div class="sc-data-card">
-      <div class="sc-card-header">
-        <div>
-          <div class="sc-card-tag">INFRASTRUCTURE INTAKE</div>
-          <h2 class="sc-card-title">Facility Tonnage Ingestion vs Daily Capacity</h2>
-          <div class="sc-card-sub">Net weighed gross-tare receipts recorded at certified scales today</div>
-        </div>
-        <div class="sc-chart-legend">
-          <span><i style="background:var(--sc-forest, #42c366)"></i> Normal Flow</span>
-          <span><i style="background:var(--sc-heat, #f47707)"></i> >85% Near Cap</span>
-          <span><i style="background:var(--sc-a6)"></i> Design Headroom</span>
-        </div>
-      </div>
-      ${barSvg}
-    </div>
-
-    <div class="sc-data-card">
-      <div class="sc-card-header">
-        <div>
-          <div class="sc-card-tag">SETTLEMENT PIPELINE</div>
-          <h2 class="sc-card-title">End-to-End Service Assurance Pipeline</h2>
-          <div class="sc-card-sub">Physical doorstep scan to audited Friday escrow settlement chain</div>
-        </div>
-        <span class="sc-pill sc-pill-forest">ESCROW CHAIN ACTIVE</span>
-      </div>
-
-      <div class="sc-pipeline-container">
-        <div class="sc-pipeline-item">
-          <div class="sc-pipeline-row">
-            <div class="sc-pipeline-title">
-              ${scIcon('route', 15)}
-              <span>01. Dispatched Stops on Route</span>
-            </div>
-            <span class="sc-pipeline-metric">1,840 stops <small>(100%)</small></span>
-          </div>
-          <div class="sc-pipeline-bar"><div class="sc-pipeline-fill" style="width:100%"></div></div>
-          <div class="sc-pipeline-meta">
-            <span>24 Compactor routes active across 20 LGAs</span>
-            <span>Dry conditions · Level 0</span>
-          </div>
-        </div>
-
-        <div class="sc-pipeline-item">
-          <div class="sc-pipeline-row">
-            <div class="sc-pipeline-title">
-              ${scIcon('scan', 15)}
-              <span>02. Doorstep Tag Scans & Pickups</span>
-            </div>
-            <span class="sc-pipeline-metric">1,612 pickups <small>(87.6%)</small></span>
-          </div>
-          <div class="sc-pipeline-bar"><div class="sc-pipeline-fill" style="width:87.6%"></div></div>
-          <div class="sc-pipeline-meta">
-            <span>GPS proximity & timestamp cryptographic log</span>
-            <span>228 stops remaining</span>
-          </div>
-        </div>
-
-        <div class="sc-pipeline-item">
-          <div class="sc-pipeline-row">
-            <div class="sc-pipeline-title">
-              ${scIcon('receipt', 15)}
-              <span>03. Weighbridge Receipts Certified</span>
-            </div>
-            <span class="sc-pipeline-metric">1,390 loads <small>(75.5%)</small></span>
-          </div>
-          <div class="sc-pipeline-bar"><div class="sc-pipeline-fill" style="width:75.5%"></div></div>
-          <div class="sc-pipeline-meta">
-            <span>Gross / tare delta matched to digital manifest</span>
-            <span>11 in scale queue</span>
-          </div>
-        </div>
-
-        <div class="sc-pipeline-item">
-          <div class="sc-pipeline-row">
-            <div class="sc-pipeline-title">
-              ${scIcon('banknote', 15)}
-              <span>04. Reconciled Friday Escrow Payouts</span>
-            </div>
-            <span class="sc-pipeline-metric">1,240 verified <small>(67.4%)</small></span>
-          </div>
-          <div class="sc-pipeline-bar"><div class="sc-pipeline-fill" style="width:67.4%"></div></div>
-          <div class="sc-pipeline-meta">
-            <span>5% LIRS statutory WHT withheld · Tonnage audited</span>
-            <span>₦32.41M accrued value</span>
-          </div>
-        </div>
-      </div>
-    </div>
+  <div class="ov-panels">
+    <section class="ov-panel">
+      <header class="ov-panel-head">
+        <h2>Dumpsite & TLS tipping today</h2>
+        <p>Tonnes tipped at each dumpsite and transfer station against its daily limit.</p>
+      </header>
+      <table class="ov-table">
+        <thead><tr><th>Dumpsite / TLS</th><th class="num">Trucks waiting to tip</th><th class="num">Tonnes tipped</th><th>Daily limit used</th></tr></thead>
+        <tbody>
+          ${facilities.map(f => { const p = pct(f.actual, f.cap); return `<tr>
+            <td><b>${f.name}</b><small>${f.area}</small></td>
+            <td class="num">${f.queue ? f.queue + ' · ' + f.turn + ' min' : '—'}</td>
+            <td class="num">${n(f.actual)} / ${n(f.cap)} t</td>
+            <td><span class="ov-bar-cell">${bar(p, p >= 85 ? 'is-warn' : '')}<span class="num">${p}%</span></span></td>
+          </tr>`; }).join('')}
+        </tbody>
+      </table>
+    </section>
+    <section class="ov-panel">
+      <header class="ov-panel-head">
+        <h2>Today's collections</h2>
+        <p>From trucks rolled out to PSP operators paid.</p>
+      </header>
+      <table class="ov-table">
+        <thead><tr><th>Step</th><th class="num">Count</th><th>Of stops rolled out</th></tr></thead>
+        <tbody>
+          ${pipeline.map(([label, v, unit]) => { const p = pct(v, pipeline[0][1]); return `<tr>
+            <td><b>${label}</b></td>
+            <td class="num">${n(v)} ${unit}</td>
+            <td><span class="ov-bar-cell">${bar(p)}<span class="num">${p}%</span></span></td>
+          </tr>`; }).join('')}
+        </tbody>
+      </table>
+    </section>
   </div>`;
 }
 
-function renderOverviewLaunchpad() {
+function renderOverviewQueue() {
+  const rank = { Critical: 0, High: 1, Medium: 2, Low: 3 };
+  const items = [];
+  modules.facilities.filter(f => occupancy(f) > f.capacity).forEach(f => items.push({ tone: 'is-crit', what: f.name + ' is full', where: (f.area || f.id), detail: occupancy(f) + ' trucks on site, room for ' + f.capacity, action: 'View trucks at dumpsite', go: 'capacity', r: 0 }));
+  const overIds = modules.facilities.filter(f => occupancy(f) > f.capacity).map(f => f.id);
+  modules.incidents.filter(i => i.status !== 'Resolved' && !(overIds.includes(i.subject) && /capacity/i.test(i.type))).forEach(i => items.push({ tone: i.priority === 'High' || i.priority === 'Critical' ? 'is-crit' : 'is-warn', what: i.type, where: i.area || '', detail: i.subject + ' · ' + i.status, action: 'Attend to complaint', go: 'incidents', r: rank[i.priority] ?? 2 }));
+  modules.partners.filter(p => p.status === 'Pending review').forEach(p => items.push({ tone: 'is-warn', what: 'PSP enrolment waiting', where: p.area || '', detail: p.name || p.id, action: 'Review enrolment', go: 'partners', r: 2 }));
+  items.sort((x, y) => x.r - y.r);
+  const shown = items.slice(0, 6);
+  const body = shown.length ? `<table class="ov-table ov-queue">
+      <thead><tr><th>Issue</th><th>LGA</th><th></th></tr></thead>
+      <tbody>${shown.map(it => `<tr>
+        <td><span class="ov-flag ${it.tone}"></span><b>${it.what}</b><small>${it.detail}</small></td>
+        <td>${it.where}</td>
+        <td class="num"><button class="text-action" data-go="${it.go}">${it.action} ${icon('arrow')}</button></td>
+      </tr>`).join('')}</tbody></table>` : '<p class="ov-empty">Nothing needs your attention right now.</p>';
   return `
-  <div class="module-launchpad">
-    <div class="launch-tile" data-go="cadastre">
-      <div class="launch-tile-top">
-        <div class="launch-tile-tag">MODULE 01 · IDENTITY</div>
-        <h3>Tenement Cadastre & DUIDs</h3>
-        <p>Tenement property registry, doorstep dwelling unit IDs (DUIDs), ring-fenced tenant billing, and virtual compound wallets.</p>
-      </div>
-      <div class="launch-tile-stats">
-        <span>5 Properties</span> · <span>37 DUIDs</span> · <span>₦1.84M Balance</span>
-      </div>
-      <div class="launch-tile-foot">
-        <span>Open Tenement Register</span>
-        ${scIcon('arrowRight', 14)}
-      </div>
-    </div>
+  <section class="ov-panel ov-wide">
+    <header class="ov-panel-head">
+      <h2>Needs your attention</h2>
+      <p>${items.length ? items.length + ' item' + (items.length > 1 ? 's' : '') + ', most urgent first.' : 'All clear.'}${items.length > shown.length ? ' Showing the first ' + shown.length + '.' : ''}</p>
+    </header>${body}
+  </section>`;
+}
 
-    <div class="launch-tile" data-go="fleet">
-      <div class="launch-tile-top">
-        <div class="launch-tile-tag">MODULE 02 · LOGISTICS</div>
-        <h3>Fleet Telemetry & Routes</h3>
-        <p>Live compactor GPS tracking, geofenced route breadcrumbs, speed threshold alerts, and automated missed-stop alarms.</p>
-      </div>
-      <div class="launch-tile-stats">
-        <span>24 Active Routes</span> · <span>684 Trucks</span> · <span>99.1% Signal</span>
-      </div>
-      <div class="launch-tile-foot">
-        <span>View Live Fleet Map</span>
-        ${scIcon('arrowRight', 14)}
-      </div>
-    </div>
-
-    <div class="launch-tile" data-go="capacity">
-      <div class="launch-tile-top">
-        <div class="launch-tile-tag">MODULE 03 · WEIGHBRIDGE</div>
-        <h3>Scale Queues & Receipts</h3>
-        <p>Automated gross/tare weighing, queue turnaround times, anti-tailgating scale interlocks, and traceable receipts.</p>
-      </div>
-      <div class="launch-tile-stats">
-        <span>4 Scale Lanes</span> · <span>14m Turnaround</span> · <span>3,842 T Net</span>
-      </div>
-      <div class="launch-tile-foot">
-        <span>Inspect Site Queues</span>
-        ${scIcon('arrowRight', 14)}
-      </div>
-    </div>
-
-    <div class="launch-tile" data-go="finance">
-      <div class="launch-tile-top">
-        <div class="launch-tile-tag">MODULE 05 · SETTLEMENT</div>
-        <h3>Escrow & Friday Payouts</h3>
-        <p>Verified tonnage payments, LIRS statutory deductions, 48-hour dispute cure windows, and automated PSP statements.</p>
-      </div>
-      <div class="launch-tile-stats">
-        <span>25 Operators</span> · <span>₦32.4M Accrued</span> · <span>5% WHT Withheld</span>
-      </div>
-      <div class="launch-tile-foot">
-        <span>View Finance Ledger</span>
-        ${scIcon('arrowRight', 14)}
-      </div>
-    </div>
-  </div>`;
+// Official LGAs are distinct from the district names used by the sample fleet.
+const OVERVIEW_LGAS = ['Agege','Ajeromi-Ifelodun','Alimosho','Amuwo-Odofin','Apapa','Badagry','Epe','Eti-Osa','Ibeju-Lekki','Ifako-Ijaiye','Ikeja','Ikorodu','Kosofe','Lagos Island','Lagos Mainland','Mushin','Ojo','Oshodi-Isolo','Shomolu','Surulere'];
+const OVERVIEW_DISTRICT_LGA = {Yaba:'Lagos Mainland',Lekki:'Eti-Osa',Oshodi:'Oshodi-Isolo'};
+// Illustrative totals only: these do not create trucks or tickets in other modules.
+const OVERVIEW_LGA_SAMPLES = {'Ajeromi-Ifelodun':[72,54,6,4,864,810],'Amuwo-Odofin':[58,43,4,2,696,654],Badagry:[40,29,3,2,480,438],Epe:[34,25,2,1,408,378],'Ibeju-Lekki':[46,34,3,2,552,510],'Ifako-Ijaiye':[62,46,5,3,744,690],Ikorodu:[84,63,7,5,1008,936],Kosofe:[68,51,5,3,816,756],Mushin:[76,56,7,5,912,840],Ojo:[54,40,4,3,648,600],Shomolu:[60,45,4,3,720,672]};
+function overviewLgaRows() {
+  const areas = Object.fromEntries(OVERVIEW_LGAS.map(name => [name, {name,total:0,working:0,lost:0,cases:0,collected:0,tipped:0,district:null,placeholder:false}]));
+  fleet.forEach(v => {
+    const a = areas[OVERVIEW_DISTRICT_LGA[v.district] || v.district];
+    if (!a) return;
+    a.district = v.district; a.total++;
+    if (v.status === 'No signal') a.lost++; else if (v.status !== 'At facility') a.working++;
+    a.collected += v.reported * 0.6; a.tipped += v.verified * 0.6;
+  });
+  modules.incidents.filter(i => i.status !== 'Resolved').forEach(i => { const a = areas[OVERVIEW_DISTRICT_LGA[i.area] || i.area]; if (a) a.cases++; });
+  return OVERVIEW_LGAS.map(name => {
+    const a = areas[name], sample = OVERVIEW_LGA_SAMPLES[name];
+    if (!a.total && sample) {
+      [a.total,a.working,a.lost,a.cases,a.collected,a.tipped] = sample;
+      a.placeholder = true;
+    }
+    a.collected = Math.round(a.collected); a.tipped = Math.round(a.tipped);
+    return a;
+  });
+}
+function renderOverviewAreas() {
+  const rows = overviewLgaRows().sort((x, y) => (y.lost / (y.total || 1) + y.cases) - (x.lost / (x.total || 1) + x.cases) || x.name.localeCompare(y.name));
+  const n = v => v.toLocaleString('en-GB');
+  return `
+  <section class="ov-panel ov-wide">
+    <header class="ov-panel-head">
+      <h2>By LGA</h2>
+      <p>All 20 LGAs · Sample data only. LGAs needing attention come first. Illustrative figures are shown where sample trucks are not yet available.</p>
+    </header>
+    <table class="ov-table">
+      <thead><tr><th>LGA</th><th class="num">Trucks</th><th class="num">On route</th><th class="num">Tracker offline</th><th class="num">Open complaints</th><th></th></tr></thead>
+      <tbody>${rows.map(a => { const lostPct = Math.round(a.lost / (a.total || 1) * 100); return `<tr${permitted('fleet') && a.district ? ` data-fleet-district="${esc(a.district)}"` : ''}>
+        <td><b>${esc(a.name)}</b>${a.placeholder ? '<small>Illustrative figures</small>' : ''}</td>
+        <td class="num">${n(a.total)}</td>
+        <td class="num">${n(a.working)}</td>
+        <td class="num${lostPct >= 10 ? ' is-warn-text' : ''}">${n(a.lost)} · ${lostPct}%</td>
+        <td class="num">${a.cases || '0'}</td>
+        <td class="num">${a.placeholder ? '<small>No sample trucks yet</small>' : permitted('fleet') && a.district ? `<button class="text-action" data-fleet-district="${esc(a.district)}" aria-label="View trucks in ${esc(a.name)}">View trucks ${icon('arrow')}</button>` : ''}</td>
+      </tr>`; }).join('')}</tbody>
+    </table>
+  </section>`;
 }
 
 screens.overview = () => {
   return renderOverviewHero() +
     renderOverviewKpis() +
     renderOverviewCharts() +
-    renderOverviewLaunchpad() +
-    panel('Operational attention', 'Open a record or facility to take immediate action.', `<div class="module-pad">${routeButton('Service records · ' + sim.orders.filter(o => o.stage !== 'Verified').length + ' in progress', 'serviceLedger')}${routeButton('Site capacity · ' + modules.facilities.filter(f => occupancy(f) > f.capacity).length + ' above limit', 'capacity')}${routeButton('Partner registration · ' + modules.partners.filter(p => p.status === 'Pending review').length + ' pending', 'partners')}${routeButton('Review incidents · ' + modules.incidents.filter(i => i.status !== 'Resolved').length + ' active', 'incidents')}</div>`) +
-    panel('Follow a complete collection', 'From dispatch to a verified disposal receipt.', simOrderTable(sim.orders.slice(0, 3))) +
-    panel('Scenarios & controls', 'Simulate field handoffs, camera detections, and offline edge recovery.', `<div class="module-pad">${routeButton('Open scenarios', 'scenarios')}${routeButton('Camera and sensor observations', 'cameras')}${routeButton('Performance report', 'reports')}</div>`);
+    renderOverviewQueue() +
+    renderOverviewAreas();
 };
 // Preserve the existing citizen-care journey while generating matching resident notifications.
 const simRenderBase=renderJourney;

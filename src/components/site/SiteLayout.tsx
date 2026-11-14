@@ -51,7 +51,7 @@ export function EmberLink({ children, className, ...to }: To & { children: React
       )}
     >
       {children}
-      <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-0.5" />
+      <ArrowRight className="size-4" />
     </Anchor>
   );
 }
@@ -78,7 +78,7 @@ export function LineLink({ children, className, ...to }: To & { children: ReactN
       <span className="bg-[linear-gradient(currentColor,currentColor)] bg-[length:0%_1px] bg-left-bottom bg-no-repeat pb-0.5 transition-[background-size] duration-500 group-hover:bg-[length:100%_1px]">
         {children}
       </span>
-      <ArrowUpRight className="size-4 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+      <ArrowUpRight className="size-4" />
     </Anchor>
   );
 }

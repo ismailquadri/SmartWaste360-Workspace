@@ -79,7 +79,7 @@ $('toast').setAttribute('aria-atomic','true');
 $('layersBtn').setAttribute('aria-label','Map display');
 $('modalBack').addEventListener('click',e=>{if(e.target===$('modalBack'))closeModal()});
 document.addEventListener('keydown',e=>{
- const tab=e.target.closest('[role=tab]');if(!tab||!['ArrowLeft','ArrowRight','Home','End'].includes(e.key))return;
+ const tab=e.target.closest('[role=tab][data-tab]');if(!tab||!['ArrowLeft','ArrowRight','Home','End'].includes(e.key))return;
  e.preventDefault();const tabs=[...tab.parentElement.querySelectorAll('[role=tab]')];let i=tabs.indexOf(tab);i=e.key==='Home'?0:e.key==='End'?tabs.length-1:(i+(e.key==='ArrowRight'?1:-1)+tabs.length)%tabs.length;const next=tabs[i].dataset.tab;state.tab=next;renderDetail();$('detail').querySelector('[data-tab="'+next+'"]').focus();
 });
 if(journey.page==='fleet')ensureFleetMap();

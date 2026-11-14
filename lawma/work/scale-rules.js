@@ -1,0 +1,21 @@
+/* MOD-03 proposed weighbridge rules. Sample checks only; LAWMA facilities and Weights & Measures approval is required. */
+const SCALE_BEAMS=4;
+const CORNER_TOLERANCE=0.18;
+const SIGNAL_JUMP_KG=1500;
+const DRIFT_LIMIT=0.015;
+const LEACHATE_DEDUCTION_KG=1500;
+const COMMERCIAL_TIP_FEE=10000;
+const SCALE_REVIEW_ROLES=['management','operations','auditor','admin'];
+const beamsClear=b=>Array.isArray(b)&&b.length===SCALE_BEAMS&&b.every(Boolean);
+const cornerDeviation=(c,e)=>{const t=c.reduce((n,x)=>n+x,0)||1;return Math.max(...c.map((x,i)=>Math.abs(x/t-e[i])))};
+const signalTamper=(c,e,jump)=>cornerDeviation(c,e)>CORNER_TOLERANCE||jump>=SIGNAL_JUMP_KG;
+const driftRatio=(test,reading)=>Math.abs(reading-test)/test;
+const scaleInTolerance=(test,reading)=>driftRatio(test,reading)<=DRIFT_LIMIT;
+const wetSeason=month=>month>=5&&month<=10;
+const mudAllowance=(month,rainMm,washed)=>washed||!wetSeason(month)?0:rainMm>=30?600:rainMm>=10?400:250;
+const leachateBreach=v=>!!v?.opened&&v.zone!=='Leachate sump';
+const ticketNet=t=>t.gross-(t.tare-mudAllowance(t.month,t.rainMm,t.washed))-(leachateBreach(t.valve)?LEACHATE_DEDUCTION_KG:0);
+const tariffMismatch=(account,ticketClass)=>account==='Commercial'&&ticketClass!=='Commercial';
+const tipFee=(netKg,ticketClass)=>ticketClass==='Commercial'?Math.round(netKg/1000*COMMERCIAL_TIP_FEE):0;
+const classChangeAllowed=(d,by)=>!!d.reason&&!!d.second&&d.second.trim().toLowerCase()!==String(by).trim().toLowerCase();
+const ticketFindings=(t,scaleOk)=>[!beamsClear(t.beams)&&'Truck not fully on the scale',signalTamper(t.corners,t.expected,t.jump)&&'Signal tamper suspected',!scaleOk&&'Scale out of calibration',leachateBreach(t.valve)&&'Leachate drained outside the sump',tariffMismatch(t.account,t.ticketClass)&&'Commercial load booked as domestic'].filter(Boolean);

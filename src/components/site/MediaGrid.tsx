@@ -28,10 +28,10 @@ export function MediaGrid() {
                   src={`https://i.ytimg.com/vi/${m.id}/maxresdefault.jpg`}
                   alt=""
                   loading="lazy"
-                  className="h-full w-full object-cover opacity-80 transition duration-700 group-hover:scale-105 group-hover:opacity-100"
+                  className="h-full w-full object-cover opacity-80 transition-opacity duration-300 group-hover:opacity-100"
                 />
                 <span className="absolute inset-0 grid place-items-center">
-                  <span className="grid size-16 place-items-center rounded-full bg-paper/90 text-ink backdrop-blur transition-transform duration-500 group-hover:scale-110">
+                  <span className="grid size-16 place-items-center rounded-full bg-paper/90 text-ink backdrop-blur">
                     <Play className="ml-0.5 size-5 fill-current" />
                   </span>
                 </span>

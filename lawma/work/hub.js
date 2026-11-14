@@ -92,7 +92,7 @@ const HUB_PERIOD='October 2026';
 for(const r of ['management','admin','operations','care'])if(personaPages[r]&&!personaPages[r].includes('publicReports'))personaPages[r].push('publicReports');
 for(const r of ['management','admin','operations','care','finance'])if(personaPages[r]&&!personaPages[r].includes('commercial'))personaPages[r].push('commercial');
 if(personaPages.enforcement&&!personaPages.enforcement.includes('publicReports'))personaPages.enforcement.push('publicReports');
-journeyNav.push(['publicReports','Public reports','flag'],['commercial','Markets & businesses','market']);
+journeyNav.push(['publicReports','Resident reports','flag'],['commercial','Markets & businesses','market']);
 const hubPartnerContext=changePartnerContext;changePartnerContext=function(id){hubPartnerContext(id);if(journey.role==='partner'&&currentPartner().service==='Collection'&&!personaPages.partner.includes('publicReports'))personaPages.partner.push('publicReports')};
 const hubCanTriage=()=>isAuthority()||journey.role==='care';
 const hubCanField=r=>hubCanTriage()||isPartnerRole()&&r.partner===modules.partnerContext;
@@ -435,4 +435,88 @@ runModule=function(cmd,id){
   saveAndRender(todo.length+' remittance'+(todo.length===1?'':'s')+' confirmed.');return;
  }
  hubRemRun(cmd,id);
+};
+
+// Officials only: the workspace serves LAWMA management and staff. Operators, crews, facility
+// operators, partners and residents appear only as subjects of records, never as sign-in roles.
+const OFFICIAL_ROLES = ['management', 'operations', 'finance', 'care', 'enforcement', 'recovery', 'auditor', 'admin'];
+const OUTSIDE_PAGES = ['crew', 'partner', 'resident'];
+Object.keys(journeyRoles).forEach(id => { if (!OFFICIAL_ROLES.includes(id)) { delete journeyRoles[id]; delete personaPages[id]; } });
+Object.keys(personaPages).forEach(id => { personaPages[id] = personaPages[id].filter(p => !OUTSIDE_PAGES.includes(p)); });
+for (const select of document.querySelectorAll('#persona,#entryRole,#productSignup select[name=role]')) {
+  select.querySelectorAll('option').forEach(o => { if (o.value && !OFFICIAL_ROLES.includes(o.value)) o.remove(); });
+  if (!OFFICIAL_ROLES.includes(select.value)) select.value = 'management';
+}
+if (!OFFICIAL_ROLES.includes(journey.role)) { journey.role = 'management'; if (OUTSIDE_PAGES.includes(journey.page) || !personaPages.management.includes(journey.page)) journey.page = 'overview'; }
+
+// Management menu: Scenarios and Notifications are prototype tools, hidden from LAWMA management.
+const MANAGEMENT_HIDDEN = ['scenarios', 'alerts'];
+if (personaPages.management) personaPages.management = personaPages.management.filter(p => !MANAGEMENT_HIDDEN.includes(p));
+if (journey.role === 'management' && MANAGEMENT_HIDDEN.includes(journey.page)) journey.page = 'overview';
+
+// Weekly LGA tonnage brief: figures come from workspace records; AI only words them.
+// Nothing feeds partner settlement until an official confirms that week's figures.
+const BRIEF_CONFIRMERS = ['management', 'operations', 'finance'];
+const TONNES_PER_TRIP = 0.6;
+const briefWeek = () => { const d = new Date(); d.setUTCHours(0, 0, 0, 0); d.setUTCDate(d.getUTCDate() - ((d.getUTCDay() + 6) % 7)); return d.toISOString().slice(0, 10); };
+const briefRows = () => {
+  const held = typeof scaleHeldByLga === 'function' ? scaleHeldByLga() : {};
+  return overviewLgaRows().map(a => ({ lga: a.name, collected: a.collected, tipped: Math.max(0, Math.round((a.tipped - (held[a.name] || 0)) * 10) / 10), held: held[a.name] || 0 })).sort((x, y) => (y.collected - y.tipped) - (x.collected - x.tipped));
+};
+const currentBrief = () => { const b = modules.lgaBrief; return b && b.week === briefWeek() && b.rows?.length === 20 && (b.heldKg ?? 0) === (typeof scaleHeldKg === 'function' ? scaleHeldKg() : 0) && OVERVIEW_LGAS.every(lga => b.rows.some(r => r.lga === lga)) ? b : null; };
+const briefConfirmed = () => currentBrief()?.status === 'Confirmed';
+let briefBusy = false, briefError = '';
+function renderOverviewBrief() {
+  const b = currentBrief(), rows = b ? b.rows : briefRows(), n = v => v.toLocaleString('en-GB');
+  const areas = Object.fromEntries(overviewLgaRows().map(a => [a.name, a]));
+  const tot = rows.reduce((s, r) => ({ c: s.c + r.collected, t: s.t + r.tipped }), { c: 0, t: 0 });
+  const canConfirm = BRIEF_CONFIRMERS.includes(journey.role);
+  const statusLine = !b ? 'Not written yet.' : b.status === 'Confirmed' ? 'Confirmed by ' + esc(b.confirmedBy) + ' on ' + esc(b.confirmedAt) + '. Cleared for settlement.' : 'Unconfirmed. Not used for settlement until an official confirms the figures.';
+  const actions = (briefBusy ? '<span class="ov-empty">Writing summary…</span>' : '<button class="btn" data-module="lga-brief-draft">' + (b ? 'Rewrite summary' : 'Write summary') + '</button>') +
+    (b && b.status !== 'Confirmed' && canConfirm ? ' <button class="btn primary" data-module="lga-brief-confirm">Confirm figures for settlement</button>' : '');
+  return `
+  <section class="ov-panel ov-wide">
+    <header class="ov-panel-head">
+      <h2>This week's tonnage by LGA</h2>
+      <p>Week from ${briefWeek()}. Sample data only; illustrative figures included for LGAs without sample trucks. ${statusLine}${typeof scaleHeldKg === 'function' && scaleHeldKg() ? ' Tipped figures leave out ' + (scaleHeldKg() / 1000).toFixed(1) + ' t on held weigh tickets.' : ''}</p>
+    </header>
+    ${b ? `<p class="ov-brief">${esc(b.text)}</p>` : ''}
+    ${briefError ? `<p class="ov-brief is-warn-text">${esc(briefError)}</p>` : ''}
+    <table class="ov-table">
+      <thead><tr><th>LGA</th><th class="num">Collected (t)</th><th class="num">Tipped (t)</th><th class="num">Not yet tipped (t)</th></tr></thead>
+      <tbody>${rows.map(r => { const a = areas[r.lga], linked = permitted('fleet') && a?.district; return `<tr${linked ? ` data-fleet-district="${esc(a.district)}"` : ''}><td>${linked ? `<button class="text-action" data-fleet-district="${esc(a.district)}" aria-label="View trucks in ${esc(r.lga)}">${esc(r.lga)} ${icon('arrow')}</button>` : `<b>${esc(r.lga)}</b>`}${a?.placeholder ? '<small>Illustrative figures · No sample trucks yet</small>' : ''}</td><td class="num">${n(r.collected)}</td><td class="num">${n(r.tipped)}</td><td class="num">${n(r.collected - r.tipped)}</td></tr>`; }).join('')}
+      <tr${permitted('fleet') ? ' data-fleet-district="all"' : ''}><td>${permitted('fleet') ? '<button class="text-action" data-fleet-district="all" aria-label="View trucks in all LGAs">All LGAs</button>' : '<b>All LGAs</b>'}</td><td class="num"><b>${n(tot.c)}</b></td><td class="num"><b>${n(tot.t)}</b></td><td class="num"><b>${n(tot.c - tot.t)}</b></td></tr></tbody>
+    </table>
+    <div class="ov-brief-actions">${actions}</div>
+  </section>`;
+}
+const hubBriefOverview = screens.overview;
+screens.overview = () => hubBriefOverview() + renderOverviewBrief();
+const hubBriefRun = runModule;
+runModule = function (cmd, id) {
+  if (cmd === 'lga-brief-draft') {
+    if (briefBusy) return;
+    briefBusy = true; briefError = ''; renderJourney();
+    const rows = briefRows();
+    fetch('/api/lga-brief', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ rows }) })
+      .then(r => r.json().then(j => ({ ok: r.ok, j })))
+      .then(({ ok, j }) => { if (!ok) throw new Error(j.error || 'The summary could not be written.'); modules.lgaBrief = { week: briefWeek(), rows, heldKg: typeof scaleHeldKg === 'function' ? scaleHeldKg() : 0, text: j.text, status: 'Unconfirmed', drafted: new Date().toISOString() }; saveModules(); recordModuleAction('Weekly LGA tonnage summary written'); })
+      .catch(e => { briefError = e.message || 'The summary could not be written.'; })
+      .finally(() => { briefBusy = false; renderJourney(); });
+    return;
+  }
+  if (cmd === 'lga-brief-confirm') {
+    const b = currentBrief(); if (!b || !BRIEF_CONFIRMERS.includes(journey.role)) return;
+    openForm('Confirm weekly tonnage', 'Week from ' + b.week + '. Once confirmed, these figures can be used in PSP settlement decisions.', [field('checked', 'I have checked these figures against weighbridge tickets', { type: 'checkbox' })], 'Confirm figures', d => {
+      if (!d.checked) return 'Tick the box to confirm you checked the figures.';
+      b.status = 'Confirmed'; b.confirmedBy = journeyRoles[journey.role][0]; b.confirmedAt = new Date().toLocaleString('en-GB', { dateStyle: 'medium', timeStyle: 'short' });
+      recordModuleAction('Weekly LGA tonnage confirmed for settlement');
+    });
+    return;
+  }
+  if (cmd === 'sim-settlementReview') {
+    const s = sim.settlements.find(s => s.id === id);
+    if (s && s.status === 'Awaiting approval' && !briefConfirmed()) { toast('Confirm this week’s LGA tonnage on the overview before approving settlements.'); return; }
+  }
+  hubBriefRun(cmd, id);
 };
