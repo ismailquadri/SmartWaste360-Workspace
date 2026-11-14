@@ -258,7 +258,7 @@ function hubChannelsPanel(){
 }
 const hubSystems=screens.systems;screens.systems=()=>hubSystems()+hubChannelsPanel();
 function hubCarePanel(){
- const rows=['App','WhatsApp','USSD','Phone call','Field officer'].map(ch=>{const list=hub.reports.filter(r=>r.channel===ch),acked=list.filter(r=>r.ack),mins=acked.map(r=>(Date.parse(r.ack)-Date.parse(r.raised))/60000);return [ch,list.length,list.filter(r=>!['Cleared','Duplicate'].includes(r.status)).length,mins.length?Math.round(mins.reduce((n,m)=>n+m,0)/mins.length)+' min':'—']}).filter(r=>r[1]);
+ const rows=['App','WhatsApp','USSD','Phone call','Field officer'].map(ch=>{const list=hub.reports.filter(r=>r.channel===ch),acked=list.filter(r=>r.ack),mins=acked.map(r=>(Date.parse(r.ack)-Date.parse(r.raised))/60000);return [ch,list.length,list.filter(r=>!['Cleared','Duplicate'].includes(r.status)).length,mins.length?Math.round(mins.reduce((n,m)=>n+m,0)/mins.length)+' min':'-']}).filter(r=>r[1]);
  return panel('Public reports by channel','Volume and average time to acknowledge.',table(['Channel','Reports','Open','Time to acknowledge'],rows))+`<div class="module-pad">${routeButton('Open public reports','publicReports')}</div>`;
 }
 

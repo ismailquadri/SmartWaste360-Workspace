@@ -135,7 +135,7 @@ screens.cadastre = () => {
           `<b>₦${(p.wallet.balance).toLocaleString()}</b><small class="cell-sub">Target: ₦${(p.wallet.targetMonthly).toLocaleString()}/mo</small>`,
           `<span>${p.units.length} Flats</span><small class="cell-sub">${p.ownerDebtLedger.length ? '<span class="state-pill amber">' + p.ownerDebtLedger.length + ' debt isolated</span>' : 'Clean ledger'}</small>`,
           `<span class="state-pill ${p.serviceStatus === 'Active' ? 'good' : p.serviceStatus === 'Encumbered' ? 'red' : 'amber'}">${esc(p.serviceTier)}</span>`,
-          button('Inspect property & DUIDs', 'inspectProperty', p.id, true)
+          button('Inspect DUIDs', 'inspectProperty', p.id, true)
         ])
       ) : empty('No matching properties found', 'Change your filter criteria or search query to see more tenement records.'))
     ) +
@@ -297,7 +297,7 @@ function runModule(cmd,id){
  if(cmd==='registerPartner'||cmd==='editPartner'){partnerForm(id);return}
  if(cmd==='approvePartner'){
   const p=partnerByID(id);if(!p)return;
-  openForm('Review registration',p.name+' · '+p.reference,[field('decision','Registration decision',{options:['Activate partner','Request corrections']}),field('note','Review note',{type:'textarea'}),field('confirm','I have reviewed the sample organisation and service details',{type:'checkbox'})],'Save decision',d=>{p.status=d.decision==='Activate partner'?'Active':'Pending review';p.reviewNote=d.note;recordModuleAction(p.id+' registration: '+d.decision+' — '+d.note)});return;
+  openForm('Review registration',p.name+' · '+p.reference,[field('decision','Registration decision',{options:['Activate partner','Request corrections']}),field('note','Review note',{type:'textarea'}),field('confirm','I have reviewed the sample organisation and service details',{type:'checkbox'})],'Save decision',d=>{p.status=d.decision==='Activate partner'?'Active':'Pending review';p.reviewNote=d.note;recordModuleAction(p.id+' registration: '+d.decision+': '+d.note)});return;
  }
  if(cmd==='assetTab'){ui.assetTab=id;renderJourney();return}
  if(cmd==='addPerson'||cmd==='editPerson'){
@@ -360,7 +360,7 @@ function runModule(cmd,id){
  }
  if(cmd==='decideReview'){
   const r=modules.reviews.find(x=>x.id===id);if(!r)return;
-  openForm('Record review decision','A review records a human finding. This workflow does not issue fines.',[field('status','Decision',{options:['Evidence requested','Follow-up required','Closed — no further action']}),field('decision','Reason and supporting evidence',{type:'textarea'})],'Save decision',d=>{Object.assign(r,d,{reviewer:journeyRoles[journey.role][0]});recordModuleAction(id+': '+d.status+' — '+d.decision)});return;
+  openForm('Record review decision','A review records a human finding. This workflow does not issue fines.',[field('status','Decision',{options:['Evidence requested','Follow-up required','Closed: no further action']}),field('decision','Reason and supporting evidence',{type:'textarea'})],'Save decision',d=>{Object.assign(r,d,{reviewer:journeyRoles[journey.role][0]});recordModuleAction(id+': '+d.status+': '+d.decision)});return;
  }
  if(cmd==='residentSetup'){
   const r=modules.resident;

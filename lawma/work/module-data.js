@@ -182,7 +182,7 @@ const moduleSeed = () => ({
   visits:[],
   incidents:[{id:'INC-001',type:'Capacity breach',subject:'FAC-002',partner:'PAR-020',area:'Oshodi',priority:'High',status:'Open',owner:'Unassigned',description:'Manual sample count exceeds the configured holding capacity.',resolution:'',notes:[],created:'2026-10-05T07:20:00.000Z'}],
   reviews:[],
-  policies:[{id:'POL-001',name:'Facility capacity review',trigger:'Vehicles present exceed the site capacity',response:'Supervisor reviews occupancy and records an action',status:'Draft — not approved'},{id:'POL-002',name:'Missing collection evidence',trigger:'A service event has incomplete supporting evidence',response:'Request evidence and record a human decision',status:'Draft — not approved'}],
+  policies:[{id:'POL-001',name:'Facility capacity review',trigger:'Vehicles present exceed the site capacity',response:'Supervisor reviews occupancy and records an action',status:'Draft: not approved'},{id:'POL-002',name:'Missing collection evidence',trigger:'A service event has incomplete supporting evidence',response:'Request evidence and record a human decision',status:'Draft: not approved'}],
   resident:{name:'Amina',area:'Ikeja',property:'PR-0182',partner:'PAR-006',address:'Household, Ikeja'},
   serviceRequests:[],
   users:[{id:'USR-001',name:'Operations supervisor',role:'operations',status:'Sample active'},{id:'USR-002',name:'Partner coordinator',role:'partner',status:'Sample active'}],

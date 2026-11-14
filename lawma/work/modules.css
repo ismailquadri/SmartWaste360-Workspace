@@ -723,3 +723,45 @@ body.entry-open>:is(.top,.journey-bar,.journey-nav,#journeyMain,#fleetMain,.skip
 .launch-tile:hover .launch-tile-foot svg {
   transform: translateX(3px);
 }
+
+
+/* Table presentation, column widths, and responsive bounds */
+.table-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  width: 100%;
+}
+.table-scroll table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+.table-scroll th {
+  padding: 11px 14px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+.table-scroll td {
+  padding: 12px 14px;
+  font-size: 12px;
+  vertical-align: middle;
+}
+.table-scroll th:first-child, .table-scroll td:first-child {
+  padding-left: 18px;
+}
+.table-scroll th:last-child, .table-scroll td:last-child {
+  padding-right: 18px;
+  text-align: right;
+  white-space: nowrap;
+}
+.table-scroll td:last-child .btn {
+  white-space: nowrap;
+  font-size: 11px;
+  padding: 6px 12px;
+  min-height: 32px;
+}
+.journey-stats strong, .table-scroll td code, .kpi-card-num, .site-count strong {
+  font-variant-numeric: tabular-nums;
+}
