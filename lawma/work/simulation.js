@@ -78,7 +78,7 @@ function openService(id){const o=simOrder(id);if(!o)return;activeService=id;
  drawer(o.id+' · '+o.area,simulatedNote()+steps(['Assign','Collect','Facility','Receipt'],serviceTrackerStep(o))+
  rowKV('Operator',esc(partnerName(o.partner)))+rowKV('Vehicle / crew',esc(o.vehicle+' · '+o.crew))+rowKV('Current stage',esc(serviceStageLabel(o)))+
  `<div class="drawer-actions">${canOrderAction(o)&&(!o.billed||o.stage!=='Verified')?simBtn(simNext(o),'advance',o.id,true):''}${permitted('fleet')?simBtn('View route on map','map',o.id):''}${simBtn(sim.online?'Simulate offline':'Restore connection','connection')}${o.receipt?simBtn(o.receipt.kind==='TLS intake'?'View intake receipt':'View disposal receipt','receipt',o.id):''}</div>`+
- table(['Checkpoint','Capture','Sync'],o.stops.map(s=>[esc(s.property),s.captured?'Tag + staged image':'Pending',s.synced?'Synced':s.captured?'Queued':'—']))+
+ table(['Checkpoint','Capture','Sync'],o.stops.map(s=>[esc(s.property),s.captured?'Tag + staged image':'Pending',s.synced?'Synced':s.captured?'Queued':'Pending']))+
  (o.stops.some(s=>s.captured)?`<h3>Latest staged evidence</h3>${scene('evidence')}<p class="sim-caption">${esc(o.stops.filter(s=>s.captured).at(-1).photo)} · capture metadata retained</p>`:'')+
  (o.billed?rowKV('Related invoices',sim.invoices.filter(i=>i.order===o.id).map(i=>i.id).join(', ')):'')+
  '<h3>Event history</h3><ol class="module-timeline">'+o.events.map(e=>`<li>${esc(e.text)}<small>${stamp(e.time)}</small></li>`).join('')+'</ol>');
@@ -149,12 +149,12 @@ screens.resident=()=>{
  panel('Your service requests','Reports retain their property and partner links.',modules.serviceRequests.filter(r=>r.property===modules.resident.property).length?table(['Reference','Issue','Status',''],modules.serviceRequests.filter(r=>r.property===modules.resident.property).map(r=>[r.id,esc(r.type),status(r.status),link('View request','residentRequest',r.id)])):empty('No open service requests','Report a missed collection or other issue to start a traceable case.'));
 };
 const originalCompliance=screens.compliance;
-screens.compliance=()=>originalCompliance()+panel('Policy simulation','',`<div class="module-pad"><div class="capacity-line"><span>Service completion target</span><b>${sim.policy.target}%</b></div><div class="capacity-line"><span>Notice amount</span><b>${cash(sim.policy.penalty)}</b></div><p>${sim.policy.approved?'Approved for this scenario.':'Draft policy — review before a penalty decision.'}</p>${simBtn('Configure policy','policy')}</div>`);
+screens.compliance=()=>originalCompliance()+panel('Policy simulation','',`<div class="module-pad"><div class="capacity-line"><span>Service completion target</span><b>${sim.policy.target}%</b></div><div class="capacity-line"><span>Notice amount</span><b>${cash(sim.policy.penalty)}</b></div><p>${sim.policy.approved?'Approved for this scenario.':'Draft policy: review before a penalty decision.'}</p>${simBtn('Configure policy','policy')}</div>`);
 screens.enforcement=()=>pageHead('ENFORCEMENT REVIEW','Review the evidence. Record a fair decision.','Progress a staged camera flag through verification, a notice and appeal.',simBtn('Create sample flag','dumping','FAC-003',true))+
  panel('Incident and appeal register','Flags never issue notices automatically.',sim.cases.length?table(['Case / source','Finding','Stage',''],sim.cases.map(c=>[`${c.id}<small class="cell-sub">${esc(c.site)}</small>`,esc(c.finding),status(c.stage),link('Open case','sim-enforcement',c.id)])):empty('No flagged incidents','Create a sample flag here or from Cameras & sensors.'));
 screens.recovery=()=>{
  const batches=sim.batches.filter(b=>journey.role!=='partner'||b.partner===modules.partnerContext);
- return pageHead('RESOURCE RECOVERY','Account for what is recovered.','Follow a material batch from declared weight to processor acceptance.',simBtn('Register material batch','batch','',true))+panel('Material batches','Accepted weight and receipt stay linked to the batch.',batches.length?table(['Batch','Organisation','Material','Declared / accepted','Status',''],batches.map(b=>[b.id,esc(partnerName(b.partner)),esc(b.material),b.weight+' t / '+(b.accepted??'—')+' t',status(b.status),link('Open batch','sim-batchDetail',b.id)])):empty('No batches for this partner','Register a material batch to begin its recovery journey.'));
+ return pageHead('RESOURCE RECOVERY','Account for what is recovered.','Follow a material batch from declared weight to processor acceptance.',simBtn('Register material batch','batch','',true))+panel('Material batches','Accepted weight and receipt stay linked to the batch.',batches.length?table(['Batch','Organisation','Material','Declared / accepted','Status',''],batches.map(b=>[b.id,esc(partnerName(b.partner)),esc(b.material),b.weight+' t / '+(b.accepted??'Pending')+' t',status(b.status),link('Open batch','sim-batchDetail',b.id)])):empty('No batches for this partner','Register a material batch to begin its recovery journey.'));
 };
 screens.partnerWork=()=>{
  const rows=sim.tickets.filter(t=>journey.role!=='partner'||t.partner===modules.partnerContext);
@@ -234,7 +234,7 @@ runModule=function(cmd,id){
   const inv=sim.invoices.find(i=>i.id===id&&simScopeInvoice(i));if(!inv||['Payment received','Reconciled'].includes(inv.status))return;
   openForm('Checkout',inv.id+' · '+cash(inv.amount)+' · no money moves and no card details are needed.',[field('provider','Simulated provider',{options:['Paystack','Flutterwave']}),field('outcome','Payment outcome',{options:['Successful','Failed']})],'Run simulated payment',d=>{
    const payment={id:moduleID('PAY',sim.payments),invoice:id,amount:inv.amount,outcome:d.outcome,provider:d.provider,time:simNow()};sim.payments.unshift(payment);inv.status=d.outcome==='Successful'?'Payment received':'Payment failed';inv.receipt=d.outcome==='Successful'?payment.id:null;
-   simNotice(d.outcome==='Successful'?'Payment receipt ready':'Payment failed — retry available',id+' · '+cash(inv.amount),'resident');sim.notices[0].property=inv.property;recordModuleAction(payment.id+' '+d.outcome+' simulated payment');
+   simNotice(d.outcome==='Successful'?'Payment receipt ready':'Payment failed: retry available',id+' · '+cash(inv.amount),'resident');sim.notices[0].property=inv.property;recordModuleAction(payment.id+' '+d.outcome+' simulated payment');
   });return;
  }
  if(a==='reconcile'){
@@ -259,9 +259,9 @@ runModule=function(cmd,id){
  if(a==='enforceNext'){
   const c=sim.cases.find(c=>c.id===id);if(!c)return;
   if(c.stage==='Verified finding'&&!sim.policy.approved){toast('Approve a policy in Compliance before preparing a notice.');return}
-  const options={'Unverified flag':['Request field verification','Dismiss false positive'],'Field verification':['Verify finding','Insufficient evidence'],'Verified finding':['Issue notice'],'Notice issued':['Submit appeal'],'Appeal received':['Allow appeal — withdraw notice','Uphold notice']}[c.stage];if(!options)return;
+  const options={'Unverified flag':['Request field verification','Dismiss false positive'],'Field verification':['Verify finding','Insufficient evidence'],'Verified finding':['Issue notice'],'Notice issued':['Submit appeal'],'Appeal received':['Allow appeal: withdraw notice','Uphold notice']}[c.stage];if(!options)return;
   openForm('Review '+id,'A human decision is required at each stage. No legal notice is sent.',[field('decision','Decision',{options}),field('note','Evidence / decision reason',{type:'textarea'})],'Record decision',d=>{
-   const states={'Request field verification':'Field verification','Dismiss false positive':'Dismissed','Verify finding':'Verified finding','Insufficient evidence':'Dismissed','Issue notice':'Notice issued','Submit appeal':'Appeal received','Allow appeal — withdraw notice':'Notice withdrawn','Uphold notice':'Notice upheld'};
+   const states={'Request field verification':'Field verification','Dismiss false positive':'Dismissed','Verify finding':'Verified finding','Insufficient evidence':'Dismissed','Issue notice':'Notice issued','Submit appeal':'Appeal received','Allow appeal: withdraw notice':'Notice withdrawn','Uphold notice':'Notice upheld'};
    c.stage=states[d.decision];if(['Verified finding','Dismissed'].includes(c.stage))c.finding=d.note;c.notes.push(d.decision+': '+d.note);if(c.stage==='Notice issued')c.amount=sim.policy.penalty;recordModuleAction(id+' '+c.stage);
   });return;
  }
@@ -270,11 +270,11 @@ runModule=function(cmd,id){
  }
  if(a==='batchDetail'){
   const b=sim.batches.find(b=>b.id===id&&(!isPartnerRole()||b.partner===modules.partnerContext));if(!b)return;
-  drawer(b.id,rowKV('Material',esc(b.material))+rowKV('Declared weight',b.weight+' t')+rowKV('Accepted weight',(b.accepted??'—')+' t')+rowKV('Status',esc(b.status))+rowKV('Receipt',esc(b.receipt||'Pending'))+(b.status==='Accepted'?'':simBtn('Record processor outcome','batchAccept',id,true)));return;
+  drawer(b.id,rowKV('Material',esc(b.material))+rowKV('Declared weight',b.weight+' t')+rowKV('Accepted weight',(b.accepted??'Pending')+' t')+rowKV('Status',esc(b.status))+rowKV('Receipt',esc(b.receipt||'Pending'))+(b.status==='Accepted'?'':simBtn('Record processor outcome','batchAccept',id,true)));return;
  }
  if(a==='batchAccept'){
   const b=sim.batches.find(b=>b.id===id);if(!b)return;
-  openForm('Processor outcome',id+' · '+b.weight+' tonnes declared.',[field('outcome','Outcome',{options:['Accepted','Rejected — contamination']}),field('weight','Accepted weight (tonnes)',{type:'number',min:0,max:b.weight,step:.01,value:b.weight}),textField('receipt','Dummy receipt reference','PROC-'+id)],'Save outcome',d=>{if(+d.weight>b.weight)return'Accepted weight cannot exceed declared weight.';b.status=d.outcome;b.accepted=d.outcome==='Accepted'?+d.weight:0;b.receipt=d.receipt;simNotice('Material outcome recorded',id+' · '+d.outcome,'recovery');sim.notices[0].partner=b.partner;recordModuleAction(id+' '+d.outcome)});return;
+  openForm('Processor outcome',id+' · '+b.weight+' tonnes declared.',[field('outcome','Outcome',{options:['Accepted','Rejected: contamination']}),field('weight','Accepted weight (tonnes)',{type:'number',min:0,max:b.weight,step:.01,value:b.weight}),textField('receipt','Dummy receipt reference','PROC-'+id)],'Save outcome',d=>{if(+d.weight>b.weight)return'Accepted weight cannot exceed declared weight.';b.status=d.outcome;b.accepted=d.outcome==='Accepted'?+d.weight:0;b.receipt=d.receipt;simNotice('Material outcome recorded',id+' · '+d.outcome,'recovery');sim.notices[0].partner=b.partner;recordModuleAction(id+' '+d.outcome)});return;
  }
  if(a==='workOrder'){
   if(!modules.partners.some(p=>p.status==='Active'&&['Transport','Technical support'].includes(p.service)&&(!isPartnerRole()||p.id===modules.partnerContext))){toast('Activate a transport or technical support partner before assigning work.');return}
@@ -326,7 +326,7 @@ function renderOverviewHero() {
   <section class="overview-hero-banner">
     <div class="overview-hero-top">
       <div class="overview-hero-kicker">
-        <span class="pulse-dot"></span>
+        <span class="status-dot-solid"></span>
         <span>LAGOS STATE WASTE MANAGEMENT AUTHORITY · SOVEREIGN OPERATIONS COMMAND</span>
       </div>
       <div class="overview-hero-meta">
@@ -337,7 +337,7 @@ function renderOverviewHero() {
     <div class="overview-hero-main">
       <div class="overview-hero-headline">
         <h1>Statewide Waste & Concession Assurance Console</h1>
-        <p>Real-time compactor GPS telemetry, weighbridge scale ingestion, compound tenement cadastre billing, and concessionaire SLA settlement across 20 Local Government Areas.</p>
+        <p>Live compactor GPS telemetry, weighbridge scale ingestion, compound tenement cadastre billing, and concessionaire SLA settlement across 20 Local Government Areas.</p>
       </div>
       <div class="overview-hero-actions">
         <button class="btn primary" data-go="cadastre">${scIcon('home', 14)} Tenement Cadastre (MOD-01)</button>
@@ -527,7 +527,7 @@ function renderOverviewCharts() {
           <text x="185" y="${y + 22}" text-anchor="end" font-size="9" font-family="var(--sc-mono)" fill="var(--sc-fg-muted)">${f.queue}</text>
 
           <!-- Capacity Track -->
-          <rect x="195" y="${y + 2}" width="${capWidth}" height="16" rx="4" fill="var(--sc-a4)" stroke="var(--sc-border-faint)" stroke-width="1" />
+          <rect x="195" y="${y + 2}" width="${capWidth}" height="16" rx="4" fill="var(--sc-a4)" />
 
           <!-- Actual Ingestion Bar -->
           <rect x="195" y="${y + 2}" width="${actualWidth}" height="16" rx="4" fill="${barColor}" />
@@ -557,7 +557,7 @@ function renderOverviewCharts() {
         <div class="sc-chart-legend">
           <span><i style="background:var(--sc-forest, #42c366)"></i> Normal Flow</span>
           <span><i style="background:var(--sc-heat, #f47707)"></i> >85% Near Cap</span>
-          <span><i style="background:var(--sc-a4);border:1px solid var(--sc-border-faint)"></i> Design Headroom</span>
+          <span><i style="background:var(--sc-a6)"></i> Design Headroom</span>
         </div>
       </div>
       ${barSvg}
