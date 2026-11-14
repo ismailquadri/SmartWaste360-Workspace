@@ -53,7 +53,7 @@ html[data-theme]:root:not(#sc) {
 
   --sc-r-sm: 6px; --sc-r: 8px; --sc-r-md: 10px; --sc-r-lg: 12px; --sc-r-xl: 16px;
   --sc-shadow-pop: 0 0 0 1px var(--sc-border-faint), 0 12px 32px -8px rgba(0, 0, 0, .14), 0 4px 8px -4px rgba(0, 0, 0, .06);
-  --sc-shadow-card: 0 1px 1px rgba(0, 0, 0, .02), 0 2px 4px -2px rgba(0, 0, 0, .03);
+  --sc-shadow-card: 0 1px 3px 0 rgba(0, 0, 0, .04), 0 1px 2px -1px rgba(0, 0, 0, .02);
   --sc-shadow-primary:
     0 -6px 12px 0 rgba(255, 40, 0, .18) inset,
     0 2px 4px 0 rgba(244, 119, 7, .14),
@@ -115,7 +115,7 @@ html[data-theme=dark]:root:not(#sc) {
   --sc-crimson-text: #ff7a6b; --sc-crimson-bg: rgba(235, 52, 36, .16);
   --sc-blue-text: #7aa5ff;   --sc-blue-bg: rgba(42, 109, 251, .16);
   --sc-shadow-pop: 0 0 0 1px var(--sc-border), 0 16px 40px -8px rgba(0, 0, 0, .6);
-  --sc-shadow-card: none;
+  --sc-shadow-card: 0 1px 3px 0 rgba(0, 0, 0, .35);
   --on: #4cc872;
   --facility: #6f9cc4;
   --stale: #737373;
@@ -146,7 +146,7 @@ html[data-theme]:root:not(#sc) ::-webkit-scrollbar-track { background: transpare
 html[data-theme]:root:not(#sc) ::-webkit-scrollbar-thumb { background: var(--sc-a8); border-radius: 4px; }
 html[data-theme]:root:not(#sc) ::-webkit-scrollbar-thumb:hover { background: var(--sc-border-loud); }
 
-/* Mono labels — the Scouts signature */
+/* Mono labels: the Scouts signature */
 html[data-theme]:root:not(#sc) :is(.eyebrow, .nav-section, .product-kicker, .release-coordinate, .release-signal,
   .console-bar, .console-receipt span, .release-proof-steps span, .demo-pill, .partner-strip span,
   .capability-grid article > span, .resident-date span, .camera-overlay, .tls-tabs button) {
@@ -252,7 +252,7 @@ html[data-theme]:root:not(#sc) .metric + .metric:before { background: var(--sc-b
 html[data-theme]:root:not(#sc) :is(.work-panel, .site-card, .tls-context, .tls-site-bar, .tls-balance, .connection-box,
   .workspace, .telemetry-grid > div, .record-banner) {
   background: var(--sc-surface);
-  border: 1px solid var(--sc-border-faint);
+  border: 0;
   border-radius: var(--sc-r-lg);
   box-shadow: var(--sc-shadow-card);
 }

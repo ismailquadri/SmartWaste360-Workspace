@@ -122,6 +122,746 @@ body.entry-open>:is(.top,.journey-bar,.journey-nav,#journeyMain,#fleetMain,.skip
  #journeyMain,#fleetMain{margin-left:212px;max-width:none;padding-inline:32px}.workspace{height:calc(100dvh - 380px);min-height:480px}
 }
 .journey-stats strong{overflow-wrap:anywhere}.module-pad .journey-steps{padding-inline:0}
+
+/* MOD-01 Cadastre & Decal styling */
+.decal-modal-view {
+  background: #ffffff;
+  color: #1a202c;
+  border: 3px solid #0b7042;
+  border-radius: 8px;
+  padding: 18px;
+  max-width: 520px;
+  margin: 0 auto;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+  font-family: inherit;
+}
+.decal-header {
+  text-align: center;
+  border-bottom: 2px solid #0b7042;
+  padding-bottom: 12px;
+  margin-bottom: 14px;
+}
+.decal-state-crest {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #0b7042;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.decal-header h3 {
+  margin: 0 0 4px 0;
+  font-size: 16px;
+  font-weight: 800;
+  color: #111827;
+  letter-spacing: 0.04em;
+}
+.decal-header small {
+  font-size: 10px;
+  color: #4b5563;
+  font-weight: 600;
+}
+.decal-body {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  margin-bottom: 14px;
+}
+.decal-qr-box {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+.decal-fake-qr {
+  width: 120px;
+  height: 120px;
+  background: #f8fafc;
+  border: 2px solid #111827;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.qr-corner {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  border: 4px solid #111827;
+}
+.qr-corner.tl { top: 4px; left: 4px; }
+.qr-corner.tr { top: 4px; right: 4px; }
+.qr-corner.bl { bottom: 4px; left: 4px; }
+.qr-center-text {
+  font-size: 10px;
+  line-height: 1.2;
+}
+.decal-qr-caption {
+  font-size: 9px;
+  font-weight: 700;
+  color: #0b7042;
+  text-align: center;
+  max-width: 120px;
+}
+.decal-info-table {
+  font-size: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  line-height: 1.3;
+}
+.decal-info-table code {
+  background: #f1f5f9;
+  padding: 1px 4px;
+  border-radius: 4px;
+  font-size: 11px;
+}
+.decal-footer {
+  border-top: 1px dashed #cbd5e1;
+  padding-top: 10px;
+  font-size: 10px;
+  color: #b45309;
+  line-height: 1.3;
+  text-align: center;
+}
+
+/* ========================================================
+   OPEN SCOUTS DESIGN SYSTEM OVERHAUL
+   Refined Tokens, Clean Hairlines, Precision Charts & Icons
+   ======================================================== */
+
+.overview-hero-banner {
+  background: var(--sc-surface, #ffffff);
+  border: 0;
+  border-radius: var(--sc-r-lg, 12px);
+  padding: 24px 28px;
+  margin-bottom: 24px;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.04), 0 1px 2px -1px rgba(0, 0, 0, 0.02);
+  position: relative;
+  overflow: hidden;
+}
+
+.overview-hero-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.overview-hero-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--sc-mono, monospace);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--sc-heat-text, #b45200);
+}
+
+.overview-hero-kicker .status-dot-solid {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--sc-forest, #42c366);
+  display: inline-block;
+}
+
+.overview-hero-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--sc-mono, monospace);
+  font-size: 11px;
+}
+
+.overview-hero-coord {
+  color: var(--sc-fg-muted, rgba(38, 38, 38, 0.58));
+  background: var(--sc-a4, rgba(0, 0, 0, 0.04));
+  padding: 4px 9px;
+  border-radius: var(--sc-r-sm, 6px);
+  border: 0;
+}
+
+.overview-hero-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 9px;
+  border-radius: var(--sc-r-sm, 6px);
+  background: var(--sc-forest-bg, rgba(66, 195, 102, 0.12));
+  color: var(--sc-forest-text, #1d7a3a);
+  border: 0;
+  font-weight: 500;
+}
+
+.status-dot-green {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--sc-forest, #42c366);
+  display: inline-block;
+}
+
+.overview-hero-main {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+
+.overview-hero-headline {
+  flex: 1;
+  min-width: 320px;
+}
+
+.overview-hero-headline h1 {
+  margin: 0 0 6px 0;
+  font-size: 21px;
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  color: var(--sc-fg, #262626);
+  line-height: 1.25;
+}
+
+.overview-hero-headline p {
+  margin: 0;
+  font-size: 13px;
+  color: var(--sc-fg-muted, rgba(38, 38, 38, 0.58));
+  line-height: 1.5;
+  max-width: 720px;
+}
+
+.overview-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.overview-hero-actions .btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 8px 14px;
+  border-radius: var(--sc-r, 8px);
+  background: var(--sc-surface, #ffffff);
+  color: var(--sc-fg, #262626);
+  border: 1px solid var(--sc-border, #e8e8e8);
+  box-shadow: var(--sc-shadow-card, 0 1px 1px rgba(0,0,0,0.02));
+  transition: all 0.15s var(--sc-ease, ease);
+  cursor: pointer;
+}
+
+.overview-hero-actions .btn:hover {
+  background: var(--sc-bg-lighter, #fbfbfb);
+  border-color: var(--sc-border-loud, rgba(0,0,0,0.12));
+  transform: translateY(-1px);
+}
+
+.overview-hero-actions .btn.primary {
+  background: var(--sc-heat, #f47707) linear-gradient(180deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0));
+  color: #ffffff;
+  border: 0;
+  box-shadow: var(--sc-shadow-primary);
+}
+
+.overview-hero-actions .btn.primary:hover {
+  background-color: var(--sc-heat-hover, #ff8419);
+  box-shadow: var(--sc-shadow-primary-hover);
+}
+
+.overview-hero-actions .btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 8px 12px;
+  border-radius: var(--sc-r, 8px);
+  background: transparent;
+  color: var(--sc-fg-muted, rgba(38, 38, 38, 0.58));
+  border: 1px solid var(--sc-border-faint, #ededed);
+  transition: all 0.15s var(--sc-ease, ease);
+  cursor: pointer;
+}
+
+.overview-hero-actions .btn-ghost:hover {
+  background: var(--sc-a4, rgba(0, 0, 0, 0.04));
+  color: var(--sc-fg, #262626);
+}
+
+.overview-hero-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 12px;
+  padding-top: 18px;
+  border-top: 0;
+}
+
+.overview-hero-chip {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px 14px;
+  background: var(--sc-a3, rgba(0, 0, 0, 0.025));
+  border: 0;
+  border-radius: var(--sc-r, 8px);
+}
+
+.overview-hero-chip .chip-label {
+  font-family: var(--sc-mono, monospace);
+  font-size: 10px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--sc-fg-faint, rgba(38, 38, 38, 0.40));
+}
+
+.overview-hero-chip .chip-val {
+  font-size: 11.5px;
+  font-weight: 500;
+  color: var(--sc-fg, #262626);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* KPI CARDS GRID - OPEN SCOUTS PRECISION SYSTEM */
+.kpi-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.kpi-card {
+  background: var(--sc-surface, #ffffff);
+  border: 0;
+  border-radius: var(--sc-r-lg, 12px);
+  padding: 20px 22px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.04), 0 1px 2px -1px rgba(0, 0, 0, 0.02);
+  transition: transform 0.15s var(--sc-ease, ease), box-shadow 0.15s var(--sc-ease, ease);
+}
+
+.kpi-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px -4px rgba(0, 0, 0, 0.08);
+}
+
+.kpi-card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.kpi-card-title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.kpi-card-tag {
+  font-family: var(--sc-mono, monospace);
+  font-size: 10px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--sc-fg-faint, rgba(38, 38, 38, 0.40));
+}
+
+.kpi-card-title {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--sc-fg, #262626);
+}
+
+.sc-pill {
+  font-family: var(--sc-mono, monospace);
+  font-size: 10px;
+  font-weight: 500;
+  padding: 3px 7px;
+  border-radius: var(--sc-r-sm, 6px);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.sc-pill-forest {
+  background: var(--sc-forest-bg, rgba(66, 195, 102, 0.12));
+  color: var(--sc-forest-text, #1d7a3a);
+}
+
+.sc-pill-honey {
+  background: var(--sc-honey-bg, rgba(236, 183, 48, 0.14));
+  color: var(--sc-honey-text, #8a6100);
+}
+
+.sc-pill-blue {
+  background: var(--sc-blue-bg, rgba(42, 109, 251, 0.12));
+  color: var(--sc-blue-text, #1f56d1);
+}
+
+.kpi-card-metric {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+
+.kpi-card-num {
+  font-size: 28px;
+  font-weight: 500;
+  letter-spacing: -0.04em;
+  color: var(--sc-fg, #262626);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.kpi-card-denom {
+  font-family: var(--sc-mono, monospace);
+  font-size: 10.5px;
+  font-weight: 400;
+  color: var(--sc-fg-muted, rgba(38, 38, 38, 0.58));
+  letter-spacing: 0.02em;
+}
+
+.kpi-card-breakdown {
+  font-size: 11px;
+  color: var(--sc-fg-dim, rgba(38, 38, 38, 0.72));
+  line-height: 1.4;
+  margin-bottom: 10px;
+  font-variant-numeric: tabular-nums;
+}
+
+.kpi-card-progress {
+  height: 3px;
+  background: var(--sc-a6, rgba(0, 0, 0, 0.06));
+  border-radius: 999px;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--sc-heat, #f47707);
+  border-radius: 999px;
+}
+
+.progress-honey { background: var(--sc-honey, #ecb730); }
+.progress-forest { background: var(--sc-forest, #42c366); }
+.progress-blue { background: var(--sc-blue, #2a6dfb); }
+
+.kpi-card-foot {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--sc-fg-muted, rgba(38, 38, 38, 0.58));
+  padding-top: 10px;
+  border-top: 0;
+}
+
+.kpi-card-foot svg {
+  color: var(--sc-fg-faint, rgba(38, 38, 38, 0.40));
+  flex-shrink: 0;
+}
+
+/* CHARTS SECTION - TREMOR/SCOUTS PRECISION DATA CARDS */
+.overview-charts-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+@media (max-width: 1080px) {
+  .overview-charts-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.sc-data-card {
+  background: var(--sc-surface, #ffffff);
+  border: 0;
+  border-radius: var(--sc-r-lg, 12px);
+  padding: 22px 24px;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.04), 0 1px 2px -1px rgba(0, 0, 0, 0.02);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.sc-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.sc-card-tag {
+  font-family: var(--sc-mono, monospace);
+  font-size: 10px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--sc-fg-faint, rgba(38, 38, 38, 0.40));
+  margin-bottom: 2px;
+}
+
+.sc-card-title {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: var(--sc-fg, #262626);
+}
+
+.sc-card-sub {
+  font-size: 12px;
+  color: var(--sc-fg-muted, rgba(38, 38, 38, 0.58));
+  margin-top: 3px;
+  line-height: 1.4;
+}
+
+.sc-chart-legend {
+  display: flex;
+  gap: 12px;
+  font-family: var(--sc-mono, monospace);
+  font-size: 10.5px;
+  color: var(--sc-fg-muted, rgba(38, 38, 38, 0.58));
+  align-items: center;
+}
+
+.sc-chart-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.sc-chart-legend i {
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  display: inline-block;
+}
+
+.sc-tremor-chart {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* PIPELINE FUNNEL CONTAINER */
+.sc-pipeline-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sc-pipeline-item {
+  padding: 11px 14px;
+  background: var(--sc-a2, rgba(0, 0, 0, 0.025));
+  border: 0;
+  border-radius: var(--sc-r, 8px);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sc-pipeline-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+}
+
+.sc-pipeline-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-weight: 500;
+  color: var(--sc-fg, #262626);
+}
+
+.sc-pipeline-title svg {
+  color: var(--sc-heat, #f47707);
+}
+
+.sc-pipeline-metric {
+  font-family: var(--sc-mono, monospace);
+  font-size: 11.5px;
+  font-weight: 500;
+  color: var(--sc-fg, #262626);
+}
+
+.sc-pipeline-metric small {
+  color: var(--sc-fg-muted, rgba(38, 38, 38, 0.58));
+  font-weight: 400;
+}
+
+.sc-pipeline-bar {
+  height: 3px;
+  background: var(--sc-a6, rgba(0, 0, 0, 0.06));
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.sc-pipeline-fill {
+  height: 100%;
+  background: var(--sc-heat, #f47707);
+  border-radius: 999px;
+}
+
+.sc-pipeline-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px;
+  color: var(--sc-fg-muted, rgba(38, 38, 38, 0.58));
+}
+
+/* MODULE LAUNCHPAD TILES */
+.module-launchpad {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.launch-tile {
+  background: var(--sc-surface, #ffffff);
+  border: 0;
+  border-radius: var(--sc-r-lg, 12px);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.04), 0 1px 2px -1px rgba(0, 0, 0, 0.02);
+  transition: all 0.15s var(--sc-ease, ease);
+}
+
+.launch-tile:hover {
+  box-shadow: 0 6px 16px -4px rgba(0, 0, 0, 0.08);
+  transform: translateY(-1px);
+}
+
+.launch-tile-tag {
+  font-family: var(--sc-mono, monospace);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--sc-fg-faint, rgba(38, 38, 38, 0.40));
+  margin-bottom: 6px;
+}
+
+.launch-tile-top h3 {
+  margin: 0 0 4px 0;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: var(--sc-fg, #262626);
+}
+
+.launch-tile-top p {
+  margin: 0 0 10px 0;
+  font-size: 12px;
+  color: var(--sc-fg-muted, rgba(38, 38, 38, 0.58));
+  line-height: 1.45;
+}
+
+.launch-tile-stats {
+  font-family: var(--sc-mono, monospace);
+  font-size: 11px;
+  color: var(--sc-fg-dim, rgba(38, 38, 38, 0.72));
+  background: var(--sc-a4, rgba(0, 0, 0, 0.04));
+  padding: 6px 10px;
+  border-radius: var(--sc-r-sm, 6px);
+  border: 0;
+  margin-bottom: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+.launch-tile-foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 0;
+  padding-top: 10px;
+  font-family: var(--sc-mono, monospace);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--sc-heat-text, #b45200);
+}
+
+.launch-tile-foot svg {
+  color: var(--sc-heat, #f47707);
+  transition: transform 0.15s var(--sc-ease, ease);
+}
+
+.launch-tile:hover .launch-tile-foot svg {
+  transform: translateX(3px);
+}
+
+
+/* Table presentation, column widths, and responsive bounds */
+.table-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  width: 100%;
+}
+.table-scroll table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+.table-scroll th {
+  padding: 11px 14px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+.table-scroll td {
+  padding: 12px 14px;
+  font-size: 12px;
+  vertical-align: middle;
+}
+.table-scroll th:first-child, .table-scroll td:first-child {
+  padding-left: 18px;
+}
+.table-scroll th:last-child, .table-scroll td:last-child {
+  padding-right: 18px;
+  text-align: right;
+  white-space: nowrap;
+}
+.table-scroll td:last-child .btn {
+  white-space: nowrap;
+  font-size: 11px;
+  padding: 6px 12px;
+  min-height: 32px;
+}
+.journey-stats strong, .table-scroll td code, .kpi-card-num, .site-count strong {
+  font-variant-numeric: tabular-nums;
+}
 </style><style>.sim-label{display:inline-flex;border:1px solid var(--line);border-radius:20px;padding:7px 10px;font-size:11px;letter-spacing:.06em;color:var(--muted);white-space:nowrap}.sim-scene{display:block;width:100%;height:auto;background:#394742;border-radius:8px}.sim-scene.night{filter:grayscale(.85) contrast(1.25)}.camera-frame{position:relative;overflow:hidden;border-radius:10px;background:#263632}.camera-overlay{position:absolute;bottom:10px;left:12px;right:12px;display:flex;justify-content:space-between;gap:10px;color:white;font:10px monospace;background:#14221bb3;padding:8px}.camera-frame[data-frame]:after{content:attr(data-frame);position:absolute;top:12px;right:12px;color:#fff;font:12px monospace}.camera-offline .sim-scene{opacity:.3}.camera-message{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;color:#fff;font-size:13px}.camera-message span{font-size:11px}.camera-layout{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(280px,1fr);gap:22px}.camera-controls{display:flex;gap:8px;flex-wrap:wrap;padding:18px}.camera-list{padding:0 16px 18px}.camera-choice{width:100%;display:flex;align-items:center;text-align:left;gap:12px;background:transparent;border:1px solid var(--line);border-radius:9px;padding:13px;margin-bottom:8px;color:var(--ink)}.camera-choice.selected{border-color:var(--lawma-orange);background:var(--lawma-soft)}.camera-choice>span:first-of-type{flex:1}.camera-choice svg{width:20px;fill:none;stroke:currentColor}.camera-choice small{display:block;font-size:11px;color:var(--muted);margin-top:5px}.sensor-reading{display:flex;gap:16px;align-items:center}.sensor-reading strong{font-size:38px;letter-spacing:-.04em}.sensor-reading small{font-size:16px}.sensor-reading.breach{color:#bc4a18}.scenario-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}.notification-item{display:flex;justify-content:space-between;align-items:center;padding:20px;gap:14px;border-top:1px solid var(--line)}.notification-item h3{font-size:14px;margin:10px 0 6px}.notification-item p{font-size:12px;color:var(--muted);line-height:1.6}.notification-item small,.sim-caption{font-size:11px;color:var(--muted)}
 @media(max-width:760px){.camera-layout,.scenario-grid{grid-template-columns:1fr}.camera-controls .btn{font-size:11px}.notification-item{align-items:flex-start;flex-direction:column}}
 </style><meta name="theme-color" content="#f47707"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="apple-mobile-web-app-title" content="SmartWaste360"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="app-icon-192.png"><style>/* Mobile-first shell with iOS conventions: safe areas, bottom tabs and modal sheets. */
@@ -233,7 +973,7 @@ html[data-theme]:root:not(#sc) {
 
   --sc-r-sm: 6px; --sc-r: 8px; --sc-r-md: 10px; --sc-r-lg: 12px; --sc-r-xl: 16px;
   --sc-shadow-pop: 0 0 0 1px var(--sc-border-faint), 0 12px 32px -8px rgba(0, 0, 0, .14), 0 4px 8px -4px rgba(0, 0, 0, .06);
-  --sc-shadow-card: 0 1px 1px rgba(0, 0, 0, .02), 0 2px 4px -2px rgba(0, 0, 0, .03);
+  --sc-shadow-card: 0 1px 3px 0 rgba(0, 0, 0, .04), 0 1px 2px -1px rgba(0, 0, 0, .02);
   --sc-shadow-primary:
     0 -6px 12px 0 rgba(255, 40, 0, .18) inset,
     0 2px 4px 0 rgba(244, 119, 7, .14),
@@ -295,7 +1035,7 @@ html[data-theme=dark]:root:not(#sc) {
   --sc-crimson-text: #ff7a6b; --sc-crimson-bg: rgba(235, 52, 36, .16);
   --sc-blue-text: #7aa5ff;   --sc-blue-bg: rgba(42, 109, 251, .16);
   --sc-shadow-pop: 0 0 0 1px var(--sc-border), 0 16px 40px -8px rgba(0, 0, 0, .6);
-  --sc-shadow-card: none;
+  --sc-shadow-card: 0 1px 3px 0 rgba(0, 0, 0, .35);
   --on: #4cc872;
   --facility: #6f9cc4;
   --stale: #737373;
@@ -326,7 +1066,7 @@ html[data-theme]:root:not(#sc) ::-webkit-scrollbar-track { background: transpare
 html[data-theme]:root:not(#sc) ::-webkit-scrollbar-thumb { background: var(--sc-a8); border-radius: 4px; }
 html[data-theme]:root:not(#sc) ::-webkit-scrollbar-thumb:hover { background: var(--sc-border-loud); }
 
-/* Mono labels — the Scouts signature */
+/* Mono labels: the Scouts signature */
 html[data-theme]:root:not(#sc) :is(.eyebrow, .nav-section, .product-kicker, .release-coordinate, .release-signal,
   .console-bar, .console-receipt span, .release-proof-steps span, .demo-pill, .partner-strip span,
   .capability-grid article > span, .resident-date span, .camera-overlay, .tls-tabs button) {
@@ -432,7 +1172,7 @@ html[data-theme]:root:not(#sc) .metric + .metric:before { background: var(--sc-b
 html[data-theme]:root:not(#sc) :is(.work-panel, .site-card, .tls-context, .tls-site-bar, .tls-balance, .connection-box,
   .workspace, .telemetry-grid > div, .record-banner) {
   background: var(--sc-surface);
-  border: 1px solid var(--sc-border-faint);
+  border: 0;
   border-radius: var(--sc-r-lg);
   box-shadow: var(--sc-shadow-card);
 }
@@ -1124,7 +1864,7 @@ function fitFleet(){if(!ready)return;const data=allFiltered();if(!data.length)re
 function setView(view){state.view=view;state.page=0;document.querySelectorAll('[data-view]').forEach(b=>b.classList.toggle('active',b.dataset.view===view));$('pageTitle').textContent=view==='review'?'Service review':'Fleet overview';$('pageDescription').textContent=view==='review'?'Inspect incomplete evidence and service exceptions before taking action.':'Locate vehicles, review service delivery and respond to exceptions.';closeDetail();changeFilter(false)}
 function rowKV(k,v){return '<div class="kv"><span>'+k+'</span><b>'+v+'</b></div>'}
 function detailContent(v){const r=ROUTES[v.ri];if(state.tab==='activity')return '<section class="detail-section"><h3>Today’s activity</h3><ul class="timeline"><li>GPS snapshot received<time>12:08 WAT · '+age(v.age)+'</time></li><li>'+v.reported+' collection events submitted<time>11:52 WAT · crew device</time></li><li>Route assignment acknowledged<time>07:12 WAT · '+v.crew+'</time></li><li>Shift started<time>06:45 WAT · depot check-in</time></li>'+v.notes.map(n=>'<li>'+esc(n)+'<time>Added during this session</time></li>').join('')+'</ul></section>';
-if(state.tab==='service')return '<section class="detail-section"><h3>Collection evidence</h3>'+rowKV('Assigned stops',v.planned)+rowKV('Reported by crew',v.reported)+rowKV('Verified service records',v.verified)+rowKV('Awaiting review',v.pending)+'<p class="note">Vehicle proximity supports a service record. It does not independently prove collection.</p></section><section class="detail-section"><h3>Latest service record</h3><div class="proof-row"><b>Service event · SR-'+String(v.id).padStart(4,'0')+'-032</b><small>11:52 WAT · '+r.name+' · crew '+v.crew+'</small><span class="proof-state">Tag scan recorded · device timestamp present</span></div><div class="proof-row"><b>Photo evidence</b><small>'+(v.pending>0?'Upload incomplete — reviewer follow-up required':'Metadata available — sample image not included')+'</small></div></section><section class="detail-section"><h3>Facility handoff</h3>'+rowKV('Disposal receipt',v.id===42&&journey.weighed?'LD-0218 · linked':'Not linked')+rowKV('Weight record',v.id===42&&journey.weighed?(journey.gross-journey.tare).toLocaleString()+' kg net':'Awaiting facility record')+'<p class="note">A collection record and a facility receipt remain separate evidence until reconciled.</p></section>'+(v.review?'<button class="btn primary" id="assignReview">Assign follow-up '+icon('arrow')+'</button>':'');
+if(state.tab==='service')return '<section class="detail-section"><h3>Collection evidence</h3>'+rowKV('Assigned stops',v.planned)+rowKV('Reported by crew',v.reported)+rowKV('Verified service records',v.verified)+rowKV('Awaiting review',v.pending)+'<p class="note">Vehicle proximity supports a service record. It does not independently prove collection.</p></section><section class="detail-section"><h3>Latest service record</h3><div class="proof-row"><b>Service event · SR-'+String(v.id).padStart(4,'0')+'-032</b><small>11:52 WAT · '+r.name+' · crew '+v.crew+'</small><span class="proof-state">Tag scan recorded · device timestamp present</span></div><div class="proof-row"><b>Photo evidence</b><small>'+(v.pending>0?'Upload incomplete: reviewer follow-up required':'Metadata available: sample image not included')+'</small></div></section><section class="detail-section"><h3>Facility handoff</h3>'+rowKV('Disposal receipt',v.id===42&&journey.weighed?'LD-0218 · linked':'Not linked')+rowKV('Weight record',v.id===42&&journey.weighed?(journey.gross-journey.tare).toLocaleString()+' kg net':'Awaiting facility record')+'<p class="note">A collection record and a facility receipt remain separate evidence until reconciled.</p></section>'+(v.review?'<button class="btn primary" id="assignReview">Assign follow-up '+icon('arrow')+'</button>':'');
 return '<section class="detail-section"><h3>Vehicle & crew</h3>'+rowKV('Crew lead',v.crew)+rowKV('Operator',esc(v.psp))+rowKV('District',v.district)+rowKV('Vehicle class','Waste compactor')+'</section><section class="detail-section"><h3>Location confidence</h3>'+rowKV('Last received',age(v.age))+rowKV('Reported speed',v.status==='No signal'?'Not current':v.speed+' km/h')+rowKV('Position',v.coord[1].toFixed(5)+'° N<br>'+v.coord[0].toFixed(5)+'° E')+(v.status==='No signal'?'<p class="note warning">Last known position. This vehicle’s current location cannot be confirmed.</p>':'')+'</section><section class="detail-section"><h3>Today’s service</h3>'+rowKV('Verified / planned',v.verified+' / '+v.planned+' stops')+'<div class="progress"><i style="width:'+v.verified/v.planned*100+'%"></i></div><div class="split-progress"><span><b>'+v.reported+'</b> reported</span><span><b>'+v.pending+'</b> awaiting review</span></div><div class="detail-actions"><button class="btn" id="fitRoute">'+icon('fit')+'Show full route</button><button class="btn" id="serviceTab">Service record</button></div><p class="note">Assignment aligned to mapped roads. Road routing does not confirm heavy-vehicle access.</p></section>'+(v.review?'<section class="detail-section"><h3>Needs attention</h3><p class="note warning">'+v.reason+' · '+v.pending+' event'+(v.pending>1?'s':'')+'</p><button class="btn primary" id="assignReview">Assign follow-up '+icon('arrow')+'</button></section>':'')}
 function renderDetail(){if(!state.selected)return;const v=fleet[state.selected-1];$('detail').hidden=false;$('detail').innerHTML='<div class="detail-head"><div class="detail-heading"><div><div class="detail-kicker">VEHICLE DETAILS</div><h2>'+v.code+'</h2>'+statusHTML(v)+'</div><button class="iconbtn" id="closeDetail" aria-label="Close vehicle details">'+icon('close')+'</button></div><p>'+v.district+' · '+esc(v.psp)+'<br>Fleet snapshot · 12:08 WAT</p></div><div class="detail-tabs" role="tablist">'+[['overview','Overview'],['service','Service record'],['activity','Activity']].map(([k,l])=>'<button role="tab" aria-selected="'+(state.tab===k)+'" class="'+(state.tab===k?'active':'')+'" data-tab="'+k+'">'+l+'</button>').join('')+'</div><div class="detail-content">'+detailContent(v)+'</div>';$('closeDetail').onclick=closeDetail;$('detail').querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{state.tab=b.dataset.tab;renderDetail()});if($('fitRoute'))$('fitRoute').onclick=fitSelectedRoute;if($('serviceTab'))$('serviceTab').onclick=()=>{state.tab='service';renderDetail()};if($('assignReview'))$('assignReview').onclick=()=>assignmentDialog(v)}
 function fitSelectedRoute(){if(!ready||!state.selected)return;const r=ROUTES[fleet[state.selected-1].ri],b=new maplibregl.LngLatBounds();r.coordinates.forEach(c=>b.extend(c));const wide=$('map').clientWidth>600;map.fitBounds(b,{padding:{top:78,bottom:80,left:35,right:wide?340:35},maxZoom:15.5,duration:500})}
@@ -1184,14 +1924,14 @@ const isFleet=p==='fleet';oldMain.hidden=!isFleet;journeyMain.hidden=isFleet;ski
 let html='';
 if(p==='overview')html=pageHead('AUTHORITY OVERVIEW','A clearer picture of today.','Service delivery, facility handoff and exceptions in one place.',action('Open fleet map','fleet',true))+stats([['Vehicles in view','1,000','684 on route · 46 with stale signals'],['Service follow-ups','24','Evidence requiring supervisor review'],['Priority resident case',journey.caseStage===2?pill('Resolved','good'):'1','CC-1048 · missed collection'],['Connected load',journey.weighed?pill('Recorded','good'):pill('Pending','amber'),'LD-0218 · facility receipt']])+'<div class="journey-grid wide">'+panel('The service chain','Follow one collection from assignment to a confirmed outcome.',scenarioRecord()+steps(['Assign','Collect','Facility','Reconcile'],journey.assigned&&journey.synced&&journey.weighed&&journey.settled?4:journey.assigned&&journey.synced&&journey.weighed?3:journey.assigned&&journey.synced?2:journey.assigned?1:0)+'<div class="chain-links">'+routeButton('Assign the service','dispatch')+routeButton('Capture field evidence','crew')+routeButton('Receive the load','facility')+routeButton('Reconcile the account','finance')+'</div>')+panel('Needs a decision','Priorities with a clear next action.','<div class="priority-row"><span>'+pill('Evidence','amber')+'<b>Collection proof incomplete</b><small>FLT-0042 · three reported events</small></span>'+routeButton('Inspect','fleet')+'</div><div class="priority-row"><span>'+pill('Citizen care','amber')+'<b>Missed pickup in Ikeja</b><small>Resident confirmation required before closure</small></span>'+routeButton('Review','care')+'</div><div class="priority-row"><span>'+pill('Continuity')+'<b>Field connectivity interrupted</b><small>Queued records must preserve original capture time</small></span>'+routeButton('Open shift','crew')+'</div>')+'</div>'+panel('Performance questions','',table(['Outcome','Evidence needed','Workspace'],[['Reliable collection','Assignment, crew event and service review',routeButton('PSP operations','dispatch')],['Better facility turnaround','Arrival, scale and tipping timestamps',routeButton('Facilities','facility')],['Payment compliance','Property, invoice and bank match',routeButton('Revenue','finance')],['Resource recovery','Material weight and processor receipt',routeButton('Recovery','recovery')]]));
 if(p==='dispatch')html=pageHead('PSP OPERATIONS','Plan the shift. Close the gaps.','Use assignments, vehicle readiness and evidence to manage the day.',action('Assign collection','assign',true))+scenarioRecord()+steps(['Ready','Assigned','Evidence received'],journey.synced?3:journey.assigned?1:0)+'<div class="journey-grid wide">'+panel('Today’s route sheet','PSP partner 06 · sample operating area',table(['Route / vehicle','Crew','Progress','Action'],[['IKJ-07 / FLT-0042','Babatunde A.',pill(journey.synced?'Evidence received':journey.assigned?'Assigned':'Awaiting assignment'),routeButton('Open crew journey','crew')],['YAB-03 / FLT-0074','Crew B',pill('On route'),routeButton('Locate vehicle','fleet')],['AGE-02 / FLT-0141','Crew C',pill(journey.maintained?'Inspection scheduled':'Vehicle unavailable','amber'),action('Plan inspection','maintenance')]]))+panel('Readiness before dispatch','Practical checks for a reliable shift.','<ul class="plain-list"><li>Driver and crew assigned</li><li>Vehicle condition and capacity checked</li><li>Service area and route acknowledged</li><li>Device charged and offline queue available</li></ul>')+'</div>';
-if(p==='crew')html=pageHead('FIELD CREW · BABATUNDE A.','Your next collection','A short, touch-friendly workflow for the crew at the kerbside.',action(journey.connected?'Simulate offline':'Restore connection','connect'))+scenarioRecord()+steps(['Assignment','Capture','Sync'],journey.synced?3:journey.collected?2:journey.assigned?1:0)+'<div class="journey-grid">'+panel('PR-0182 · stop 32 of 48','Ikeja · assigned to FLT-0042','<div class="stop-detail"><div>'+pill(journey.connected?'Connected':'Offline — records stay on this device',journey.connected?'':'amber')+'<h3>Household collection</h3><p>Match the property tag, record the outcome and capture the required evidence.</p></div>'+action(journey.collected?'Review captured event':'Record collection','capture',true)+'</div>')+panel('Outbox','Keep working through intermittent connectivity.',journey.collected?'<div class="priority-row"><span><b>SR-0042 · collection event</b><small>Original capture: 12:08 WAT · PR-0182</small></span>'+pill(journey.synced?'Synced':'Queued',journey.synced?'good':'amber')+'</div>'+(!journey.synced?action('Sync queued record','sync',true):routeButton('Continue to facility handoff','facility')):'<div class="empty-state">No records queued.<small>Capture a collection to create the service event.</small></div>')+'</div>';
+if(p==='crew')html=pageHead('FIELD CREW · BABATUNDE A.','Your next collection','A short, touch-friendly workflow for the crew at the kerbside.',action(journey.connected?'Simulate offline':'Restore connection','connect'))+scenarioRecord()+steps(['Assignment','Capture','Sync'],journey.synced?3:journey.collected?2:journey.assigned?1:0)+'<div class="journey-grid">'+panel('PR-0182 · stop 32 of 48','Ikeja · assigned to FLT-0042','<div class="stop-detail"><div>'+pill(journey.connected?'Connected':'Offline: records stay on this device',journey.connected?'':'amber')+'<h3>Household collection</h3><p>Match the property tag, record the outcome and capture the required evidence.</p></div>'+action(journey.collected?'Review captured event':'Record collection','capture',true)+'</div>')+panel('Outbox','Keep working through intermittent connectivity.',journey.collected?'<div class="priority-row"><span><b>SR-0042 · collection event</b><small>Original capture: 12:08 WAT · PR-0182</small></span>'+pill(journey.synced?'Synced':'Queued',journey.synced?'good':'amber')+'</div>'+(!journey.synced?action('Sync queued record','sync',true):routeButton('Continue to facility handoff','facility')):'<div class="empty-state">No records queued.<small>Capture a collection to create the service event.</small></div>')+'</div>';
 if(p==='facility')html=pageHead('TLS & LANDFILL','Receive, weigh and reconcile.','A traceable load record from gate arrival to disposal receipt.',action('Process arriving load','weigh',true))+scenarioRecord()+steps(['Vehicle & manifest','Gross / tare','Tipping confirmation','Receipt'],journey.weighed?4:0)+'<div class="journey-grid wide">'+panel('Arrival register','',table(['Load','Vehicle / manifest','Stage','Action'],[['LD-0218','FLT-0042 · IKJ-07',pill(journey.weighed?'Receipt issued':'Awaiting intake',journey.weighed?'good':'amber'),action(journey.weighed?'View receipt':'Open intake','weigh')],['LD-0219','FLT-0176 · SUR-02',pill('Manifest mismatch','amber'),action('Record exception','gateException')],['LD-0220','FLT-0205 · YAB-03',pill('Awaiting scale'),action('Record scale outage','scaleException')]]))+panel('Facility controls','Evidence before completion.','<ul class="plain-list"><li>Vehicle identity and manifest match</li><li>Gross and tare weights with units</li><li>Operator-confirmed unloading</li><li>Unique load receipt and audit record</li></ul>'+note('ANPR, weighbridge, edge gateway and gate integrations are proposed. Manual records must be reconciled after outages.'))+'</div>';
-if(p==='finance')html=pageHead('REVENUE & BILLING','Know what is billed. Know what is settled.','Separate property matching, invoices, gateway events and bank settlement.',action('Reconcile sample payment','reconcile',true))+stats([['Property account','PR-0182','Linked to household account AC-0182'],['Sample invoice','₦15,000','INV-0182 · invoice amount'],['Gateway notification',pill('Received','amber'),'Not sufficient evidence of bank settlement'],['Bank reconciliation',journey.settled?pill('Matched','good'):pill('Pending','amber'),'Human confirmation required']])+panel('Account ledger','Sample records; tariffs and funds-flow policies are not approved.',table(['Reference','Account','Amount','State','Action'],[['INV-0182','AC-0182 · Ikeja','₦15,000',pill(journey.settled?'Reconciled':'Bank match pending',journey.settled?'good':'amber'),action('Review payment','reconcile')],['PR-0420','Property ownership unresolved','—',pill('Data exception','amber'),action('Assign data review','property')],['PAY-0098','Gateway reversal','₦8,000',pill('Review required','amber'),action('Record reversal review','reversal')]]))+note('Customer payment reconciliation does not authorize a PSP disbursement. Settlement rules, deductions and disputes require LAWMA approval.')+routeButton('View the linked service record','facility');
+if(p==='finance')html=pageHead('REVENUE & BILLING','Know what is billed. Know what is settled.','Separate property matching, invoices, gateway events and bank settlement.',action('Reconcile sample payment','reconcile',true))+stats([['Property account','PR-0182','Linked to household account AC-0182'],['Sample invoice','₦15,000','INV-0182 · invoice amount'],['Gateway notification',pill('Received','amber'),'Not sufficient evidence of bank settlement'],['Bank reconciliation',journey.settled?pill('Matched','good'):pill('Pending','amber'),'Human confirmation required']])+panel('Account ledger','Sample records; tariffs and funds-flow policies are not approved.',table(['Reference','Account','Amount','State','Action'],[['INV-0182','AC-0182 · Ikeja','₦15,000',pill(journey.settled?'Reconciled':'Bank match pending',journey.settled?'good':'amber'),action('Review payment','reconcile')],['PR-0420','Property ownership unresolved','-',pill('Data exception','amber'),action('Assign data review','property')],['PAY-0098','Gateway reversal','₦8,000',pill('Review required','amber'),action('Record reversal review','reversal')]]))+note('Customer payment reconciliation does not authorize a PSP disbursement. Settlement rules, deductions and disputes require LAWMA approval.')+routeButton('View the linked service record','facility');
 if(p==='care')html=pageHead('CITIZEN CARE','Turn a report into a resolved service.','Keep the resident informed and preserve the evidence behind closure.',action('Open priority case','case',true))+steps(['Received','Recovery assigned','Resident confirmed'],journey.caseStage===2?3:journey.caseStage)+panel('Case inbox','Web and assisted-channel reports share one reference.',table(['Case','Issue / property','Channel','State','Action'],[['CC-1048','Missed collection · PR-0182','Phone / assisted',pill(['New','Recovery assigned','Resolved'][journey.caseStage],journey.caseStage===2?'good':'amber'),action('Open case','case')],...(journey.reported?[['CC-1049',esc(journey.reportIssue||'Service issue')+' · PR-0182','Resident portal',pill('Received'),routeButton('Resident receipt','resident')]]:[]),['CC-1046','Incorrect bill · PR-0420','Web',pill('Account review'),action('Assign billing review','property')]]))+note('A case is closed after the recovery outcome and resident confirmation are recorded.');
-if(p==='resident')html=pageHead('MY WASTE SERVICE','Good morning, Amina.','Your collection, bill and service requests in one place.',action('Report a service issue','report',true))+'<div class="journey-grid">'+panel('Your collection','PR-0182 · Ikeja service area','<div class="resident-date"><span>NEXT SCHEDULED</span><strong>Monday, 5 October</strong><p>PSP partner 06 · household collection</p></div>'+pill(journey.caseStage===2?'Previous missed collection resolved':'Missed collection under review',journey.caseStage===2?'good':'amber')+action('View case progress','caseStatus'))+panel('Your account','AC-0182 · invoice',stats([['Invoice INV-0182','₦15,000',journey.settled?'Payment reconciled':'Sample outstanding invoice']])+action('View bill & payment status','residentBill'))+'</div>'+panel('Your service requests','Reference numbers make follow-up easier.',table(['Reference','Issue','Latest update'],[['CC-1048','Missed collection',['Received by customer care','Recovery crew assigned','Resident confirmation recorded'][journey.caseStage]],...(journey.reported?[['CC-1049',esc(journey.reportIssue||'Service issue'),'Received — follow up using this reference']]:[])]));
+if(p==='resident')html=pageHead('MY WASTE SERVICE','Good morning, Amina.','Your collection, bill and service requests in one place.',action('Report a service issue','report',true))+'<div class="journey-grid">'+panel('Your collection','PR-0182 · Ikeja service area','<div class="resident-date"><span>NEXT SCHEDULED</span><strong>Monday, 5 October</strong><p>PSP partner 06 · household collection</p></div>'+pill(journey.caseStage===2?'Previous missed collection resolved':'Missed collection under review',journey.caseStage===2?'good':'amber')+action('View case progress','caseStatus'))+panel('Your account','AC-0182 · invoice',stats([['Invoice INV-0182','₦15,000',journey.settled?'Payment reconciled':'Sample outstanding invoice']])+action('View bill & payment status','residentBill'))+'</div>'+panel('Your service requests','Reference numbers make follow-up easier.',table(['Reference','Issue','Latest update'],[['CC-1048','Missed collection',['Received by customer care','Recovery crew assigned','Resident confirmation recorded'][journey.caseStage]],...(journey.reported?[['CC-1049',esc(journey.reportIssue||'Service issue'),'Received: follow up using this reference']]:[])]));
 if(p==='enforcement')html=pageHead('ENFORCEMENT REVIEW','Evidence first. Accountable decisions.','A camera flag opens a review; it does not establish a violation.',action('Review flagged incident','enforce',true))+steps(['Flag received','Human review','Field verification'],journey.enforcementStage)+panel('Incident register','No automatic penalties or identity decisions.',table(['Incident','Location / source','Evidence','State','Action'],[['ENF-0081','Ikeja · proposed camera feed','Low-light detection; identity unconfirmed',pill(journey.enforcementStage?'Field verification assigned':'Unverified flag','amber'),action('Review incident','enforce')],['APL-0012','Operator appeal','Contested vehicle match',pill('Appeal open'),action('Record appeal review','appeal')]]))+note('Night-vision camera feeds and detection models are not connected. Legal authority, evidence thresholds, retention and appeal rules require confirmation.');
 if(p==='recovery')html=pageHead('RESOURCE RECOVERY','Track material beyond the collection.','Preserve material streams and link recovery claims to processor receipts.',action('Record processor receipt','recover',true))+panel('Material register','',table(['Batch','Material','Declared weight','Chain of custody','Action'],[['REC-0031','Sorted PET','1.20 tonnes',pill(journey.recovered?'Processor receipt linked':'Receipt pending',journey.recovered?'good':'amber'),action('Review batch','recover')],['REC-0032','Mixed recyclables','0.86 tonnes',pill('Contamination review','amber'),action('Record quality review','contamination')]]))+note('A declared recyclable load is not a verified recovery outcome. Processor acceptance, measured weight and contamination checks are needed.');
-if(p==='systems')html=pageHead('PLATFORM OPERATIONS','Know where the evidence comes from.','Device continuity, data ownership, integrations and accountable access.',action('Review access request','access'))+'<div class="journey-grid wide">'+panel('Integration register','Proposed interfaces; connection status is not live monitoring.',table(['Source','Purpose','Readiness'],[['GPS / crew devices','Location and field evidence',pill('Simulated')],['ANPR / RFID / weighbridge','Facility and bin events',pill('Not connected')],['Payment gateway / bank','Receipt and settlement',pill('Not connected')],['LASRRA / Lagos GIS','Identity and property matching',pill('Access to confirm','amber')],['PAKAM / existing LAWMA apps','Service and citizen channels',pill('Discovery required')],['LIRS / revenue systems','Financial exchange',pill('Ownership to confirm')]]))+panel('Continuity & governance','Decisions still required.','<ul class="plain-list"><li>AWS primary and Azure standby are proposed.</li><li>Warm versus hot standby is unresolved.</li><li>Recovery targets, data residency and failover authority need agreement.</li><li>Role switching here previews journeys; it is not authentication.</li></ul>'+action('Record continuity issue','continuity'))+'</div>'+panel('Activity log','Local session history — not a tamper-proof production audit.',journey.audit.length?table(['Time','Actor view','Action'],journey.audit.map(a=>[esc(a.time),esc(a.role),esc(a.text)])):'<div class="empty-state">No actions recorded yet.<small>Complete a workflow to see its activity here.</small></div>');
+if(p==='systems')html=pageHead('PLATFORM OPERATIONS','Know where the evidence comes from.','Device continuity, data ownership, integrations and accountable access.',action('Review access request','access'))+'<div class="journey-grid wide">'+panel('Integration register','Proposed interfaces; connection status is not live monitoring.',table(['Source','Purpose','Readiness'],[['GPS / crew devices','Location and field evidence',pill('Simulated')],['ANPR / RFID / weighbridge','Facility and bin events',pill('Not connected')],['Payment gateway / bank','Receipt and settlement',pill('Not connected')],['LASRRA / Lagos GIS','Identity and property matching',pill('Access to confirm','amber')],['PAKAM / existing LAWMA apps','Service and citizen channels',pill('Discovery required')],['LIRS / revenue systems','Financial exchange',pill('Ownership to confirm')]]))+panel('Continuity & governance','Decisions still required.','<ul class="plain-list"><li>AWS primary and Azure standby are proposed.</li><li>Warm versus hot standby is unresolved.</li><li>Recovery targets, data residency and failover authority need agreement.</li><li>Role switching here previews journeys; it is not authentication.</li></ul>'+action('Record continuity issue','continuity'))+'</div>'+panel('Activity log','Local session history: not a tamper-proof production audit.',journey.audit.length?table(['Time','Actor view','Action'],journey.audit.map(a=>[esc(a.time),esc(a.role),esc(a.text)])):'<div class="empty-state">No actions recorded yet.<small>Complete a workflow to see its activity here.</small></div>');
 journeyMain.innerHTML=html+'<footer class="journey-footer"><span>Simulated records · no live operational actions</span></footer>';bindJourney();saveJourney();}
 function goJourney(page){journey.page=page;renderJourney();if(page!=='fleet')journeyMain.querySelector('h1')?.focus();window.scrollTo({top:0,behavior:'instant'})}
 function bindJourney(){document.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>goJourney(b.dataset.go));journeyMain.querySelectorAll('[data-action]').forEach(b=>b.onclick=()=>runJourney(b.dataset.action))}
@@ -1209,7 +1949,7 @@ if(a==='case'){if(journey.caseStage===2){dialog('CC-1048 · resolved','<p>Recove
 if(a==='report'){formJourney('Report a service issue','PR-0182 · no personal contact information is needed.',[{id:'issue',label:'Issue',options:['Missed collection','Incorrect bill','Illegal dumping','Damaged bin']},{id:'detail',label:'What happened?'}],'Submit sample report',d=>{journey.reported=true;journey.reportIssue=d.issue;journey.reportDetail=d.detail;addAudit('CC-1049 created: '+d.issue);});return}
 if(a==='caseStatus'){dialog('Your request · CC-1048','<p>Missed collection · PR-0182</p>'+steps(['Received','Recovery assigned','Resolved'],journey.caseStage===2?3:journey.caseStage)+'<p>'+['Customer care has received your report. Keep CC-1048 for follow-up.','A recovery crew has been assigned. Customer care will confirm the result with you.','Your confirmation has been recorded and the missed collection case is resolved.'][journey.caseStage]+'</p>');return}
 if(a==='residentBill'){dialog('Invoice INV-0182','<p>Account AC-0182 · PR-0182</p>'+rowKV('Amount','₦15,000')+rowKV('Status',journey.settled?'Reconciled':'Awaiting bank reconciliation')+note('Payment checkout is not connected. A production journey would hand off to an approved payment provider and return a traceable receipt.'));return}
-if(a==='enforce'){formJourney('Review incident ENF-0081','The camera flag is unverified. Record a human review and next step.',[{id:'finding',label:'Finding',options:['Insufficient evidence — field check required','Potential false positive — retain for review']},reasonField],'Save review',()=>{journey.enforcementStage=1;addAudit('ENF-0081 reviewed; field verification required, no penalty');});return}
+if(a==='enforce'){formJourney('Review incident ENF-0081','The camera flag is unverified. Record a human review and next step.',[{id:'finding',label:'Finding',options:['Insufficient evidence: field check required','Potential false positive: retain for review']},reasonField],'Save review',()=>{journey.enforcementStage=1;addAudit('ENF-0081 reviewed; field verification required, no penalty');});return}
 if(a==='recover'){formJourney('Processor receipt · REC-0031','Link acceptance to a measured material batch.',[{id:'receipt',label:'Processor receipt reference',value:'PROC-0031'},{id:'weight',label:'Accepted weight (tonnes)',type:'number',value:'1.20'},{id:'accept',label:'Acceptance confirmed',type:'checkbox',hint:'Processor receipt and material category agree'}],'Link receipt',d=>{if(+d.weight>1.2)return'Accepted weight exceeds the declared batch. Review the discrepancy.';journey.recovered=true;addAudit('REC-0031 processor receipt linked: '+d.weight+' tonnes accepted');});return}
 const titles={maintenance:'Schedule vehicle inspection',gateException:'Record manifest exception',scaleException:'Record scale outage',property:'Assign property data review',reversal:'Record payment reversal review',appeal:'Record appeal review',contamination:'Record material quality review',access:'Review access request',continuity:'Record continuity issue'};
 if(titles[a])formJourney(titles[a],'Record the accountable owner and next action. No external system is changed.',[{id:'owner',label:'Responsible team',options:['District supervisor','Facility supervisor','Finance review team','Data steward','Platform support']},reasonField],'Save follow-up',d=>{if(a==='maintenance')journey.maintained=true;addAudit(titles[a]+': '+d.note+' · '+d.owner)});
@@ -1403,16 +2143,179 @@ function maybeStartTour(){
 }
 const tourBtn=document.getElementById('lawmaTourBtn');
 if(tourBtn)tourBtn.onclick=()=>{try{localStorage.removeItem('lawma-tour-v1')}catch{}startTour()};
-</script><script>/* Fictional, browser-session records. Categories are proposals, not a LAWMA taxonomy. */
+</script><script>
+const defaultProperties = () => [
+  {
+    id: 'PROP-SUR-041',
+    name: 'Sample Surulere Compound 041',
+    address: 'Illustrative address 14, Surulere',
+    lga: 'Surulere',
+    ward: 'Ward B',
+    cadastreId: 'SAMPLE-CAD-SUR-041',
+    geohash: 'SAMPLE-GEO-e06180a7fff',
+    plusCode: 'Illustrative map code, Surulere',
+    type: 'Multi-Family Tenement (6 Flats)',
+    unitsCount: 6,
+    landlord: { name: 'Sample owner A', phone: '+234 800 000 0041', nin: 'SAMPLE-ONLY', lasrraId: 'SAMPLE-LASRRA-041' },
+    wallet: { id: 'SAMPLE-WALLET-041', balance: 12000, targetMonthly: 18000, lastPaid: '2026-10-04T10:15:00.000Z', smsAlertsCount: 14 },
+    decal: { id: 'SAMPLE-DECAL-SUR-041', affixedAt: '2026-01-12', verifiedBy: 'Illustrative field officer (not verified)' },
+    serviceTier: 'Illustrative doorstep collection option',
+    serviceStatus: 'Sample state · not verified',
+    lucLien: { attached: false, ref: 'SAMPLE-REVIEW-SUR-041', amount: 0, statutoryRef: 'Unverified policy concept; no legal effect' },
+    units: [
+      { duid: 'DUID-SUR-W02-P041-U01', flat: 'Flat 1 (Ground Left)', tenant: 'Sample resident 1', phone: '+234 800 000 0001', lasrraId: 'SAMPLE-LASRRA-001', tariff: 3000, arrears: 0, clearance: 'Sample clear' , status: 'Sample active' },
+      { duid: 'DUID-SUR-W02-P041-U02', flat: 'Flat 2 (Ground Right)', tenant: 'Sample resident 2', phone: '+234 800 000 0002', lasrraId: '', tariff: 3000, arrears: 0, clearance: 'Sample clear' , status: 'Sample active' },
+      { duid: 'DUID-SUR-W02-P041-U03', flat: 'Flat 3 (First Floor Left)', tenant: 'Sample resident 3', phone: '+234 800 000 0003', lasrraId: 'SAMPLE-LASRRA-003', tariff: 3000, arrears: 0, clearance: 'Sample clear' , status: 'Sample active' },
+      { duid: 'DUID-SUR-W02-P041-U04', flat: 'Flat 4 (First Floor Right)', tenant: 'Sample resident 4', phone: '+234 800 000 0004', lasrraId: '', tariff: 3000, arrears: 15000, clearance: 'Sample clear' , status: 'Arrears Flag' },
+      { duid: 'DUID-SUR-W02-P041-U05', flat: 'Flat 5 (Penthouse)', tenant: 'Sample resident 5', phone: '+234 800 000 0005', lasrraId: 'SAMPLE-LASRRA-005', tariff: 3000, arrears: 0, clearance: 'Sample clear' , status: 'Sample active' },
+      { duid: 'DUID-SUR-W02-P041-U06', flat: 'Flat 6 (Boys Quarters)', tenant: 'Sample resident 6', phone: '+234 800 000 0006', lasrraId: '', tariff: 3000, arrears: 0, clearance: 'Sample clear' , status: 'Sample active' }
+    ],
+    ownerDebtLedger: [],
+    walletPayments: [
+      { id: 'PAY-041-1', amount: 6000, payer: 'DUID-SUR-W02-P041-U02 (sample resident 2)', date: '2026-10-01T09:30:00.000Z', method: 'Illustrative USSD transfer', note: 'Fictional payment entry only; no funds moved and no SMS sent.' }
+    ]
+  },
+  {
+    id: 'PROP-ALI-118',
+    name: 'Sample Egbeda Mixed-Use Property 118',
+    address: 'Illustrative address 28, Egbeda',
+    lga: 'Alimosho',
+    ward: 'Egbeda/Akowonjo',
+    cadastreId: 'SAMPLE-CAD-ALI-118',
+    geohash: 'SAMPLE-GEO-e02241b7fff',
+    plusCode: 'Illustrative map code, Egbeda',
+    type: 'Mixed Commercial & Tenement (8 Units)',
+    unitsCount: 8,
+    landlord: { name: 'Sample owner B', phone: '+234 800 000 0118', nin: 'SAMPLE-ONLY', lasrraId: 'SAMPLE-LASRRA-118' },
+    wallet: { id: 'SAMPLE-WALLET-118', balance: 4500, targetMonthly: 32000, lastPaid: '2026-09-28T14:10:00.000Z', smsAlertsCount: 22 },
+    decal: { id: 'SAMPLE-DECAL-ALI-118', affixedAt: '2026-02-14', verifiedBy: 'Illustrative field officer (not verified)' },
+    serviceTier: 'Hypothetical prepaid-bag option',
+    serviceStatus: 'Hypothetical state · not connected',
+    lucLien: { attached: false, ref: 'SAMPLE-REVIEW-ALI-118', amount: 0, statutoryRef: 'Unverified policy concept; no legal effect' },
+    units: [
+      { duid: 'DUID-ALI-EG-P118-U01', flat: 'Shop 1 (Electronics)', tenant: 'Sample resident A', phone: '+234 800 000 0101', lasrraId: 'SAMPLE-LASRRA-A', tariff: 5000, arrears: 0, clearance: 'Sample clear' , status: 'Sample active' },
+      { duid: 'DUID-ALI-EG-P118-U02', flat: 'Shop 2 (Pharmacy)', tenant: 'Sample resident B', phone: '+234 800 000 0102', lasrraId: 'SAMPLE-LASRRA-B', tariff: 5000, arrears: 0, clearance: 'Sample clear' , status: 'Sample active' },
+      { duid: 'DUID-ALI-EG-P118-U03', flat: 'Flat 1 (First Floor Front)', tenant: 'Sample resident C', phone: '+234 800 000 0103', lasrraId: '', tariff: 4000, arrears: 0, clearance: 'Sample clear' , status: 'Sample active' },
+      { duid: 'DUID-ALI-EG-P118-U04', flat: 'Flat 2 (First Floor Rear)', tenant: 'Sample resident D', phone: '+234 800 000 0104', lasrraId: 'SAMPLE-LASRRA-D', tariff: 4000, arrears: 0, clearance: 'Sample clear' , status: 'Sample active' },
+      { duid: 'DUID-ALI-EG-P118-U05', flat: 'Flat 3 (Second Floor Front)', tenant: 'Sample resident E', phone: '+234 800 000 0105', lasrraId: '', tariff: 4000, arrears: 0, clearance: 'Sample clear' , status: 'Sample active' },
+      { duid: 'DUID-ALI-EG-P118-U06', flat: 'Flat 4 (Second Floor Rear)', tenant: 'Sample resident F', phone: '+234 800 000 0106', lasrraId: '', tariff: 4000, arrears: 0, clearance: 'Sample clear' , status: 'Sample active' },
+      { duid: 'DUID-ALI-EG-P118-U07', flat: 'Flat 5 (Third Floor Front)', tenant: 'Sample resident G', phone: '+234 800 000 0107', lasrraId: 'SAMPLE-LASRRA-G', tariff: 3000, arrears: 0, clearance: 'Sample clear' , status: 'Sample active' },
+      { duid: 'DUID-ALI-EG-P118-U08', flat: 'Flat 6 (Third Floor Rear)', tenant: 'Sample resident H', phone: '+234 800 000 0108', lasrraId: '', tariff: 3000, arrears: 0, clearance: 'Sample clear' , status: 'Sample active' }
+    ],
+    ownerDebtLedger: [
+      { id: 'DEBT-ALI-01', duid: 'DUID-ALI-EG-P118-U03', formerTenant: 'Sample former occupant', amount: 18000, isolatedAt: '2026-08-10T11:00:00.000Z', status: 'Illustrative review only', note: 'Illustrative arrears scenario only; no debt assignment or service rule is enacted.' }
+    ],
+    walletPayments: [
+      { id: 'PAY-118-1', amount: 4500, payer: 'DUID-ALI-EG-P118-U01 (sample resident 1)', date: '2026-09-28T14:10:00.000Z', method: 'Illustrative POS channel', note: 'Fictional payment entry only; no funds moved and no SMS sent.' }
+    ]
+  },
+  {
+    id: 'PROP-IKJ-015',
+    name: 'Sample Ikeja Residence 015',
+    address: 'Illustrative address 7, Ikeja GRA',
+    lga: 'Ikeja',
+    ward: 'GRA / Onigbongbo',
+    cadastreId: 'SAMPLE-CAD-IKJ-015',
+    geohash: 'SAMPLE-GEO-e02b2927fff',
+    plusCode: 'Illustrative map code, Ikeja',
+    type: 'Single-Family Detached Villa (1 Unit)',
+    unitsCount: 1,
+    landlord: { name: 'Sample owner C', phone: '+234 800 000 0015', nin: 'SAMPLE-ONLY', lasrraId: 'SAMPLE-LASRRA-015' },
+    wallet: { id: 'SAMPLE-WALLET-015', balance: 25000, targetMonthly: 12000, lastPaid: '2026-10-02T16:00:00.000Z', smsAlertsCount: 6 },
+    decal: { id: 'SAMPLE-DECAL-IKJ-015', affixedAt: '2025-11-20', verifiedBy: 'Illustrative field officer (not verified)' },
+    serviceTier: 'Illustrative doorstep collection option',
+    serviceStatus: 'Sample state · hypothetical incentive not approved',
+    lucLien: { attached: false, ref: 'SAMPLE-REVIEW-IKJ-015', amount: 0, statutoryRef: 'Unverified policy concept; no legal effect' },
+    units: [
+      { duid: 'DUID-IKJ-W01-P015-U01', flat: 'Main Villa Residence', tenant: 'Sample resident 15', phone: '+234 800 000 0015', lasrraId: 'SAMPLE-LASRRA-015', tariff: 10800, arrears: 0, clearance: 'Sample clear' , status: 'Sample active · no rebate applied' }
+    ],
+    ownerDebtLedger: [],
+    walletPayments: [
+      { id: 'PAY-015-1', amount: 25000, payer: 'Sample occupant', date: '2026-10-02T16:00:00.000Z', method: 'Illustrative bank debit', note: 'Illustrative balance entry only; no identity check, rebate or payment occurred.' }
+    ]
+  },
+  {
+    id: 'PROP-LEK-204',
+    name: 'Sample Lekki Office Plaza 204',
+    address: 'Illustrative address 12, Lekki Phase 1',
+    lga: 'Eti-Osa',
+    ward: 'Lekki 1',
+    cadastreId: 'SAMPLE-CAD-LEK-204',
+    geohash: 'SAMPLE-GEO-e03314c7fff',
+    plusCode: 'Illustrative map code, Lekki',
+    type: 'Commercial Office Plaza (10 Suites)',
+    unitsCount: 10,
+    landlord: { name: 'Sample holding company', phone: '+234 800 000 0204', nin: 'SAMPLE-ONLY', lasrraId: 'SAMPLE-LASRRA-204' },
+    wallet: { id: 'SAMPLE-WALLET-204', balance: 0, targetMonthly: 85000, lastPaid: '2026-06-15T11:00:00.000Z', smsAlertsCount: 30 },
+    decal: { id: 'SAMPLE-DECAL-LEK-204', affixedAt: '2025-08-11', verifiedBy: 'Illustrative field officer (not verified)' },
+    serviceTier: 'Hypothetical policy review state',
+    serviceStatus: 'Hypothetical state · no lien registered',
+    lucLien: { attached: true, ref: 'SAMPLE-REVIEW-LEK-204', amount: 255000, statutoryRef: 'Unverified policy concept; no legal effect', attachedDate: '2026-09-01' },
+    units: [
+      ...Array.from({length: 10}, (_, i) => ({
+        duid: `DUID-LEK-W03-P204-U${String(i+1).padStart(2,'0')}`,
+        flat: `Suite ${101 + i} (Floor ${Math.floor(i/3)+1})`,
+        tenant: `Sample commercial occupant ${i+1}`,
+        phone: `SAMPLE-CONTACT-${i+1}`,
+        lasrraId: '',
+        tariff: 8500,
+        arrears: 25500,
+        clearance: 'Hypothetical review' ,
+        status: 'Hypothetical review only'
+      }))
+    ],
+    ownerDebtLedger: [
+      { id: 'DEBT-LEK-01', duid: 'PLAZA-MASTER-ARREARS', formerTenant: 'Sample prior property account', amount: 255000, isolatedAt: '2026-09-01T00:00:00.000Z', status: 'Simulated review state; not a registered lien', note: 'Illustrative arrears scenario only. No lien or title action is created.' }
+    ],
+    walletPayments: []
+  },
+  {
+    id: 'PROP-M12-088',
+    name: 'Sample Ketu Market Cluster 088',
+    address: 'Illustrative market-perimeter location, Ketu',
+    lga: 'Kosofe',
+    ward: 'Ketu/Mile 12',
+    cadastreId: 'SAMPLE-CAD-KOS-088',
+    geohash: 'SAMPLE-GEO-e01b4467fff',
+    plusCode: 'Illustrative map code, Ketu',
+    type: 'Perimeter Market Cluster (12 Units)',
+    unitsCount: 12,
+    landlord: { name: 'Sample traders association', phone: '+234 800 000 0088', nin: 'SAMPLE-ONLY', lasrraId: 'SAMPLE-LASRRA-088' },
+    wallet: { id: 'SAMPLE-WALLET-088', balance: 48000, targetMonthly: 60000, lastPaid: '2026-10-03T18:00:00.000Z', smsAlertsCount: 45 },
+    decal: { id: 'SAMPLE-DECAL-KOS-088', affixedAt: '2026-03-01', verifiedBy: 'Illustrative field officer (not verified)' },
+    serviceTier: 'Illustrative market collection option',
+    serviceStatus: 'Sample state · not verified',
+    lucLien: { attached: false, ref: 'SAMPLE-REVIEW-KOS-088', amount: 0, statutoryRef: 'Unverified policy concept; no legal effect' },
+    units: [
+      ...Array.from({length: 12}, (_, i) => ({
+        duid: `DUID-KOS-M12-P088-U${String(i+1).padStart(2,'0')}`,
+        flat: `Stall / Living Bay ${i+1}`,
+        tenant: `Sample trader ${i+1}`,
+        phone: `SAMPLE-CONTACT-M12-${i+1}`,
+        lasrraId: '',
+        tariff: 5000,
+        arrears: 0,
+        clearance: 'Sample clear' ,
+        status: 'Sample active'
+      }))
+    ],
+    ownerDebtLedger: [],
+    walletPayments: [
+      { id: 'PAY-088-1', amount: 48000, payer: 'Sample market contribution group', date: '2026-10-03T18:00:00.000Z', method: 'Illustrative pooled contribution', note: 'Illustrative entry only; no funds moved.' }
+    ]
+  }
+];
+
+/* SIMULATION ONLY: all property/person/identity/payment data below is invented, not verified, and has no legal or financial effect. */
 const moduleSeed = () => ({
   version: 1,
   categories: ['PSP', 'Recycling & recovery', 'Facility operations', 'Transport & haulage', 'Technical services'],
   partners: [
-    ...Array.from({length:18}, (_,i) => ({id:'PAR-'+String(i+1).padStart(3,'0'), name:'PSP partner '+String(i+1).padStart(2,'0'), type:'PSP', service:'Collection', area:i===5?'Ikeja':ROUTES[i%ROUTES.length].name, status:'Active', contact:'Service coordinator', reference:'PSP-'+String(i+1).padStart(3,'0')})),
-    {id:'PAR-019',name:'Recovery partner 01',type:'Recycling & recovery',service:'Recovery',area:'Ikeja',status:'Active',contact:'Recovery coordinator',reference:'REC-019'},
-    {id:'PAR-020',name:'Facility partner 01',type:'Facility operations',service:'Facility operations',area:'Oshodi',status:'Active',contact:'Facility coordinator',reference:'FAC-020'},
+    ...Array.from({length:18}, (_,i) => ({id:'PAR-'+String(i+1).padStart(3,'0'), name:'PSP partner '+String(i+1).padStart(2,'0'), type:'PSP', service:'Collection', area:i===5?'Ikeja':ROUTES[i%ROUTES.length].name, status:'Sample active', contact:'Service coordinator', reference:'PSP-'+String(i+1).padStart(3,'0')})),
+    {id:'PAR-019',name:'Recovery partner 01',type:'Recycling & recovery',service:'Recovery',area:'Ikeja',status:'Sample active',contact:'Recovery coordinator',reference:'REC-019'},
+    {id:'PAR-020',name:'Facility partner 01',type:'Facility operations',service:'Facility operations',area:'Oshodi',status:'Sample active',contact:'Facility coordinator',reference:'FAC-020'},
     {id:'PAR-021',name:'Haulage partner 01',type:'Transport & haulage',service:'Transport',area:'Apapa',status:'Pending review',contact:'Transport coordinator',reference:'TRN-021'},
-    {id:'PAR-022',name:'Technical partner 01',type:'Technical services',service:'Technical support',area:'Lagos',status:'Active',contact:'Support coordinator',reference:'TEC-022'}
+    {id:'PAR-022',name:'Technical partner 01',type:'Technical services',service:'Technical support',area:'Lagos',status:'Sample active',contact:'Support coordinator',reference:'TEC-022'}
   ],
   personnel:[{id:'PER-001',partner:'PAR-006',name:'Babatunde A.',role:'Driver',status:'Available'},{id:'PER-002',partner:'PAR-019',name:'Recovery coordinator',role:'Coordinator',status:'Available'}],
   vehicleRecords:[],
@@ -1424,16 +2327,21 @@ const moduleSeed = () => ({
   visits:[],
   incidents:[{id:'INC-001',type:'Capacity breach',subject:'FAC-002',partner:'PAR-020',area:'Oshodi',priority:'High',status:'Open',owner:'Unassigned',description:'Manual sample count exceeds the configured holding capacity.',resolution:'',notes:[],created:'2026-10-05T07:20:00.000Z'}],
   reviews:[],
-  policies:[{id:'POL-001',name:'Facility capacity review',trigger:'Vehicles present exceed the site capacity',response:'Supervisor reviews occupancy and records an action',status:'Draft — not approved'},{id:'POL-002',name:'Missing collection evidence',trigger:'A service event has incomplete supporting evidence',response:'Request evidence and record a human decision',status:'Draft — not approved'}],
+  policies:[{id:'POL-001',name:'Facility capacity review',trigger:'Vehicles present exceed the site capacity',response:'Supervisor reviews occupancy and records an action',status:'Draft: not approved'},{id:'POL-002',name:'Missing collection evidence',trigger:'A service event has incomplete supporting evidence',response:'Request evidence and record a human decision',status:'Draft: not approved'}],
   resident:{name:'Amina',area:'Ikeja',property:'PR-0182',partner:'PAR-006',address:'Household, Ikeja'},
   serviceRequests:[],
-  users:[{id:'USR-001',name:'Operations supervisor',role:'operations',status:'Active'},{id:'USR-002',name:'Partner coordinator',role:'partner',status:'Active'}],
-  partnerContext:'PAR-006',audit:[]
+  users:[{id:'USR-001',name:'Operations supervisor',role:'operations',status:'Sample active'},{id:'USR-002',name:'Partner coordinator',role:'partner',status:'Sample active'}],
+  partnerContext:'PAR-006',audit:[],properties:defaultProperties()
 });
 let modules=moduleSeed();
 try {
   const saved=JSON.parse(sessionStorage.getItem('lawma-modules-v1')||localStorage.getItem('lawma-demo-saved-v1')||'null');
-  if(saved?.version===1 && Array.isArray(saved.partners) && Array.isArray(saved.incidents)) modules={...modules,...saved};
+  if(saved && Array.isArray(saved.partners) && Array.isArray(saved.incidents)) {
+    modules={...modules,...saved};
+    if(!Array.isArray(modules.properties) || modules.properties.length===0) {
+      modules.properties=defaultProperties();
+    }
+  }
 } catch { /* Start with the demonstration dataset if browser storage is unavailable. */ }
 function saveModules(){
   try { sessionStorage.setItem('lawma-modules-v1',JSON.stringify(modules)); localStorage.setItem('lawma-demo-saved-v1',JSON.stringify(modules)); return true; }
@@ -1454,11 +2362,20 @@ const currentPartner=()=>partnerByID(modules.partnerContext)||modules.partners[0
 
 // Existing session fixtures predate explicit facility ownership.
 modules.facilities.forEach(f=>{f.partner ||= 'PAR-020'});
+
+const propertyByID = id => modules.properties.find(p => p.id === id);
+const findDUID = duid => {
+  for(const p of modules.properties){
+    const u = p.units.find(x => x.duid === duid);
+    if(u) return { property: p, unit: u };
+  }
+  return null;
+};
 </script><script>/* LAWMA workspaces. Local presentation workflows; all operational writes stay in this tab. */
 (() => {
 'use strict';
 const legacyRender=renderJourney, legacyGo=goJourney, legacyRun=runJourney;
-const ui={partnerQuery:'',partnerType:'All categories',assetTab:'Vehicles',incidentFilter:'Open',facility:'FAC-001'};
+const ui={cadastreQuery:'',cadastreLga:'All LGAs',cadastreTier:'All tiers',partnerQuery:'',partnerType:'All categories',assetTab:'Vehicles',incidentFilter:'Open',facility:'FAC-001'};
 const screens={};
 const visibleFacilities=()=>modules.facilities.filter(f=>journey.role!=='partner'||f.partner===modules.partnerContext);
 const visibleVisits=()=>modules.visits.filter(v=>visibleFacilities().some(f=>f.id===v.facility));
@@ -1477,10 +2394,10 @@ const moduleFooter='<footer class="journey-footer"><span>Sample data · changes 
 journeyRoles.partner=['Partner coordinator','partner','Organisation records, service responsibilities and follow-ups'];
 journeyRoles.psp[0]='Collection dispatcher (PSP)';
 journeyRoles.admin[2]='Users, partner categories and activity history';
-const pages=['overview','partners','registry','fleet','dispatch','facility','capacity','incidents','compliance','finance','care','connectedService','enforcement','recovery','systems'];
+const pages=['overview','cadastre','partners','registry','fleet','dispatch','facility','capacity','incidents','compliance','finance','care','connectedService','enforcement','recovery','systems'];
 personaPages.management=[...pages,'crew'];
 personaPages.admin=[...pages,'crew'];
-personaPages.operations=['overview','partners','registry','fleet','dispatch','facility','capacity','incidents','compliance','care'];
+personaPages.operations=['overview','cadastre','partners','registry','fleet','dispatch','facility','capacity','incidents','compliance','care'];
 personaPages.partner=['partner','incidents'];
 personaPages.psp=['partner','dispatch','fleet','crew','incidents'];
 personaPages.facility=['facility','capacity','incidents'];
@@ -1489,13 +2406,13 @@ personaPages.recovery=['recovery','partners','incidents'];
 personaPages.care=['care','incidents','finance'];
 personaPages.resident=['resident'];
 journeyNav.splice(0,journeyNav.length,...[
- ['overview','Overview','layers'],['partners','Partners','partners'],['partner','My organisation','partners'],['registry','People & vehicles','truck'],
+ ['overview','Overview','layers'],['cadastre','Cadastre & DUID','cadastre'],['partners','Partners','partners'],['partner','My organisation','partners'],['registry','People & vehicles','truck'],
  ['fleet','Fleet map','map'],['dispatch','Collection operations','truck'],['crew','Field shift','pin'],['facility','Facility intake','layers'],
  ['capacity','Site capacity','capacity'],['incidents','Incidents','alert'],['compliance','Compliance','check'],['finance','Revenue','file'],
  ['care','Citizen care','help'],['enforcement','Enforcement','alert'],['recovery','Recovery','recycle'],['resident','My service','help'],['systems','Administration','settings']
 ]);
 const defs=document.querySelector('.symbols defs');
-defs.insertAdjacentHTML('beforeend','<symbol id="i-partners" viewBox="0 0 24 24"><path d="M3 21V5h11v16M14 10h7v11M6 9h5M6 13h5M6 17h5M17 14h1M17 18h1M1 21h22"/></symbol><symbol id="i-capacity" viewBox="0 0 24 24"><path d="M3 21V9l9-6 9 6v12M7 21v-9h10v9M10 12v9M14 12v9M3 21h18"/></symbol><symbol id="i-recycle" viewBox="0 0 24 24"><path d="m9 5 3-3 6 9M14 10l4 1 2-4M20 14v5H9M11 16l-2 3 2 3M5 18l-3-4 6-9M4 5h4l1 4"/></symbol><symbol id="i-settings" viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/><circle cx="8" cy="6" r="2"/><circle cx="16" cy="12" r="2"/><circle cx="9" cy="18" r="2"/></symbol>');
+defs.insertAdjacentHTML('beforeend','<symbol id="i-cadastre" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></symbol><symbol id="i-partners" viewBox="0 0 24 24"><path d="M3 21V5h11v16M14 10h7v11M6 9h5M6 13h5M6 17h5M17 14h1M17 18h1M1 21h22"/></symbol><symbol id="i-capacity" viewBox="0 0 24 24"><path d="M3 21V9l9-6 9 6v12M7 21v-9h10v9M10 12v9M14 12v9M3 21h18"/></symbol><symbol id="i-recycle" viewBox="0 0 24 24"><path d="m9 5 3-3 6 9M14 10l4 1 2-4M20 14v5H9M11 16l-2 3 2 3M5 18l-3-4 6-9M4 5h4l1 4"/></symbol><symbol id="i-settings" viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/><circle cx="8" cy="6" r="2"/><circle cx="16" cy="12" r="2"/><circle cx="9" cy="18" r="2"/></symbol>');
 $('persona').innerHTML=Object.entries(journeyRoles).map(([id,r])=>`<option value="${id}">${esc(r[0])}</option>`).join('');
 document.querySelector('.product').textContent='LAWMA 360';
 
@@ -1547,6 +2464,57 @@ function partnerRows(){
  `<b>${esc(p.name)}</b><small class="cell-sub">${p.id}</small>`,`${esc(p.type)}<small class="cell-sub">${esc(p.service)}</small>`,esc(p.area),status(p.status),link('View partner','partnerDetail',p.id)
  ])):empty('No matching partners','Change the search or category to see more organisations.');
 }
+
+screens.cadastre = () => {
+  const lga = ui.cadastreLga, tier = ui.cadastreTier, q = ui.cadastreQuery.toLowerCase();
+  const all = modules.properties || [];
+  const rows = all.filter(p => {
+    const matchLga = lga === 'All LGAs' || p.lga === lga;
+    const matchTier = tier === 'All tiers' || p.serviceTier === tier;
+    const matchQ = !q || [p.id, p.name, p.address, p.cadastreId, p.lga, p.ward, p.geohash, p.landlord?.name, ...p.units.map(u => u.duid + ' ' + u.tenant)].join(' ').toLowerCase().includes(q);
+    return matchLga && matchTier && matchQ;
+  });
+
+  const totalUnits = all.reduce((s, p) => s + (p.units?.length || 0), 0);
+  const totalIsolatedDebt = all.reduce((s, p) => s + (p.ownerDebtLedger || []).reduce((ds, d) => ds + d.amount, 0), 0);
+  const totalWalletBal = all.reduce((s, p) => s + (p.wallet?.balance || 0), 0);
+  const totalEncumbered = all.filter(p => p.lucLien?.attached).length;
+
+  const lgas = ['All LGAs', 'Surulere', 'Alimosho', 'Ikeja', 'Eti-Osa', 'Kosofe'];
+  const tiers = ['All tiers', 'Illustrative doorstep collection option', 'Hypothetical prepaid-bag option', 'Hypothetical policy review state'];
+
+  return pageHead('MOD-01: CADASTRE & RESIDENT IDENTITY · SIMULATION', 'Illustrative Tenement & DUID Registry', 'DEMO DATA ONLY: addresses, identities, IDs, balances, tariffs, decals and policy states are invented and unverified. No real payment, identity check, service action, lien or legal effect occurs.', isAuthority()?button('Add tenement property', 'addProperty', '', true):'') +
+    stats([
+      ['Registered properties', all.length, 'Master cadastre nodes'],
+      ['Dwelling units (DUID)', totalUnits, 'Individual doorstep flat IDs'],
+      ['Isolated owner arrears', '₦' + totalIsolatedDebt.toLocaleString(), 'Ring-fenced from new tenants'],
+      ['Compound wallets', '₦' + totalWalletBal.toLocaleString(), 'Virtual escrow balance']
+    ]) +
+    panel('Illustrative property register', 'Illustrative property records and independent dwelling-unit ledgers. LAGIS links, QR decals and all policy rules are unverified examples.',
+      `<div class="module-toolbar">
+        <label for="cadastreLga">LGA</label>
+        <select id="cadastreLga">${selectOptions(lgas, ui.cadastreLga)}</select>
+        <label for="cadastreTier">Service tier</label>
+        <select id="cadastreTier">${selectOptions(tiers, ui.cadastreTier)}</select>
+        <label for="cadastreQuery" class="sr-only">Search</label>
+        <input type="search" id="cadastreQuery" placeholder="Search address, DUID, cadastre ID, geohash..." value="${esc(ui.cadastreQuery)}">
+      </div>` +
+      (rows.length ? table(
+        ['Property & address', 'Cadastre ID / H3 geohash', 'Landlord / LASRRA', 'Compound wallet', 'Units (DUID)', 'Service tier', ''],
+        rows.map(p => [
+          `<b>${esc(p.name)}</b><small class="cell-sub">${esc(p.address)} · <b>${esc(p.lga)}</b> (${esc(p.ward)})</small>`,
+          `<code>${esc(p.cadastreId)}</code><small class="cell-sub">H3: ${esc(p.geohash)}</small>`,
+          `${esc(p.landlord.name)}<small class="cell-sub">${p.landlord.lasrraId ? 'LASRRA: ' + esc(p.landlord.lasrraId) : 'Sample record only'}</small>`,
+          `<b>₦${(p.wallet.balance).toLocaleString()}</b><small class="cell-sub">Target: ₦${(p.wallet.targetMonthly).toLocaleString()}/mo</small>`,
+          `<span>${p.units.length} Flats</span><small class="cell-sub">${p.ownerDebtLedger.length ? '<span class="state-pill amber">' + p.ownerDebtLedger.length + ' debt isolated</span>' : 'Clean ledger'}</small>`,
+          `<span class="state-pill ${p.serviceStatus === 'Active' ? 'good' : p.serviceStatus === 'Encumbered' ? 'red' : 'amber'}">${esc(p.serviceTier)}</span>`,
+          button('Inspect DUIDs', 'inspectProperty', p.id, true)
+        ])
+      ) : empty('No matching properties found', 'Change your filter criteria or search query to see more tenement records.'))
+    ) +
+    note('SIMULATION ONLY · POLICY NOT APPROVED: this screen demonstrates a possible tenant move-out and arrears-review workflow. It does not determine legal liability or authorize service refusal, tariff changes, a lien, or enforcement.');
+};
+
 screens.partners=()=>pageHead('PARTNER MANAGEMENT','One authority. Many partners.','Manage each organisation by its role, service area and responsibilities.',canMaintain()?button('Register partner','registerPartner','',true):'')+
  stats([['Registered partners',modules.partners.length,'All organisation categories'],['PSP partners',modules.partners.filter(p=>p.type==='PSP').length,'Collection is one service responsibility'],['Other partners',modules.partners.filter(p=>p.type!=='PSP').length,'Recovery, facilities, transport and support'],['Awaiting review',modules.partners.filter(p=>p.status==='Pending review').length,'Registration checks pending']])+
  panel('Partner directory','Categories can be managed in Administration.',`<div class="module-toolbar"><label class="module-search"><span class="sr">Search partners</span>${icon('search')}<input id="partnerQuery" aria-label="Search partners" placeholder="Search name, reference or area" value="${esc(ui.partnerQuery)}"></label><label><span class="sr">Partner category</span><select id="partnerType" aria-label="Partner category">${selectOptions(['All categories',...modules.categories],ui.partnerType)}</select></label></div><div id="partnerRows">${partnerRows()}</div>`);
@@ -1702,7 +2670,7 @@ function runModule(cmd,id){
  if(cmd==='registerPartner'||cmd==='editPartner'){partnerForm(id);return}
  if(cmd==='approvePartner'){
   const p=partnerByID(id);if(!p)return;
-  openForm('Review registration',p.name+' · '+p.reference,[field('decision','Registration decision',{options:['Activate partner','Request corrections']}),field('note','Review note',{type:'textarea'}),field('confirm','I have reviewed the sample organisation and service details',{type:'checkbox'})],'Save decision',d=>{p.status=d.decision==='Activate partner'?'Active':'Pending review';p.reviewNote=d.note;recordModuleAction(p.id+' registration: '+d.decision+' — '+d.note)});return;
+  openForm('Review registration',p.name+' · '+p.reference,[field('decision','Registration decision',{options:['Activate partner','Request corrections']}),field('note','Review note',{type:'textarea'}),field('confirm','I have reviewed the sample organisation and service details',{type:'checkbox'})],'Save decision',d=>{p.status=d.decision==='Activate partner'?'Active':'Pending review';p.reviewNote=d.note;recordModuleAction(p.id+' registration: '+d.decision+': '+d.note)});return;
  }
  if(cmd==='assetTab'){ui.assetTab=id;renderJourney();return}
  if(cmd==='addPerson'||cmd==='editPerson'){
@@ -1765,7 +2733,7 @@ function runModule(cmd,id){
  }
  if(cmd==='decideReview'){
   const r=modules.reviews.find(x=>x.id===id);if(!r)return;
-  openForm('Record review decision','A review records a human finding. This workflow does not issue fines.',[field('status','Decision',{options:['Evidence requested','Follow-up required','Closed — no further action']}),field('decision','Reason and supporting evidence',{type:'textarea'})],'Save decision',d=>{Object.assign(r,d,{reviewer:journeyRoles[journey.role][0]});recordModuleAction(id+': '+d.status+' — '+d.decision)});return;
+  openForm('Record review decision','A review records a human finding. This workflow does not issue fines.',[field('status','Decision',{options:['Evidence requested','Follow-up required','Closed: no further action']}),field('decision','Reason and supporting evidence',{type:'textarea'})],'Save decision',d=>{Object.assign(r,d,{reviewer:journeyRoles[journey.role][0]});recordModuleAction(id+': '+d.status+': '+d.decision)});return;
  }
  if(cmd==='residentSetup'){
   const r=modules.resident;
@@ -1809,6 +2777,74 @@ screens.dispatch=()=>{
 };
 const moduleRun=runModule;
 runModule=function(cmd,id){
+ if(cmd==='inspectProperty'){
+  const p=propertyByID(id);if(!p)return;
+  const totalDebt=(p.ownerDebtLedger||[]).reduce((sum,d)=>sum+d.amount,0);
+  drawer('Sample property · '+p.name,
+   '<div class="drawer-intro">'+pill('SIMULATION ONLY · NOT VERIFIED','amber')+'</div>'+note('Invented sample record. No registry, payment, SMS, service change or lien is connected.')+
+   rowKV('Sample property reference','<code>'+esc(p.id)+'</code>')+
+   rowKV('Illustrative address',esc(p.address)+', '+esc(p.lga))+
+   rowKV('Sample spatial / cadastre references','<code>'+esc(p.cadastreId)+'</code><br>Illustrative geohash: <code>'+esc(p.geohash)+'</code>')+
+   rowKV('Sample owner / contact',esc(p.landlord.name)+' · '+esc(p.landlord.phone))+
+   rowKV('Sample compound wallet',esc(p.wallet.id)+' · ₦'+Number(p.wallet.balance).toLocaleString()+' (fictional balance)')+
+   rowKV('Hypothetical service state',esc(p.serviceTier)+' · '+esc(p.serviceStatus))+
+   rowKV('Hypothetical arrears separated', '₦'+totalDebt.toLocaleString()+' · no real debt or lien')+
+   '<div class="drawer-actions" style="margin:16px 0">'+button('View sample decal','viewPropertyDecal',id)+button('Simulate wallet entry','recordCompoundPay',id,true)+button('Simulate tenant move-out','moveOutTenant',id)+button('Preview hypothetical service state','changeServiceTier',id)+'</div>'+
+   '<h3>Dwelling units · sample IDs</h3>'+table(['Sample ID','Unit','Occupant alias','Sample balance','Status'],p.units.map(u=>['<code>'+esc(u.duid)+'</code>',esc(u.flat),esc(u.tenant),'₦'+Number(u.arrears||0).toLocaleString(),pill(esc(u.clearance))]))+
+   '<h3>Owner review ledger · fictional</h3>'+(p.ownerDebtLedger.length?table(['Ref','Sample unit','Former occupant alias','Amount','Review state'],p.ownerDebtLedger.map(d=>[esc(d.id),esc(d.duid),esc(d.formerTenant),'₦'+Number(d.amount).toLocaleString(),esc(d.status)])):empty('No sample entries','Fictional arrears-separation entries appear here.'))+
+   '<h3>Wallet entries · fictional</h3>'+(p.walletPayments.length?table(['Sample ref','Amount','Payer alias','Date','Channel'],p.walletPayments.map(w=>[esc(w.id),'₦'+Number(w.amount).toLocaleString(),esc(w.payer),stamp(w.date),esc(w.method)])):empty('No sample entries','A simulated entry does not move funds or send a message.'))
+  );return;
+ }
+ if(cmd==='viewPropertyDecal'){
+  const p=propertyByID(id);if(!p)return;
+  dialog('SAMPLE QR-STYLE DECAL · '+esc(p.decal.id),'<div class="decal-modal-view"><div class="decal-header"><span class="decal-state-crest">ILLUSTRATIVE WORKSPACE DEMONSTRATION</span><h3>LAWMA-360 · SAMPLE SIMULATION</h3><small>NON-FUNCTIONAL SAMPLE · NOT AN OFFICIAL QR DECAL</small></div><div class="decal-body"><div class="decal-qr-box"><div class="decal-fake-qr"><div class="qr-corner tl"></div><div class="qr-corner tr"></div><div class="qr-corner bl"></div><div class="qr-center-text"><b>DEMO ONLY</b><br><small>'+esc(p.id)+'</small></div></div><span class="decal-qr-caption">NOT SCANNABLE · NO GOVERNMENT SERVICE CONNECTED</span></div><div class="decal-info-table"><div><b>Sample reference:</b> <code>'+esc(p.id)+'</code></div><div><b>Illustrative location:</b> '+esc(p.address)+'</div><div><b>Sample unit count:</b> '+p.units.length+'</div><div><b>Sample decal label:</b> '+esc(p.decal.id)+'</div></div></div><div class="decal-footer"><small>Demonstration only. Not an official decal, clearance certificate, legal notice, identity credential or enforcement record. All legal references and policy proposals require independent verification and approval.</small></div></div>');return;
+ }
+ if(cmd==='recordCompoundPay'){
+  const p=propertyByID(id);if(!p)return;
+  const units=[{value:'Sample landlord / compound contribution',label:'Sample landlord / compound contribution'},...p.units.map(u=>({value:u.duid+' ('+u.tenant+')',label:u.flat+' · '+u.tenant}))];
+  openForm('Simulate a compound-wallet entry','SIMULATION ONLY: no funds move and no SMS is sent. This records a fictional entry in browser storage.',[
+   field('amount','Sample amount (₦)',{type:'number',min:1,max:1000000,step:1,value:6000}),field('payer','Sample payer',{options:units}),field('method','Illustrative channel',{options:['Illustrative bank transfer','Illustrative USSD','Illustrative POS','Illustrative web payment']})
+  ],'Save sample entry',d=>{
+   const amount=Number(d.amount);if(!Number.isFinite(amount)||amount<=0)return'Enter a positive sample amount.';
+   p.wallet.balance+=amount;p.wallet.lastPaid=new Date().toISOString();p.walletPayments.unshift({id:moduleID('PAY',p.walletPayments),amount,payer:d.payer,date:new Date().toISOString(),method:d.method,note:'Fictional local entry only. No funds moved and no notification sent.'});
+   recordModuleAction('Fictional wallet entry of ₦'+amount.toLocaleString()+' added for '+p.id+'; no funds moved and no SMS sent.');
+  });return;
+ }
+ if(cmd==='moveOutTenant'){
+  const p=propertyByID(id);if(!p)return;
+  const options=p.units.map(u=>({value:u.duid,label:u.flat+' · '+u.tenant+(u.arrears?' · sample arrears ₦'+Number(u.arrears).toLocaleString():' · ₦0 sample balance')}));
+  const chosen=p.units.find(u=>u.arrears>0)||p.units[0];
+  openForm('Simulate tenancy change','SIMULATION ONLY: this is not a legal decision on liability or service eligibility. The demo illustrates moving a fictional prior balance to a review ledger.',[
+   field('duid','Sample dwelling unit',{options,value:chosen?.duid}),textField('newTenant','Incoming occupant alias','Sample incoming occupant'),textField('newPhone','Sample contact number','+234 800 000 0099'),field('newLasrra','Sample identity reference (optional)',{value:'',optional:true})
+  ],'Save sample transition',d=>{
+   const unit=p.units.find(u=>u.duid===d.duid);if(!unit)return'Select a valid sample unit.';
+   if(!d.newTenant.trim())return'Enter a sample occupant alias.';
+   const oldName=unit.tenant,amount=Number(unit.arrears)||0;
+   if(amount>0)p.ownerDebtLedger.unshift({id:moduleID('DEBT',p.ownerDebtLedger),duid:unit.duid,formerTenant:oldName,amount,isolatedAt:new Date().toISOString(),status:'Illustrative review only',note:'Fictional scenario; no debt assignment or legal determination.'});
+   unit.tenant=d.newTenant.trim();unit.phone=d.newPhone||'Sample contact not supplied';unit.lasrraId=d.newLasrra||'';unit.arrears=0;unit.clearance='Clear';unit.status='Sample active';
+   recordModuleAction('Simulated tenancy change on '+unit.duid+'; sample balance separated for review. No legal or service action occurred.');
+  });return;
+ }
+ if(cmd==='changeServiceTier'){
+  const p=propertyByID(id);if(!p)return;
+  openForm('Preview hypothetical service policy','SIMULATION ONLY: this selection is a mock policy state. It does not affect actual collection, impose a lien, change legal status or trigger enforcement.',[
+   field('targetTier','Hypothetical display state',{options:['Compactor Doorstep','Prepaid Branded Bags','LUC Statutory Lien Attached'],value:p.serviceTier})
+  ],'Save sample state',d=>{
+   p.serviceTier=d.targetTier;p.serviceStatus=d.targetTier==='Compactor Doorstep'?'Sample active':d.targetTier==='Prepaid Branded Bags'?'Sample review state · bag option':'Sample review state · no lien';
+   if(p.lucLien){p.lucLien.attached=false;p.lucLien.amount=0;}
+   recordModuleAction('Hypothetical display state set for '+p.id+'; no real service change or lien.');
+  });return;
+ }
+ if(cmd==='addProperty'){
+  openForm('Add illustrative property record','DEMO ONLY: fields are fictional and references are not verified against government registries.',[
+   textField('name','Sample property name','Sample Tenement'),textField('address','Illustrative address','Illustrative address, Lagos'),field('lga','Sample LGA',{options:['Surulere','Alimosho','Ikeja','Eti-Osa','Kosofe']}),textField('ward','Illustrative ward','Sample ward'),textField('landlord','Owner alias','Sample owner'),field('unitsCount','Sample unit count',{type:'number',min:1,max:50,step:1,value:4})
+  ],'Create sample property',d=>{
+   const count=Number(d.unitsCount);if(!Number.isInteger(count)||count<1||count>50)return'Enter a sample unit count from 1 to 50.';
+   const id=moduleID('PROP',modules.properties),code=id.split('-').pop(),units=Array.from({length:count},(_,i)=>({duid:'SAMPLE-'+code+'-U'+String(i+1).padStart(2,'0'),flat:'Sample unit '+(i+1),tenant:'Unassigned sample occupant',phone:'Sample only',lasrraId:'',tariff:3000,arrears:0,clearance:'Clear',status:'Sample'}));
+   modules.properties.unshift({id,name:d.name,address:d.address,lga:d.lga,ward:d.ward,cadastreId:'SAMPLE-CAD-'+code,geohash:'SAMPLE-GEO-'+code,plusCode:'Sample location only',type:'Illustrative property',unitsCount:count,landlord:{name:d.landlord,phone:'Sample only',nin:'SAMPLE-ONLY',lasrraId:''},wallet:{id:'SAMPLE-WALLET-'+code,balance:0,targetMonthly:count*3000,lastPaid:new Date().toISOString(),smsAlertsCount:0},decal:{id:'SAMPLE-DECAL-'+code,affixedAt:new Date().toISOString().slice(0,10),verifiedBy:'Not verified'},serviceTier:'Compactor Doorstep',serviceStatus:'Sample state',lucLien:{attached:false,ref:'SAMPLE-REVIEW-'+code,amount:0,statutoryRef:'Unverified policy concept; no legal effect'},units,ownerDebtLedger:[],walletPayments:[]});
+   recordModuleAction('Illustrative property '+id+' created locally; sample only.');
+  });return;
+ }
  if(cmd==='assignRoute'){
   if(!permitted('dispatch'))return;
   const choices=modules.partners.filter(p=>p.status==='Active'&&p.service==='Collection'&&(!['partner','psp'].includes(journey.role)||p.id===modules.partnerContext));
@@ -1850,6 +2886,11 @@ metrics=function(){
  $('metrics').querySelectorAll('button').forEach(b=>b.onclick=()=>{state.status=b.dataset.status;$('status').value=state.status;changeFilter(false)});
 };
 function bindModules(){
+
+ if($('cadastreLga'))$('cadastreLga').onchange=e=>{ui.cadastreLga=e.target.value;renderJourney();$('cadastreLga').focus()};
+ if($('cadastreTier'))$('cadastreTier').onchange=e=>{ui.cadastreTier=e.target.value;renderJourney();$('cadastreTier').focus()};
+ if($('cadastreQuery'))$('cadastreQuery').oninput=e=>{const value=e.target.value,caret=e.target.selectionStart;ui.cadastreQuery=value;renderJourney();const input=$('cadastreQuery');input?.focus();input?.setSelectionRange(caret,caret)};
+
  if($('partnerQuery'))$('partnerQuery').oninput=e=>{ui.partnerQuery=e.target.value;$('partnerRows').innerHTML=partnerRows()};
  if($('partnerType'))$('partnerType').onchange=e=>{ui.partnerType=e.target.value;$('partnerRows').innerHTML=partnerRows()};
  if($('incidentFilter'))$('incidentFilter').onchange=e=>{ui.incidentFilter=e.target.value;renderJourney();$('incidentFilter').focus()};
@@ -1863,7 +2904,7 @@ function bindModules(){
 }
 function renderNav(){
  const groups=[
-  ['Organisation',['overview','partners','partner','registry']],
+  ['Organisation',['overview','cadastre','partners','partner','registry']],
   ['Operations',['fleet','dispatch','serviceLedger','crew','facility','capacity','cameras','partnerWork']],
   ['Service & assurance',['publicReports','incidents','compliance','finance','remittances','commercial','care','connectedService','enforcement','recovery','resident','alerts']],
   ['Governance',['systems','reports','scenarios']]
@@ -2004,7 +3045,7 @@ function openService(id){const o=simOrder(id);if(!o)return;activeService=id;
  drawer(o.id+' · '+o.area,simulatedNote()+steps(['Assign','Collect','Facility','Receipt'],serviceTrackerStep(o))+
  rowKV('Operator',esc(partnerName(o.partner)))+rowKV('Vehicle / crew',esc(o.vehicle+' · '+o.crew))+rowKV('Current stage',esc(serviceStageLabel(o)))+
  `<div class="drawer-actions">${canOrderAction(o)&&(!o.billed||o.stage!=='Verified')?simBtn(simNext(o),'advance',o.id,true):''}${permitted('fleet')?simBtn('View route on map','map',o.id):''}${simBtn(sim.online?'Simulate offline':'Restore connection','connection')}${o.receipt?simBtn(o.receipt.kind==='TLS intake'?'View intake receipt':'View disposal receipt','receipt',o.id):''}</div>`+
- table(['Checkpoint','Capture','Sync'],o.stops.map(s=>[esc(s.property),s.captured?'Tag + staged image':'Pending',s.synced?'Synced':s.captured?'Queued':'—']))+
+ table(['Checkpoint','Capture','Sync'],o.stops.map(s=>[esc(s.property),s.captured?'Tag + staged image':'Pending',s.synced?'Synced':s.captured?'Queued':'Pending']))+
  (o.stops.some(s=>s.captured)?`<h3>Latest staged evidence</h3>${scene('evidence')}<p class="sim-caption">${esc(o.stops.filter(s=>s.captured).at(-1).photo)} · capture metadata retained</p>`:'')+
  (o.billed?rowKV('Related invoices',sim.invoices.filter(i=>i.order===o.id).map(i=>i.id).join(', ')):'')+
  '<h3>Event history</h3><ol class="module-timeline">'+o.events.map(e=>`<li>${esc(e.text)}<small>${stamp(e.time)}</small></li>`).join('')+'</ol>');
@@ -2075,12 +3116,12 @@ screens.resident=()=>{
  panel('Your service requests','Reports retain their property and partner links.',modules.serviceRequests.filter(r=>r.property===modules.resident.property).length?table(['Reference','Issue','Status',''],modules.serviceRequests.filter(r=>r.property===modules.resident.property).map(r=>[r.id,esc(r.type),status(r.status),link('View request','residentRequest',r.id)])):empty('No open service requests','Report a missed collection or other issue to start a traceable case.'));
 };
 const originalCompliance=screens.compliance;
-screens.compliance=()=>originalCompliance()+panel('Policy simulation','',`<div class="module-pad"><div class="capacity-line"><span>Service completion target</span><b>${sim.policy.target}%</b></div><div class="capacity-line"><span>Notice amount</span><b>${cash(sim.policy.penalty)}</b></div><p>${sim.policy.approved?'Approved for this scenario.':'Draft policy — review before a penalty decision.'}</p>${simBtn('Configure policy','policy')}</div>`);
+screens.compliance=()=>originalCompliance()+panel('Policy simulation','',`<div class="module-pad"><div class="capacity-line"><span>Service completion target</span><b>${sim.policy.target}%</b></div><div class="capacity-line"><span>Notice amount</span><b>${cash(sim.policy.penalty)}</b></div><p>${sim.policy.approved?'Approved for this scenario.':'Draft policy: review before a penalty decision.'}</p>${simBtn('Configure policy','policy')}</div>`);
 screens.enforcement=()=>pageHead('ENFORCEMENT REVIEW','Review the evidence. Record a fair decision.','Progress a staged camera flag through verification, a notice and appeal.',simBtn('Create sample flag','dumping','FAC-003',true))+
  panel('Incident and appeal register','Flags never issue notices automatically.',sim.cases.length?table(['Case / source','Finding','Stage',''],sim.cases.map(c=>[`${c.id}<small class="cell-sub">${esc(c.site)}</small>`,esc(c.finding),status(c.stage),link('Open case','sim-enforcement',c.id)])):empty('No flagged incidents','Create a sample flag here or from Cameras & sensors.'));
 screens.recovery=()=>{
  const batches=sim.batches.filter(b=>journey.role!=='partner'||b.partner===modules.partnerContext);
- return pageHead('RESOURCE RECOVERY','Account for what is recovered.','Follow a material batch from declared weight to processor acceptance.',simBtn('Register material batch','batch','',true))+panel('Material batches','Accepted weight and receipt stay linked to the batch.',batches.length?table(['Batch','Organisation','Material','Declared / accepted','Status',''],batches.map(b=>[b.id,esc(partnerName(b.partner)),esc(b.material),b.weight+' t / '+(b.accepted??'—')+' t',status(b.status),link('Open batch','sim-batchDetail',b.id)])):empty('No batches for this partner','Register a material batch to begin its recovery journey.'));
+ return pageHead('RESOURCE RECOVERY','Account for what is recovered.','Follow a material batch from declared weight to processor acceptance.',simBtn('Register material batch','batch','',true))+panel('Material batches','Accepted weight and receipt stay linked to the batch.',batches.length?table(['Batch','Organisation','Material','Declared / accepted','Status',''],batches.map(b=>[b.id,esc(partnerName(b.partner)),esc(b.material),b.weight+' t / '+(b.accepted??'Pending')+' t',status(b.status),link('Open batch','sim-batchDetail',b.id)])):empty('No batches for this partner','Register a material batch to begin its recovery journey.'));
 };
 screens.partnerWork=()=>{
  const rows=sim.tickets.filter(t=>journey.role!=='partner'||t.partner===modules.partnerContext);
@@ -2160,7 +3201,7 @@ runModule=function(cmd,id){
   const inv=sim.invoices.find(i=>i.id===id&&simScopeInvoice(i));if(!inv||['Payment received','Reconciled'].includes(inv.status))return;
   openForm('Checkout',inv.id+' · '+cash(inv.amount)+' · no money moves and no card details are needed.',[field('provider','Simulated provider',{options:['Paystack','Flutterwave']}),field('outcome','Payment outcome',{options:['Successful','Failed']})],'Run simulated payment',d=>{
    const payment={id:moduleID('PAY',sim.payments),invoice:id,amount:inv.amount,outcome:d.outcome,provider:d.provider,time:simNow()};sim.payments.unshift(payment);inv.status=d.outcome==='Successful'?'Payment received':'Payment failed';inv.receipt=d.outcome==='Successful'?payment.id:null;
-   simNotice(d.outcome==='Successful'?'Payment receipt ready':'Payment failed — retry available',id+' · '+cash(inv.amount),'resident');sim.notices[0].property=inv.property;recordModuleAction(payment.id+' '+d.outcome+' simulated payment');
+   simNotice(d.outcome==='Successful'?'Payment receipt ready':'Payment failed: retry available',id+' · '+cash(inv.amount),'resident');sim.notices[0].property=inv.property;recordModuleAction(payment.id+' '+d.outcome+' simulated payment');
   });return;
  }
  if(a==='reconcile'){
@@ -2185,9 +3226,9 @@ runModule=function(cmd,id){
  if(a==='enforceNext'){
   const c=sim.cases.find(c=>c.id===id);if(!c)return;
   if(c.stage==='Verified finding'&&!sim.policy.approved){toast('Approve a policy in Compliance before preparing a notice.');return}
-  const options={'Unverified flag':['Request field verification','Dismiss false positive'],'Field verification':['Verify finding','Insufficient evidence'],'Verified finding':['Issue notice'],'Notice issued':['Submit appeal'],'Appeal received':['Allow appeal — withdraw notice','Uphold notice']}[c.stage];if(!options)return;
+  const options={'Unverified flag':['Request field verification','Dismiss false positive'],'Field verification':['Verify finding','Insufficient evidence'],'Verified finding':['Issue notice'],'Notice issued':['Submit appeal'],'Appeal received':['Allow appeal: withdraw notice','Uphold notice']}[c.stage];if(!options)return;
   openForm('Review '+id,'A human decision is required at each stage. No legal notice is sent.',[field('decision','Decision',{options}),field('note','Evidence / decision reason',{type:'textarea'})],'Record decision',d=>{
-   const states={'Request field verification':'Field verification','Dismiss false positive':'Dismissed','Verify finding':'Verified finding','Insufficient evidence':'Dismissed','Issue notice':'Notice issued','Submit appeal':'Appeal received','Allow appeal — withdraw notice':'Notice withdrawn','Uphold notice':'Notice upheld'};
+   const states={'Request field verification':'Field verification','Dismiss false positive':'Dismissed','Verify finding':'Verified finding','Insufficient evidence':'Dismissed','Issue notice':'Notice issued','Submit appeal':'Appeal received','Allow appeal: withdraw notice':'Notice withdrawn','Uphold notice':'Notice upheld'};
    c.stage=states[d.decision];if(['Verified finding','Dismissed'].includes(c.stage))c.finding=d.note;c.notes.push(d.decision+': '+d.note);if(c.stage==='Notice issued')c.amount=sim.policy.penalty;recordModuleAction(id+' '+c.stage);
   });return;
  }
@@ -2196,11 +3237,11 @@ runModule=function(cmd,id){
  }
  if(a==='batchDetail'){
   const b=sim.batches.find(b=>b.id===id&&(!isPartnerRole()||b.partner===modules.partnerContext));if(!b)return;
-  drawer(b.id,rowKV('Material',esc(b.material))+rowKV('Declared weight',b.weight+' t')+rowKV('Accepted weight',(b.accepted??'—')+' t')+rowKV('Status',esc(b.status))+rowKV('Receipt',esc(b.receipt||'Pending'))+(b.status==='Accepted'?'':simBtn('Record processor outcome','batchAccept',id,true)));return;
+  drawer(b.id,rowKV('Material',esc(b.material))+rowKV('Declared weight',b.weight+' t')+rowKV('Accepted weight',(b.accepted??'Pending')+' t')+rowKV('Status',esc(b.status))+rowKV('Receipt',esc(b.receipt||'Pending'))+(b.status==='Accepted'?'':simBtn('Record processor outcome','batchAccept',id,true)));return;
  }
  if(a==='batchAccept'){
   const b=sim.batches.find(b=>b.id===id);if(!b)return;
-  openForm('Processor outcome',id+' · '+b.weight+' tonnes declared.',[field('outcome','Outcome',{options:['Accepted','Rejected — contamination']}),field('weight','Accepted weight (tonnes)',{type:'number',min:0,max:b.weight,step:.01,value:b.weight}),textField('receipt','Dummy receipt reference','PROC-'+id)],'Save outcome',d=>{if(+d.weight>b.weight)return'Accepted weight cannot exceed declared weight.';b.status=d.outcome;b.accepted=d.outcome==='Accepted'?+d.weight:0;b.receipt=d.receipt;simNotice('Material outcome recorded',id+' · '+d.outcome,'recovery');sim.notices[0].partner=b.partner;recordModuleAction(id+' '+d.outcome)});return;
+  openForm('Processor outcome',id+' · '+b.weight+' tonnes declared.',[field('outcome','Outcome',{options:['Accepted','Rejected: contamination']}),field('weight','Accepted weight (tonnes)',{type:'number',min:0,max:b.weight,step:.01,value:b.weight}),textField('receipt','Dummy receipt reference','PROC-'+id)],'Save outcome',d=>{if(+d.weight>b.weight)return'Accepted weight cannot exceed declared weight.';b.status=d.outcome;b.accepted=d.outcome==='Accepted'?+d.weight:0;b.receipt=d.receipt;simNotice('Material outcome recorded',id+' · '+d.outcome,'recovery');sim.notices[0].partner=b.partner;recordModuleAction(id+' '+d.outcome)});return;
  }
  if(a==='workOrder'){
   if(!modules.partners.some(p=>p.status==='Active'&&['Transport','Technical support'].includes(p.service)&&(!isPartnerRole()||p.id===modules.partnerContext))){toast('Activate a transport or technical support partner before assigning work.');return}
@@ -2227,11 +3268,417 @@ screens.crew=()=>pageHead('FIELD SHIFT','Your assigned collections','Capture sta
 const priorFacility=screens.facility;
 screens.facility=()=>pageHead('FACILITY INTAKE','Receive and verify each load.','Gate arrival, weighing, unloading and a traceable receipt.',routeButton('View site capacity','capacity'))+panel('Connected arrivals','Collected services can arrive here. Confirm gross and tare before issuing a receipt.',simOrderTable(ownedOrders().filter(o=>['Collected','At facility','Verified'].includes(o.stage))))+
  panel('Occupancy','Open arrivals contribute to the site count; receipt completion records departure.',`<div class="module-pad">${visibleFacilities().map(f=>`<div class="capacity-line"><span>${esc(f.name)}</span><b>${occupancy(f)} / ${f.capacity}</b></div>`).join('')}</div>`);
-screens.overview=()=>pageHead('SmartWaste360','Today at a glance','Partners, service delivery and exceptions across Lagos.',simulatedNote())+
- stats([['Fleet in view',fleet.length,'Vehicles reporting position'],['Partners',modules.partners.length,'Across '+modules.categories.length+' categories'],['Service records',sim.orders.length,'Connected assignments'],['Open incidents',modules.incidents.filter(i=>i.status!=='Resolved').length,'Supervisor follow-up']])+
- panel('Needs attention','Open a record to take the next action.',`<div class="module-pad">${routeButton('Service records · '+sim.orders.filter(o=>o.stage!=='Verified').length+' in progress','serviceLedger')}${routeButton('Site capacity · '+modules.facilities.filter(f=>occupancy(f)>f.capacity).length+' above limit','capacity')}${routeButton('Partner registration · '+modules.partners.filter(p=>p.status==='Pending review').length+' pending','partners')}${routeButton('Review incidents','incidents')}</div>`)+
- panel('Follow a complete collection','From dispatch to a verified disposal receipt.',simOrderTable(sim.orders.slice(0,3)))+
- panel('Scenarios','Manage daily work and exception handling.',`<div class="module-pad">${routeButton('Open scenarios','scenarios')}${routeButton('Camera and sensor observations','cameras')}${routeButton('Performance report','reports')}</div>`);
+function scIcon(name, size = 16) {
+  const icons = {
+    truck: `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M14 18h4l3-4v-4h-7"/><path d="M14 18H9"/><circle cx="7" cy="18" r="2"/><circle cx="19" cy="18" r="2"/></svg>`,
+    scale: `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M2 16l3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h18"/></svg>`,
+    home: `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5 12 3l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5Z"/><path d="M9 21V12h6v9"/></svg>`,
+    shield: `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>`,
+    alert: `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>`,
+    refresh: `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/><path d="M3 21v-5h5"/></svg>`,
+    arrowRight: `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>`,
+    route: `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="19" r="3"/><circle cx="18" cy="5" r="3"/><path d="M12 19h4.5a3.5 3.5 0 0 0 0-7h-9a3.5 3.5 0 0 1 0-7H12"/></svg>`,
+    scan: `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M7 12h10"/></svg>`,
+    receipt: `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z"/><path d="M16 8h-8"/><path d="M16 12h-8"/><path d="M11 16h-3"/></svg>`,
+    banknote: `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="12" x="2" y="6" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></svg>`,
+    layers: `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>`
+  };
+  return icons[name] || icons.arrowRight;
+}
+
+function renderOverviewHero() {
+  const onRouteCount = fleet.filter(v => v.status === 'On route').length;
+  const onRoutePct = Math.round((onRouteCount / (fleet.length || 1)) * 100);
+  return `
+  <section class="overview-hero-banner">
+    <div class="overview-hero-top">
+      <div class="overview-hero-kicker">
+        <span class="status-dot-solid"></span>
+        <span>LAGOS STATE WASTE MANAGEMENT AUTHORITY · SOVEREIGN OPERATIONS COMMAND</span>
+      </div>
+      <div class="overview-hero-meta">
+        <span class="overview-hero-coord">6.5244° N · 3.3792° E · 20 LGAs</span>
+        <span class="overview-hero-status-pill"><i class="status-dot-green"></i> ONSHORE TIER III</span>
+      </div>
+    </div>
+    <div class="overview-hero-main">
+      <div class="overview-hero-headline">
+        <h1>Statewide Waste & Concession Assurance Console</h1>
+        <p>Live compactor GPS telemetry, weighbridge scale ingestion, compound tenement cadastre billing, and concessionaire SLA settlement across 20 Local Government Areas.</p>
+      </div>
+      <div class="overview-hero-actions">
+        <button class="btn primary" data-go="cadastre">${scIcon('home', 14)} Tenement Cadastre (MOD-01)</button>
+        <button class="btn" data-go="fleet">${scIcon('truck', 14)} Live Fleet Map</button>
+        <button class="btn" data-go="capacity">${scIcon('scale', 14)} Weighbridge Queues</button>
+        <button class="btn-ghost" data-module="sim-telemetry">${scIcon('refresh', 13)} Refresh Telemetry</button>
+      </div>
+    </div>
+    <div class="overview-hero-strip">
+      <div class="overview-hero-chip">
+        <span class="chip-label">Data Residency</span>
+        <span class="chip-val">Verified Onshore Sovereign Cloud</span>
+      </div>
+      <div class="overview-hero-chip">
+        <span class="chip-label">Active Grid Fleet</span>
+        <span class="chip-val">${onRouteCount} / ${fleet.length} Compactors (${onRoutePct}%)</span>
+      </div>
+      <div class="overview-hero-chip">
+        <span class="chip-label">Today's Certified Intake</span>
+        <span class="chip-val">3,842 Tonnes · 5 Primary Sites</span>
+      </div>
+      <div class="overview-hero-chip">
+        <span class="chip-label">Weather Protocol</span>
+        <span class="chip-val">Dry Conditions · No Flood Grace Active</span>
+      </div>
+    </div>
+  </section>`;
+}
+
+function renderOverviewKpis() {
+  const onRoute = fleet.filter(v => v.status === 'On route').length;
+  const onRoutePct = Math.round((onRoute / (fleet.length || 1)) * 100);
+  const openIncidents = modules.incidents.filter(i => i.status !== 'Resolved').length;
+  const propCount = modules.properties ? modules.properties.length : 5;
+  const unitCount = modules.properties ? modules.properties.reduce((n, p) => n + (p.units ? p.units.length : 0), 0) : 37;
+
+  return `
+  <div class="kpi-cards-grid">
+    <div class="kpi-card">
+      <div class="kpi-card-head">
+        <div class="kpi-card-title-group">
+          <span class="kpi-card-tag">FLEET TELEMETRY</span>
+          <span class="kpi-card-title">Active Compactors</span>
+        </div>
+        <span class="sc-pill sc-pill-forest">${onRoutePct}% ON GRID</span>
+      </div>
+      <div class="kpi-card-metric">
+        <span class="kpi-card-num">${onRoute}</span>
+        <span class="kpi-card-denom">/ ${fleet.length} TRUCKS</span>
+      </div>
+      <div class="kpi-card-breakdown">
+        <span>598 en route</span> · <span>86 at scale</span> · <span>316 depot</span>
+      </div>
+      <div class="kpi-card-progress">
+        <div class="progress-fill" style="width:${onRoutePct}%"></div>
+      </div>
+      <div class="kpi-card-foot">
+        ${scIcon('truck', 13)}
+        <span>GPS breadcrumbs active across Lagos</span>
+      </div>
+    </div>
+
+    <div class="kpi-card">
+      <div class="kpi-card-head">
+        <div class="kpi-card-title-group">
+          <span class="kpi-card-tag">SCALE INGESTION</span>
+          <span class="kpi-card-title">Daily Net Tonnage</span>
+        </div>
+        <span class="sc-pill sc-pill-honey">76.8% TARGET</span>
+      </div>
+      <div class="kpi-card-metric">
+        <span class="kpi-card-num">3,842</span>
+        <span class="kpi-card-denom">TONNES RECONCILED</span>
+      </div>
+      <div class="kpi-card-breakdown">
+        <span>Target: 5,000 T</span> · <span>312 loads</span> · <span>12.4 T avg</span>
+      </div>
+      <div class="kpi-card-progress">
+        <div class="progress-fill progress-honey" style="width:76.8%"></div>
+      </div>
+      <div class="kpi-card-foot">
+        ${scIcon('scale', 13)}
+        <span>Olusosun, Solous, Simpson, Oshodi, Epe</span>
+      </div>
+    </div>
+
+    <div class="kpi-card">
+      <div class="kpi-card-head">
+        <div class="kpi-card-title-group">
+          <span class="kpi-card-tag">MOD-01 CADASTRE</span>
+          <span class="kpi-card-title">Dwelling Unit IDs</span>
+        </div>
+        <span class="sc-pill sc-pill-forest">RING-FENCED</span>
+      </div>
+      <div class="kpi-card-metric">
+        <span class="kpi-card-num">${propCount}</span>
+        <span class="kpi-card-denom">PROPERTIES (${unitCount} DUIDs)</span>
+      </div>
+      <div class="kpi-card-breakdown">
+        <span>37 Wallets</span> · <span>₦1.84M balance</span> · <span>0 suspended</span>
+      </div>
+      <div class="kpi-card-progress">
+        <div class="progress-fill progress-forest" style="width:100%"></div>
+      </div>
+      <div class="kpi-card-foot">
+        ${scIcon('home', 13)}
+        <span>Unit-level billing isolated from landlord debt</span>
+      </div>
+    </div>
+
+    <div class="kpi-card">
+      <div class="kpi-card-head">
+        <div class="kpi-card-title-group">
+          <span class="kpi-card-tag">CONCESSIONS</span>
+          <span class="kpi-card-title">Accredited PSPs</span>
+        </div>
+        <span class="sc-pill sc-pill-blue">100% SLA LOCK</span>
+      </div>
+      <div class="kpi-card-metric">
+        <span class="kpi-card-num">${modules.partners.length}</span>
+        <span class="kpi-card-denom">OPERATORS ASSURED</span>
+      </div>
+      <div class="kpi-card-breakdown">
+        <span>24 Active routes</span> · <span>99.1% telemetry</span> · <span>₦32.4M escrow</span>
+      </div>
+      <div class="kpi-card-progress">
+        <div class="progress-fill progress-blue" style="width:100%"></div>
+      </div>
+      <div class="kpi-card-foot">
+        ${scIcon('shield', 13)}
+        <span>Covering 5 major Lagos concession zones</span>
+      </div>
+    </div>
+
+    <div class="kpi-card">
+      <div class="kpi-card-head">
+        <div class="kpi-card-title-group">
+          <span class="kpi-card-tag">SUPERVISOR QUEUE</span>
+          <span class="kpi-card-title">Active Exceptions</span>
+        </div>
+        <span class="sc-pill ${openIncidents > 0 ? 'sc-pill-honey' : 'sc-pill-forest'}">${openIncidents > 0 ? openIncidents + ' PENDING' : 'ALL CLEAR'}</span>
+      </div>
+      <div class="kpi-card-metric">
+        <span class="kpi-card-num">${openIncidents}</span>
+        <span class="kpi-card-denom">TRIAGE CASES</span>
+      </div>
+      <div class="kpi-card-breakdown">
+        <span>1 Illegal dumping</span> · <span>18m avg dispatch time</span>
+      </div>
+      <div class="kpi-card-progress">
+        <div class="progress-fill ${openIncidents > 0 ? 'progress-honey' : 'progress-forest'}" style="width:${Math.max(10, openIncidents * 20)}%"></div>
+      </div>
+      <div class="kpi-card-foot">
+        ${scIcon('alert', 13)}
+        <span>Section 84 evidence certificate ready</span>
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderOverviewCharts() {
+  const facilities = [
+    { name: 'Olusosun Landfill (Ojota)', queue: '4 in queue · 14m turnaround', actual: 1420, cap: 1600, pct: 88.8, status: 'near' },
+    { name: 'Solous Landfill (Igando)', queue: '2 in queue · 11m turnaround', actual: 980, cap: 1300, pct: 75.4, status: 'ok' },
+    { name: 'Simpson TLS (Lagos Island)', queue: '1 in queue · 8m turnaround', actual: 620, cap: 900, pct: 68.9, status: 'ok' },
+    { name: 'Oshodi TLS (Oshodi-Isolo)', queue: '2 in queue · 9m turnaround', actual: 510, cap: 850, pct: 60.0, status: 'ok' },
+    { name: 'Epe Landfill (Diversion Reserve)', queue: 'Open intake · Rain diversion', actual: 312, cap: 800, pct: 39.0, status: 'reserve' }
+  ];
+
+  const maxCap = 1600;
+  const barSvg = `
+    <svg class="sc-tremor-chart" viewBox="0 0 600 230" role="img" aria-label="Facility Intake vs Daily Capacity">
+      <!-- Grid guidelines -->
+      <line x1="195" y1="10" x2="195" y2="195" stroke="var(--sc-border-faint)" stroke-width="1" stroke-dasharray="3 3" />
+      <line x1="265" y1="10" x2="265" y2="195" stroke="var(--sc-border-faint)" stroke-width="1" stroke-dasharray="3 3" />
+      <line x1="335" y1="10" x2="335" y2="195" stroke="var(--sc-border-faint)" stroke-width="1" stroke-dasharray="3 3" />
+      <line x1="405" y1="10" x2="405" y2="195" stroke="var(--sc-border-faint)" stroke-width="1" stroke-dasharray="3 3" />
+      <line x1="475" y1="10" x2="475" y2="195" stroke="var(--sc-border-faint)" stroke-width="1" />
+
+      ${facilities.map((f, i) => {
+        const y = 14 + i * 36;
+        const capWidth = Math.round((f.cap / maxCap) * 280);
+        const actualWidth = Math.round((f.actual / maxCap) * 280);
+        const barColor = f.status === 'near' ? 'var(--sc-heat, #f47707)' : f.status === 'reserve' ? 'var(--sc-blue, #2a6dfb)' : 'var(--sc-forest, #42c366)';
+        return `
+          <text x="185" y="${y + 11}" text-anchor="end" font-size="11" font-weight="500" fill="var(--sc-fg)">${f.name}</text>
+          <text x="185" y="${y + 22}" text-anchor="end" font-size="9" font-family="var(--sc-mono)" fill="var(--sc-fg-muted)">${f.queue}</text>
+
+          <!-- Capacity Track -->
+          <rect x="195" y="${y + 2}" width="${capWidth}" height="16" rx="4" fill="var(--sc-a4)" />
+
+          <!-- Actual Ingestion Bar -->
+          <rect x="195" y="${y + 2}" width="${actualWidth}" height="16" rx="4" fill="${barColor}" />
+
+          <!-- Ingestion Metric readout in right column -->
+          <text x="488" y="${y + 14}" font-size="11" font-family="var(--sc-mono)" font-weight="500" fill="var(--sc-fg)">${f.actual} T <tspan font-size="9.5" fill="var(--sc-fg-muted)">(${f.pct}%)</tspan></text>
+        `;
+      }).join('')}
+
+      <!-- Bottom Axis Scale -->
+      <line x1="195" y1="198" x2="475" y2="198" stroke="var(--sc-border)" stroke-width="1" />
+      <text x="195" y="214" font-size="10" font-family="var(--sc-mono)" fill="var(--sc-fg-muted)">0 T</text>
+      <text x="335" y="214" text-anchor="middle" font-size="10" font-family="var(--sc-mono)" fill="var(--sc-fg-muted)">800 T (50%)</text>
+      <text x="475" y="214" text-anchor="end" font-size="10" font-family="var(--sc-mono)" fill="var(--sc-fg)">1,600 T Cap</text>
+    </svg>
+  `;
+
+  return `
+  <div class="overview-charts-grid">
+    <div class="sc-data-card">
+      <div class="sc-card-header">
+        <div>
+          <div class="sc-card-tag">INFRASTRUCTURE INTAKE</div>
+          <h2 class="sc-card-title">Facility Tonnage Ingestion vs Daily Capacity</h2>
+          <div class="sc-card-sub">Net weighed gross-tare receipts recorded at certified scales today</div>
+        </div>
+        <div class="sc-chart-legend">
+          <span><i style="background:var(--sc-forest, #42c366)"></i> Normal Flow</span>
+          <span><i style="background:var(--sc-heat, #f47707)"></i> >85% Near Cap</span>
+          <span><i style="background:var(--sc-a6)"></i> Design Headroom</span>
+        </div>
+      </div>
+      ${barSvg}
+    </div>
+
+    <div class="sc-data-card">
+      <div class="sc-card-header">
+        <div>
+          <div class="sc-card-tag">SETTLEMENT PIPELINE</div>
+          <h2 class="sc-card-title">End-to-End Service Assurance Pipeline</h2>
+          <div class="sc-card-sub">Physical doorstep scan to audited Friday escrow settlement chain</div>
+        </div>
+        <span class="sc-pill sc-pill-forest">ESCROW CHAIN ACTIVE</span>
+      </div>
+
+      <div class="sc-pipeline-container">
+        <div class="sc-pipeline-item">
+          <div class="sc-pipeline-row">
+            <div class="sc-pipeline-title">
+              ${scIcon('route', 15)}
+              <span>01. Dispatched Stops on Route</span>
+            </div>
+            <span class="sc-pipeline-metric">1,840 stops <small>(100%)</small></span>
+          </div>
+          <div class="sc-pipeline-bar"><div class="sc-pipeline-fill" style="width:100%"></div></div>
+          <div class="sc-pipeline-meta">
+            <span>24 Compactor routes active across 20 LGAs</span>
+            <span>Dry conditions · Level 0</span>
+          </div>
+        </div>
+
+        <div class="sc-pipeline-item">
+          <div class="sc-pipeline-row">
+            <div class="sc-pipeline-title">
+              ${scIcon('scan', 15)}
+              <span>02. Doorstep Tag Scans & Pickups</span>
+            </div>
+            <span class="sc-pipeline-metric">1,612 pickups <small>(87.6%)</small></span>
+          </div>
+          <div class="sc-pipeline-bar"><div class="sc-pipeline-fill" style="width:87.6%"></div></div>
+          <div class="sc-pipeline-meta">
+            <span>GPS proximity & timestamp cryptographic log</span>
+            <span>228 stops remaining</span>
+          </div>
+        </div>
+
+        <div class="sc-pipeline-item">
+          <div class="sc-pipeline-row">
+            <div class="sc-pipeline-title">
+              ${scIcon('receipt', 15)}
+              <span>03. Weighbridge Receipts Certified</span>
+            </div>
+            <span class="sc-pipeline-metric">1,390 loads <small>(75.5%)</small></span>
+          </div>
+          <div class="sc-pipeline-bar"><div class="sc-pipeline-fill" style="width:75.5%"></div></div>
+          <div class="sc-pipeline-meta">
+            <span>Gross / tare delta matched to digital manifest</span>
+            <span>11 in scale queue</span>
+          </div>
+        </div>
+
+        <div class="sc-pipeline-item">
+          <div class="sc-pipeline-row">
+            <div class="sc-pipeline-title">
+              ${scIcon('banknote', 15)}
+              <span>04. Reconciled Friday Escrow Payouts</span>
+            </div>
+            <span class="sc-pipeline-metric">1,240 verified <small>(67.4%)</small></span>
+          </div>
+          <div class="sc-pipeline-bar"><div class="sc-pipeline-fill" style="width:67.4%"></div></div>
+          <div class="sc-pipeline-meta">
+            <span>5% LIRS statutory WHT withheld · Tonnage audited</span>
+            <span>₦32.41M accrued value</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderOverviewLaunchpad() {
+  return `
+  <div class="module-launchpad">
+    <div class="launch-tile" data-go="cadastre">
+      <div class="launch-tile-top">
+        <div class="launch-tile-tag">MODULE 01 · IDENTITY</div>
+        <h3>Tenement Cadastre & DUIDs</h3>
+        <p>Tenement property registry, doorstep dwelling unit IDs (DUIDs), ring-fenced tenant billing, and virtual compound wallets.</p>
+      </div>
+      <div class="launch-tile-stats">
+        <span>5 Properties</span> · <span>37 DUIDs</span> · <span>₦1.84M Balance</span>
+      </div>
+      <div class="launch-tile-foot">
+        <span>Open Tenement Register</span>
+        ${scIcon('arrowRight', 14)}
+      </div>
+    </div>
+
+    <div class="launch-tile" data-go="fleet">
+      <div class="launch-tile-top">
+        <div class="launch-tile-tag">MODULE 02 · LOGISTICS</div>
+        <h3>Fleet Telemetry & Routes</h3>
+        <p>Live compactor GPS tracking, geofenced route breadcrumbs, speed threshold alerts, and automated missed-stop alarms.</p>
+      </div>
+      <div class="launch-tile-stats">
+        <span>24 Active Routes</span> · <span>684 Trucks</span> · <span>99.1% Signal</span>
+      </div>
+      <div class="launch-tile-foot">
+        <span>View Live Fleet Map</span>
+        ${scIcon('arrowRight', 14)}
+      </div>
+    </div>
+
+    <div class="launch-tile" data-go="capacity">
+      <div class="launch-tile-top">
+        <div class="launch-tile-tag">MODULE 03 · WEIGHBRIDGE</div>
+        <h3>Scale Queues & Receipts</h3>
+        <p>Automated gross/tare weighing, queue turnaround times, anti-tailgating scale interlocks, and traceable receipts.</p>
+      </div>
+      <div class="launch-tile-stats">
+        <span>4 Scale Lanes</span> · <span>14m Turnaround</span> · <span>3,842 T Net</span>
+      </div>
+      <div class="launch-tile-foot">
+        <span>Inspect Site Queues</span>
+        ${scIcon('arrowRight', 14)}
+      </div>
+    </div>
+
+    <div class="launch-tile" data-go="finance">
+      <div class="launch-tile-top">
+        <div class="launch-tile-tag">MODULE 05 · SETTLEMENT</div>
+        <h3>Escrow & Friday Payouts</h3>
+        <p>Verified tonnage payments, LIRS statutory deductions, 48-hour dispute cure windows, and automated PSP statements.</p>
+      </div>
+      <div class="launch-tile-stats">
+        <span>25 Operators</span> · <span>₦32.4M Accrued</span> · <span>5% WHT Withheld</span>
+      </div>
+      <div class="launch-tile-foot">
+        <span>View Finance Ledger</span>
+        ${scIcon('arrowRight', 14)}
+      </div>
+    </div>
+  </div>`;
+}
+
+screens.overview = () => {
+  return renderOverviewHero() +
+    renderOverviewKpis() +
+    renderOverviewCharts() +
+    renderOverviewLaunchpad() +
+    panel('Operational attention', 'Open a record or facility to take immediate action.', `<div class="module-pad">${routeButton('Service records · ' + sim.orders.filter(o => o.stage !== 'Verified').length + ' in progress', 'serviceLedger')}${routeButton('Site capacity · ' + modules.facilities.filter(f => occupancy(f) > f.capacity).length + ' above limit', 'capacity')}${routeButton('Partner registration · ' + modules.partners.filter(p => p.status === 'Pending review').length + ' pending', 'partners')}${routeButton('Review incidents · ' + modules.incidents.filter(i => i.status !== 'Resolved').length + ' active', 'incidents')}</div>`) +
+    panel('Follow a complete collection', 'From dispatch to a verified disposal receipt.', simOrderTable(sim.orders.slice(0, 3))) +
+    panel('Scenarios & controls', 'Simulate field handoffs, camera detections, and offline edge recovery.', `<div class="module-pad">${routeButton('Open scenarios', 'scenarios')}${routeButton('Camera and sensor observations', 'cameras')}${routeButton('Performance report', 'reports')}</div>`);
+};
 // Preserve the existing citizen-care journey while generating matching resident notifications.
 const simRenderBase=renderJourney;
 renderJourney=function(){
@@ -2443,8 +3890,8 @@ runModule=function(cmd,id){
  if(!tlsWrite()){toast('This workspace has view-only access.');return}
  if(['adjust','close','resolve'].includes(c)&&!tlsApprove()){toast('A management supervisor must approve this action.');return}
  if(c==='new')openForm('Register arriving truck','Create a trip before weighing. The same reference follows its intake evidence.',[textField('truck','Truck registration / ID'),textField('driver','Driver name'),field('partner','Collection partner',{options:partnerOptions(p=>p.status==='Active'&&p.service==='Collection')}),textField('route','Collection route / service area')],'Register trip',d=>{if(tls.trips.some(t=>t.truck.toUpperCase()===d.truck.toUpperCase()&&!['Unloaded','Denied entry'].includes(t.state)))return'This truck already has an active TLS trip.';const t={id:tlsID('TRP'),truck:d.truck,driver:d.driver,partner:d.partner,route:d.route,state:'Expected',events:[]};tls.trips.push(t);tlsEvent(t,'Arrival registered; identity check pending')});
- if(c==='check'&&t?.state==='Expected')openForm('Check in '+t.truck,'Compare the truck and collection record before admitting the load.',[field('identity','Identity check',{options:['Manual match','Simulated RFID match','Simulated ANPR match','Mismatch — hold for review']})],'Record check-in',d=>{if(d.identity.startsWith('Mismatch')){tlsException(t.id,'Identity mismatch — admission held');tlsEvent(t,'Identity mismatch; check-in blocked');return}if(tlsOpen().some(e=>e.ref===t.id))return'Resolve the identity exception before admitting this truck.';t.state='Checked in';t.arrived=simNow();tlsEvent(t,d.identity+'; entered weighbridge queue')});
- if(c==='weigh'&&t?.state==='At weighbridge')openForm('Weight & inspection','Enter tonnes from the scale record. Manual readings are retained with their source.',[field('gross','Gross weight (tonnes)',{type:'number',min:.001,step:.001,value:18.4}),field('tare','Tare weight (tonnes)',{type:'number',min:.001,step:.001,value:11.2}),textField('evidence','Scale ticket reference'),field('inspection','Inspection outcome',{options:['Accepted','Rejected — hold load']} )],'Save weigh record',d=>{if(tlsOpen().some(e=>e.ref===t.id))return'Resolve the open trip exception before recording weight.';if(tlsKg(d.gross)<=tlsKg(d.tare))return'Gross weight must exceed tare weight.';if(d.inspection.startsWith('Rejected')){tlsException(t.id,'Inspection rejected; load not admitted to stock');tlsEvent(t,'Inspection rejected: '+d.evidence);return}t.gross=tlsKg(d.gross);t.tare=tlsKg(d.tare);t.net=t.gross-t.tare;t.evidence=d.evidence;t.state='Weighed';t.bridgeExited=simNow();tlsEvent(t,'Manual weigh record '+d.evidence+'; net '+tonnes(t.net)+'; inspection accepted')});
+ if(c==='check'&&t?.state==='Expected')openForm('Check in '+t.truck,'Compare the truck and collection record before admitting the load.',[field('identity','Identity check',{options:['Manual match','Simulated RFID match','Simulated ANPR match','Mismatch: hold for review']})],'Record check-in',d=>{if(d.identity.startsWith('Mismatch')){tlsException(t.id,'Identity mismatch: admission held');tlsEvent(t,'Identity mismatch; check-in blocked');return}if(tlsOpen().some(e=>e.ref===t.id))return'Resolve the identity exception before admitting this truck.';t.state='Checked in';t.arrived=simNow();tlsEvent(t,d.identity+'; entered weighbridge queue')});
+ if(c==='weigh'&&t?.state==='At weighbridge')openForm('Weight & inspection','Enter tonnes from the scale record. Manual readings are retained with their source.',[field('gross','Gross weight (tonnes)',{type:'number',min:.001,step:.001,value:18.4}),field('tare','Tare weight (tonnes)',{type:'number',min:.001,step:.001,value:11.2}),textField('evidence','Scale ticket reference'),field('inspection','Inspection outcome',{options:['Accepted','Rejected: hold load']} )],'Save weigh record',d=>{if(tlsOpen().some(e=>e.ref===t.id))return'Resolve the open trip exception before recording weight.';if(tlsKg(d.gross)<=tlsKg(d.tare))return'Gross weight must exceed tare weight.';if(d.inspection.startsWith('Rejected')){tlsException(t.id,'Inspection rejected; load not admitted to stock');tlsEvent(t,'Inspection rejected: '+d.evidence);return}t.gross=tlsKg(d.gross);t.tare=tlsKg(d.tare);t.net=t.gross-t.tare;t.evidence=d.evidence;t.state='Weighed';t.bridgeExited=simNow();tlsEvent(t,'Manual weigh record '+d.evidence+'; net '+tonnes(t.net)+'; inspection accepted')});
  if(c==='unload'&&t?.state==='Weighed')openForm('Confirm unloading','This adds '+tonnes(t.net)+' to TLS stock once.',[textField('bay','Receiving bay / holding area'),field('confirmed','Waste unloaded and truck clear',{type:'checkbox'})],'Issue intake receipt',d=>{if(t.state!=='Weighed')return'This trip has already changed. Reopen its record.';if(tlsBalance()+t.net>tlsConfig(tlsFacility()).stockCapacity)return'This load exceeds the configured waste holding capacity. Ask the supervisor to review.';t.state='Unloaded';t.unloaded=simNow();const intakeVisit=modules.visits.find(v=>v.id===t.visit);if(intakeVisit)intakeVisit.departed=t.unloaded;t.receipt=tlsID('INT');tlsPost(t.id,t.net,'Received',t.id);tlsEvent(t,'Unloaded into '+d.bay+'; intake receipt '+t.receipt);const o=sim.orders.find(o=>o.id===t.order);if(o){o.stage='Verified';o.receipt={id:t.receipt,gross:t.gross,tare:t.tare,net:t.net,time:simNow(),kind:'TLS intake'};orderEvent(o,'TLS intake confirmed via '+t.id+'; landfill disposal remains separate');const v=modules.visits.find(v=>v.id===o.visit);if(v)v.departed=simNow()}});
  if(c==='transfer')openForm('Dispatch waste to landfill','Available stock: '+tonnes(tlsBalance())+'. This records departure, not destination acceptance.',[textField('truck','Outbound haulage truck'),textField('driver','Haulage driver'),field('partner','Carrier',{options:partnerOptions(p=>['Transport','Facility operations'].includes(p.service)&&p.status==='Active')}),field('kg','Dispatched mass (tonnes)',{type:'number',min:.001,step:.001}),textField('ticket','Outbound weigh ticket'),field('destination','Receiving destination',{options:tlsConfig(tlsFacility()).destinations.map(id=>({value:id,label:modules.facilities.find(f=>f.id===id)?.name||id}))}),field('departed','Departure confirmed',{type:'checkbox'})],'Dispatch transfer',d=>{const kg=tlsKg(d.kg);if(kg<=0||kg>tlsBalance())return'Transfer must be positive and cannot exceed current TLS stock.';let remaining=kg;const sources=[];for(const lot of tlsSources()){const take=Math.min(lot.kg,remaining);if(take){sources.push({ref:lot.ref,kg:take});remaining-=take}}if(remaining)return'Not enough attributable stock. Review adjustments before dispatch.';const m={id:tlsID('MAN'),truck:d.truck,driver:d.driver,partner:d.partner,destination:modules.facilities.find(f=>f.id===d.destination)?.name||d.destination,destinationId:d.destination,kg,ticket:d.ticket,sources,state:'Awaiting destination',events:[]};tls.transfers.push(m);tlsPost(m.id,-kg,'Transferred',m.id);tlsEvent(m,'Dispatched '+tonnes(kg)+'; weigh ticket '+d.ticket)});
  if(c==='receive'&&m&&m.accepted===undefined)openForm('Confirm destination receipt','TLS dispatched '+tonnes(m.kg)+'. Record the destination’s measured acceptance.',[field('accepted','Accepted mass (tonnes)',{type:'number',min:0,step:.001}),textField('receipt','Unique destination receipt reference'),textField('officer','Receiving officer'),textField('notes','Acceptance / rejection notes')],'Record disposal receipt',d=>{if(m.accepted!==undefined)return'Receipt already recorded.';if(tls.transfers.some(t=>t.receipt===d.receipt))return'This destination receipt is already linked to another transfer.';m.accepted=tlsKg(d.accepted);m.receipt=d.receipt;m.state=m.accepted===m.kg?'Disposal confirmed':'Receipt variance';tlsEvent(m,'Destination accepted '+tonnes(m.accepted)+'; receipt '+d.receipt+'; '+d.officer+': '+d.notes);if(m.accepted!==m.kg)tlsException(m.id,'Destination variance '+tonnes(m.accepted-m.kg)+'; account for rejected / missing mass')});
@@ -2493,7 +3940,7 @@ function tlsAdmission(t,d){
  if(tlsOpen().some(e=>e.ref===t.id))return'Resolve the identity hold before attempting check-in again.';
  const registered=modules.vehicleRecords.find(v=>v.vehicle===t.truck);
  const match=[t.truck,t.plate,registered?.plate].filter(Boolean).some(x=>tlsNormal(x)===tlsNormal(d.observed));
- if(!match||d.result==='Mismatch — hold for review'){
+ if(!match||d.result==='Mismatch: hold for review'){
   tlsException(t.id,'Identity mismatch: observed '+d.observed+'; expected '+t.truck);
   tlsEvent(t,'Gate hold recorded; observed '+d.observed+' via '+d.method);return null;
  }
@@ -2551,7 +3998,7 @@ document.addEventListener('change',e=>{if(e.target.id==='tlsSiteSelect'){tlsSele
 const tlsEntryDetail=tlsTripDetail;
 tlsTripDetail=function(t){
  const next=t.state==='Expected'?['Check in truck','check']:t.state==='Checked in'?['Call to weighbridge','bridge']:t.state==='At weighbridge'?['Record weight & inspection','weigh']:t.state==='Weighed'?['Confirm unloading','unload']:null;
- drawer(t.id+' · '+t.truck,rowKV('TLS',esc(tlsName()))+rowKV('Collection assignment',esc(t.order||'Manual arrival — no assignment linked'))+rowKV('Partner',esc(partnerName(t.partner)))+rowKV('Driver / route',esc(t.driver+' / '+t.route))+rowKV('Stage',status(t.state))+(t.net?rowKV('Net intake',tonnes(t.net)):'')+(t.arrived?rowKV('Gate admission',stamp(t.arrived)):'')+(t.queueMinutes!==undefined?rowKV('Queue time',t.queueMinutes+' min'):'')+note('Manual evidence. Intake and landfill receipts are separate records.')+`<div class="drawer-actions">${tlsWrite()&&next?tlsButton(next[0],next[1],t.id,true):''}${tlsWrite()&&['Expected','Checked in'].includes(t.state)?tlsButton('Deny entry / withdraw','deny',t.id):''}</div>`+(t.receipt?rowKV('Intake receipt',esc(t.receipt)):'')+tlsTimeline(t));
+ drawer(t.id+' · '+t.truck,rowKV('TLS',esc(tlsName()))+rowKV('Collection assignment',esc(t.order||'Manual arrival: no assignment linked'))+rowKV('Partner',esc(partnerName(t.partner)))+rowKV('Driver / route',esc(t.driver+' / '+t.route))+rowKV('Stage',status(t.state))+(t.net?rowKV('Net intake',tonnes(t.net)):'')+(t.arrived?rowKV('Gate admission',stamp(t.arrived)):'')+(t.queueMinutes!==undefined?rowKV('Queue time',t.queueMinutes+' min'):'')+note('Manual evidence. Intake and landfill receipts are separate records.')+`<div class="drawer-actions">${tlsWrite()&&next?tlsButton(next[0],next[1],t.id,true):''}${tlsWrite()&&['Expected','Checked in'].includes(t.state)?tlsButton('Deny entry / withdraw','deny',t.id):''}</div>`+(t.receipt?rowKV('Intake receipt',esc(t.receipt)):'')+tlsTimeline(t));
 };
 const tlsEntryRun=runModule;
 runModule=function(cmd,id){
@@ -2564,7 +4011,7 @@ runModule=function(cmd,id){
  if(c==='site-new'){openForm('Add transfer loading station','Creates a TLS with zero opening stock. Configure its operating profile before admitting trucks.',[textField('name','Facility name'),textField('area','Location / area'),field('partner','Facility operator organisation',{options:partnerOptions(p=>p.status==='Active'&&p.service==='Facility operations')})],'Add TLS',d=>{if(modules.facilities.some(f=>f.name.toLowerCase()===d.name.toLowerCase()))return'A facility with that name already exists.';const f={id:moduleID('FAC',modules.facilities),name:d.name,area:d.area,partner:d.partner,kind:'Transfer station',capacity:20,baseline:0,expected:0};modules.facilities.push(f);tlsConfig(f).status='Closed';tlsSelect(f.id);tlsTab='Configuration';recordModuleAction('Created TLS '+f.id)});return}
  if(c==='new'){openForm('Register arriving truck','Expected arrivals enter the gate-check list before joining the queue.',[textField('truck','Truck ID or registration plate'),textField('driver','Driver name'),field('partner','Collection partner',{options:partnerOptions(p=>p.status==='Active'&&p.service==='Collection')}),textField('route','Collection route / service area')],'Register trip',tlsRegister);return}
  if(c==='bind'){const orders=sim.orders.filter(o=>o.facility===tlsSite&&['Collected','At facility'].includes(o.stage)&&!Object.values(modules.tlsStores).some(s=>s.trips.some(t=>t.order===o.id)));if(!orders.length){dialog('No completed collections to link',note('Complete a collection in Service records and choose Record facility arrival. Its truck, driver, partner and route will carry into the TLS trip.'));return}openForm('Link collection assignment','Keep the assignment, partner, truck and driver attached to one trip reference.',[field('order','Completed collection',{options:orders.map(o=>({value:o.id,label:o.id+' · '+o.vehicle+' · '+o.area}))})],'Create linked trip',d=>tlsBind(sim.orders.find(o=>o.id===d.order)));return}
- if(c==='check'&&t){openForm('Gate check · '+t.truck,'Compare the vehicle in front of you with the expected trip. A mismatch holds admission.',[textField('observed','Observed truck ID or registration',t.plate||t.truck),field('method','Identity evidence',{options:['Manual document check','Simulated RFID','Simulated ANPR']}),field('result','Identity result',{options:['Matched','Mismatch — hold for review']}),textField('evidence','Evidence / gate log reference')],'Record gate decision',d=>tlsAdmission(t,d));return}
+ if(c==='check'&&t){openForm('Gate check · '+t.truck,'Compare the vehicle in front of you with the expected trip. A mismatch holds admission.',[textField('observed','Observed truck ID or registration',t.plate||t.truck),field('method','Identity evidence',{options:['Manual document check','Simulated RFID','Simulated ANPR']}),field('result','Identity result',{options:['Matched','Mismatch: hold for review']}),textField('evidence','Evidence / gate log reference')],'Record gate decision',d=>tlsAdmission(t,d));return}
  if(c==='bridge'){const err=tlsStartBridge(t);if(err){toast(err);return}tlsCommit('Truck called to the weighbridge.');tlsTripDetail(t);return}
  if(c==='deny'&&t){openForm('Deny entry / withdraw trip',t.id+' · No received waste will be posted.',[textField('reason','Decision reason and destination advice')],'Record decision',d=>{if(!['Expected','Checked in'].includes(t.state))return'This truck has already progressed beyond the gate.';t.state='Denied entry';const v=modules.visits.find(v=>v.id===t.visit);if(v)v.departed=simNow();tlsEvent(t,'Entry denied / trip withdrawn: '+d.reason)});return}
  if(['weigh','unload','transfer'].includes(c)){const err=tlsSiteError();if(err){toast(err);return}}
@@ -2806,7 +4253,7 @@ runModule=function(cmd,id){
  if(c==='unload'&&t){openForm('Complete unloading',tonnes(t.net)+' will be received into '+(t.bay||'the holding area')+' once.',[field('confirmed','All accepted waste is unloaded and truck is clear',{type:'checkbox'})],'Issue intake receipt',d=>tlsCompleteUnload(t,d));return}
  if(['pause-unload','resume-unload'].includes(c)&&t){openForm(c==='pause-unload'?'Record unloading interruption':'Resume unloading','The trip remains open; waste is not yet credited to stock.',[textField('reason','Incident / recovery details and evidence')],'Save update',d=>{const expected=c==='pause-unload'?'Unloading':'Unload paused';if(t.state!==expected)return'The trip state has changed.';t.state=c==='pause-unload'?'Unload paused':'Unloading';tlsEvent(t,t.state+': '+d.reason)});return}
  if(c==='divert'&&t){openForm('Divert rejected load','The rejected load will leave without entering TLS stock.',[textField('destination','Approved diversion location'),textField('reason','Supervisor reason'),textField('evidence','Departure / diversion evidence')],'Confirm diversion',d=>tlsDivert(t,d));return}
- if(c==='transfer'){openForm('Dispatch transfer','Available stock: '+tonnes(tlsBalance())+'. Each departure receives its own manifest, including split loads.',[textField('truck','Outbound truck'),textField('driver','Driver'),field('partner','Carrier',{options:partnerOptions(p=>p.status==='Active'&&['Transport','Facility operations'].includes(p.service))}),field('source','Stock allocation',{options:[{value:'FIFO',label:'Mixed stock — oldest available first'},...tlsSources().map(l=>({value:l.ref,label:l.ref+' · '+tonnes(l.kg)}))]}),tlsMassField('kg','Dispatched mass (tonnes)',undefined,.001),field('material','Material category',{options:tlsMaterials}),textField('ticket','Unique outbound scale ticket'),field('destination','Receiving destination',{options:tlsConfig(tlsFacility()).destinations.map(id=>({value:id,label:modules.facilities.find(f=>f.id===id)?.name||id}))}),field('hours','Receipt expected within (hours)',{type:'number',min:.25,max:168,step:.25,value:4}),field('departed','Departure is confirmed',{type:'checkbox'})],'Dispatch and issue manifest',tlsDispatch);return}
+ if(c==='transfer'){openForm('Dispatch transfer','Available stock: '+tonnes(tlsBalance())+'. Each departure receives its own manifest, including split loads.',[textField('truck','Outbound truck'),textField('driver','Driver'),field('partner','Carrier',{options:partnerOptions(p=>p.status==='Active'&&['Transport','Facility operations'].includes(p.service))}),field('source','Stock allocation',{options:[{value:'FIFO',label:'Mixed stock: oldest available first'},...tlsSources().map(l=>({value:l.ref,label:l.ref+' · '+tonnes(l.kg)}))]}),tlsMassField('kg','Dispatched mass (tonnes)',undefined,.001),field('material','Material category',{options:tlsMaterials}),textField('ticket','Unique outbound scale ticket'),field('destination','Receiving destination',{options:tlsConfig(tlsFacility()).destinations.map(id=>({value:id,label:modules.facilities.find(f=>f.id===id)?.name||id}))}),field('hours','Receipt expected within (hours)',{type:'number',min:.25,max:168,step:.25,value:4}),field('departed','Departure is confirmed',{type:'checkbox'})],'Dispatch and issue manifest',tlsDispatch);return}
  if(c==='receive'&&m){openForm('Record destination receipt','Outstanding: '+tonnes(tlsOutstanding(m))+'. Partial acceptance keeps the remaining quantity open.',[tlsMassField('accepted','Accepted mass (tonnes)',tlsOutstanding(m)/1000),tlsMassField('rejected','Reported rejected mass (tonnes)',0),textField('receipt','Unique destination receipt'),textField('officer','Receiving officer'),textField('notes','Acceptance / rejection evidence')],'Save destination receipt',d=>tlsReceive(m,d));return}
  if(c==='remainder'&&m){openForm('Account for remaining load','Outstanding: '+tonnes(tlsOutstanding(m))+'. Only a confirmed physical return adds stock back to this TLS.',[field('kind','Outcome',{options:['Returned to this TLS','Confirmed alternative disposal']}),tlsMassField('kg','Mass accounted for (tonnes)',tlsOutstanding(m)/1000,.001),textField('destination','Confirmed receiving location'),textField('officer','Receiving officer'),textField('evidence','Receipt / return evidence')],'Record verified outcome',d=>tlsRemainder(m,d));return}
  if(c==='adjust'){openForm('Approve stock adjustment','Original records stay unchanged. Reductions also reduce the mass available for future source allocations.',[field('kg','Signed adjustment (tonnes)',{type:'number',min:-100000,step:.001}),textField('reason','Reason and supporting evidence')],'Approve adjustment',tlsAdjustment);return}
@@ -3188,7 +4635,7 @@ function hubChannelsPanel(){
 }
 const hubSystems=screens.systems;screens.systems=()=>hubSystems()+hubChannelsPanel();
 function hubCarePanel(){
- const rows=['App','WhatsApp','USSD','Phone call','Field officer'].map(ch=>{const list=hub.reports.filter(r=>r.channel===ch),acked=list.filter(r=>r.ack),mins=acked.map(r=>(Date.parse(r.ack)-Date.parse(r.raised))/60000);return [ch,list.length,list.filter(r=>!['Cleared','Duplicate'].includes(r.status)).length,mins.length?Math.round(mins.reduce((n,m)=>n+m,0)/mins.length)+' min':'—']}).filter(r=>r[1]);
+ const rows=['App','WhatsApp','USSD','Phone call','Field officer'].map(ch=>{const list=hub.reports.filter(r=>r.channel===ch),acked=list.filter(r=>r.ack),mins=acked.map(r=>(Date.parse(r.ack)-Date.parse(r.raised))/60000);return [ch,list.length,list.filter(r=>!['Cleared','Duplicate'].includes(r.status)).length,mins.length?Math.round(mins.reduce((n,m)=>n+m,0)/mins.length)+' min':'-']}).filter(r=>r[1]);
  return panel('Public reports by channel','Volume and average time to acknowledge.',table(['Channel','Reports','Open','Time to acknowledge'],rows))+`<div class="module-pad">${routeButton('Open public reports','publicReports')}</div>`;
 }
 

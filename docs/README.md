@@ -43,3 +43,16 @@ Every module is authored as an exhaustive, courtroom-grade v4.0 Product Level Do
 | **`MOD-09-MARKET-SEALING`** | **[09-MOD-MARKET-SEALING.md](modules/09-MOD-MARKET-SEALING.md)** | `v4.0` (762 lines) | Hon. Comm. Tokunbo Wahab | Non-compensatory 3-zone spatial gating ($\min(S_A, S_B, S_C)$), sub-stall virtual wallets (`MKT-STALL-*`), 12-hour controlled perishable de-stocking, and tri-factor multi-sig reopening. |
 | **`MOD-10-CITIZEN-CARE`** | **[10-MOD-CITIZEN-CARE.md](modules/10-MOD-CITIZEN-CARE.md)** | `v4.0` (737 lines) | Hon. Rasheed Shabi & Hon. Comm. Wahab | NiMet radar pre-storm surge protocol (250 emergency skips), optical/radar canal trash traps, Section 102 EMPL 5% LGA automated clearing, anonymous whistle vault, and dual-key verification. |
 | **`MOD-11-SOVEREIGN-CLOUD-INFRA`** | **[11-MOD-SOVEREIGN-CLOUD-INFRA.md](modules/11-MOD-SOVEREIGN-CLOUD-INFRA.md)** | `v4.0` (644 lines) | Gov. Dr. Kadri Obafemi Hamzat | Onshore Active-Active Tier III fabric (Alausa + MDXi Lekki, RPO=0, RTO<15s), 2.5% hardware TCO sinking fund escrow, 15-minute depot hot swap, and TPM hardware component fusing. |
+
+## 🎨 UX Architecture & Design Engineering Standards
+
+- **[LAWMA-360 UX Manifesto & Design Engineering Standard](LAWMA-360-UX-Manifesto-and-Design-Engineering-Standard.md)** — The definitive blueprint for sovereign, high-craft public infrastructure in Nigeria. Codifies anti-AI-slop rules, dual-audience ergonomics (Executive vs. Scale Marshal), 1px hairline card framing, and tabular numeric hygiene.
+
+## Executive Decisions & Validation
+
+- [Executive policy and operational decisions requiring approval](executive-policy-and-operational-decisions.md) — proposed defaults, tradeoffs, responsible approvers, and verification gates.
+- [Acceptance criteria and field-validation scenarios](acceptance-criteria-and-field-validation-scenarios.md) — testable behavior for six safeguards, all 11 modules, and end-to-end flows.
+- [Field-validation pilot plan](field-validation-pilot-plan.md) — 4-phase rollout, RACI matrix, evidence protocols, quality gates, and escalation/rollback paths.
+- [Solutions and modules traceability matrix](solutions-and-modules-traceability-matrix.md) — full cross-reference of safeguards, acceptance criteria, modules, scenarios, and open policy decisions.
+- [Field checklists, evidence logs, and incident forms](field-checklists-evidence-logs-and-incident-forms.md) — operational field kit with pre-flight checklists, calibration sheets, Section 84 evidence manifests, Sev 1–4 defect forms, and emergency stop-work protocols.
+- [Leadership briefing: pilot scope, readiness, and governance](leadership-briefing-pilot-scope-readiness-and-governance.md) — concise executive brief covering pilot corridors, 10 policy prerequisites, systemic safeguards, and Go/No-Go decision gates.
