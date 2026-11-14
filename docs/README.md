@@ -44,6 +44,18 @@ Every module is authored as an exhaustive, courtroom-grade v4.0 Product Level Do
 | **`MOD-10-CITIZEN-CARE`** | **[10-MOD-CITIZEN-CARE.md](modules/10-MOD-CITIZEN-CARE.md)** | `v4.0` (737 lines) | Hon. Rasheed Shabi & Hon. Comm. Wahab | NiMet radar pre-storm surge protocol (250 emergency skips), optical/radar canal trash traps, Section 102 EMPL 5% LGA automated clearing, anonymous whistle vault, and dual-key verification. |
 | **`MOD-11-SOVEREIGN-CLOUD-INFRA`** | **[11-MOD-SOVEREIGN-CLOUD-INFRA.md](modules/11-MOD-SOVEREIGN-CLOUD-INFRA.md)** | `v4.0` (644 lines) | Gov. Dr. Kadri Obafemi Hamzat | Onshore Active-Active Tier III fabric (Alausa + MDXi Lekki, RPO=0, RTO<15s), 2.5% hardware TCO sinking fund escrow, 15-minute depot hot swap, and TPM hardware component fusing. |
 
+---
+
+## 🛡️ Strategic Defense Q&A & Public Affairs Content Banks
+
+For each finalized module, a dedicated, courtroom-grade Strategic Defense Q&A & Public Affairs Content Bank ($\ge 500$ lines) is authored to arm executive leadership, defense attorneys, and public affairs directors with forensic rebuttals to adversarial challenges and ready-to-deploy civic communications:
+
+| Module Identifier | Dedicated Q&A & Marketing Dossier | Lines | Core Defense & Communication Themes |
+| :--- | :--- | :--- | :--- |
+| **`MOD-01-CADASTRE`** | **[01-QA-CADASTRE-AND-IDENTITY.md](modules/01-QA-CADASTRE-AND-IDENTITY.md)** | 597 lines | Why LAWMA cannot collect door-to-door cash, compound virtual wallets, landlord/Iya Oloja legal agency, Sub-60% Quorum Quarantine, Serialized Green QR Room Bags, Special Offences Court Form 1 Summons, BVN garnishees, and 5 viral multilingual civic campaigns (X thread, 60s TikTok skit, Pidgin/Yorùbá radio jingles, WhatsApp broadcast cards, and anti-bribery code). |
+| **`MOD-02-FLEET-LOGISTICS`** | **[02-QA-FLEET-LOGISTICS.md](modules/02-QA-FLEET-LOGISTICS.md)** | 633 lines | Commercial night sweeps (22:00–05:00) vs. residential day sweeps (08:30–15:30), modular retrofit telematics (~₦445k/truck), roadside diesel siphoning ultrasound sensors (>15L drop), 05:00 AM depot lock with 60-min hot-swap spare pool, LASTMA-verified incident reroutes, and JIT 4-truck dumpsite slot pacing. |
+| **`MOD-03-TLS-SCALE`** | **[03-QA-TLS-SCALE.md](modules/03-QA-TLS-SCALE.md)** | 886 lines | Zero-manual-entry direct RS-485/Modbus streaming, defeating Alaba Market RF keyfob signal interceptors via corner eccentricity (>18%) and step jumps (>=1,500kg), 72-hr solar microgrid with offline SQLite WAL edge engine, commercial tipping fee lock (₦10,000/t) with dual-officer auth, wet-season mud allowance (May–Oct: up to 600kg), 1,500kg illegal leachate dumping penalty, quad-beam optical tripwires against partial platforming, Section 84 Evidence Act certificates, and automated settlement exclusion. |
+
 ## 🎨 UX Architecture & Design Engineering Standards
 
 - **[LAWMA-360 UX Manifesto & Design Engineering Standard](LAWMA-360-UX-Manifesto-and-Design-Engineering-Standard.md)** — The definitive blueprint for sovereign, high-craft public infrastructure in Nigeria. Codifies anti-AI-slop rules, dual-audience ergonomics (Executive vs. Scale Marshal), 1px hairline card framing, and tabular numeric hygiene.
