@@ -828,12 +828,12 @@ html[data-theme]:root:not(#sc) .cad-policy svg{flex:none;width:20px;height:20px;
 html[data-theme]:root:not(#sc) .cad-policy span{display:grid;gap:4px;font-size:13px}
 html[data-theme]:root:not(#sc) .cad-policy small{color:var(--sc-fg-muted);font-size:12px;line-height:1.5}
 html[data-theme]:root:not(#sc) .cad-ladder{margin:8px 0 24px}
-html[data-theme]:root:not(#sc) .cad-tabs{display:flex;flex-wrap:wrap;gap:4px;margin:20px 0}
+html[data-theme]:root:not(#sc) .cad-tabs{display:flex;flex-wrap:nowrap;overflow-x:auto;gap:6px;margin:16px 0;padding-bottom:6px;scrollbar-width:thin}
 html[data-theme]:root:not(#sc) .drain-map{display:block;width:100%;max-width:460px;height:auto;margin:16px auto;background:var(--sc-bg-lighter)}
 html[data-theme]:root:not(#sc) .drain-map polygon{fill:var(--sc-blue-bg);stroke:var(--sc-blue);stroke-width:2}
 html[data-theme]:root:not(#sc) .drain-map text{fill:var(--sc-fg);font:12px var(--sc-font)}
 html[data-theme]:root:not(#sc) .drain-map circle{fill:var(--sc-heat);stroke:var(--sc-surface);stroke-width:2}
-html[data-theme]:root:not(#sc) .cad-tabs button{font:inherit;font-size:12px;min-height:44px;padding:8px 12px;border:0;border-radius:var(--sc-r-sm);background:var(--sc-bg-lighter);color:var(--sc-fg-dim);cursor:pointer}
+html[data-theme]:root:not(#sc) .cad-tabs button{font:inherit;font-size:12px;min-height:44px;padding:8px 12px;border:0;border-radius:var(--sc-r-sm);background:var(--sc-bg-lighter);color:var(--sc-fg-dim);cursor:pointer;white-space:nowrap;flex-shrink:0}
 html[data-theme]:root:not(#sc) .cad-tabs button[aria-selected=true]{background:var(--sc-heat-12);color:var(--sc-heat-text);font-weight:600}
 html[data-theme]:root:not(#sc) .cad-tabs button:focus-visible{outline:2px solid var(--sc-heat);outline-offset:2px}
 html[data-theme]:root:not(#sc) .cad-qr{max-width:240px;margin:20px auto;background:var(--sc-surface);padding:12px}
@@ -954,7 +954,7 @@ html[data-theme]:root:not(#sc) .ov-panel-head :is(h2,p) {max-width:100%;white-sp
 html[data-theme]:root:not(#sc) .module-toolbar {gap:var(--sc-space-sm);padding:0 var(--sc-space-lg) var(--sc-space-md)}
 html[data-theme]:root:not(#sc) .module-toolbar :is(input,select,.module-search) {min-width:0;max-width:100%}
 html[data-theme]:root:not(#sc) :is(.btn,.text-action) {white-space:normal;line-height:1.4}
-html[data-theme]:root:not(#sc) .state-pill {white-space:normal;line-height:1.4;max-width:100%;overflow-wrap:anywhere}
+html[data-theme]:root:not(#sc) .state-pill {white-space:nowrap!important;word-break:keep-all;line-height:1.4;display:inline-flex;align-items:center}
 html[data-theme]:root:not(#sc) .modal {padding:var(--sc-space-lg);max-width:calc(100vw - 32px);border-radius:var(--sc-r)}
 html[data-theme]:root:not(#sc) .modal-head {margin-bottom:var(--sc-space-lg);align-items:flex-start}
 html[data-theme]:root:not(#sc) .module-field {margin:var(--sc-space-md) 0}
@@ -995,7 +995,7 @@ html[data-theme]:root:not(#sc) #fleetMain {padding-inline:0}
  html[data-theme]:root:not(#sc) .module-toolbar {align-items:stretch}
  html[data-theme]:root:not(#sc) .module-toolbar>label {flex-basis:100%}
  html[data-theme]:root:not(#sc) .module-toolbar :is(input,select,.module-search) {width:100%;flex:1 1 100%}
- html[data-theme]:root:not(#sc) :is(.cad-tabs,.module-tabs) {flex-wrap:wrap;gap:var(--sc-space-xs)}
+ html[data-theme]:root:not(#sc) :is(.cad-tabs,.module-tabs) {flex-wrap:nowrap;overflow-x:auto;gap:var(--sc-space-xs);padding-bottom:4px;scrollbar-width:thin}
  html[data-theme]:root:not(#sc) :is(.btn,.text-action,.iconbtn) {min-height:44px}
  html[data-theme]:root:not(#sc) .modal-back {padding:var(--sc-space-xs)}
  html[data-theme]:root:not(#sc) .modal {max-width:100%;max-height:calc(100dvh - 16px);padding:var(--sc-space-md)}
@@ -1010,7 +1010,7 @@ html[data-theme]:root:not(#sc) #billPrintRoot {display:none}
 html[data-theme]:root:not(#sc) #journeyMain:has([data-module="bill-back"]) table {table-layout:fixed;width:100%;min-width:0}
 html[data-theme]:root:not(#sc) #journeyMain:has([data-module="bill-back"]) :is(td,th) {white-space:normal;overflow-wrap:anywhere;padding:12px 8px}
 html[data-theme]:root:not(#sc) #journeyMain:has([data-module="bill-back"]) td:last-child {width:110px}
-html[data-theme]:root:not(#sc) #journeyMain:has([data-module="bill-back"]) .state-pill {display:inline-block;white-space:normal!important;overflow-wrap:anywhere;max-width:100%;box-sizing:border-box}
+html[data-theme]:root:not(#sc) #journeyMain:has([data-module="bill-back"]) .state-pill {display:inline-flex;align-items:center;white-space:nowrap!important;word-break:keep-all;box-sizing:border-box}
 html[data-theme]:root:not(#sc) #journeyMain:has([data-module="bill-back"]) .work-panel {border-radius:0;box-shadow:none}
 html[data-theme]:root:not(#sc) .modal:has(.bill-sheet) {width:850px;max-width:calc(100vw - 32px)}
 html[data-theme]:root:not(#sc) .bill-sheet {font-size:12px;line-height:1.5;overflow-wrap:anywhere;padding:var(--sc-space-md);background:var(--sc-surface);color:var(--sc-fg)}

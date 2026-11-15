@@ -48,30 +48,15 @@ closeDetail=function(){
  const ghost=$('detail').cloneNode(true);ghost.removeAttribute('id');ghost.setAttribute('aria-hidden','true');ghost.inert=true;ghost.querySelectorAll('[id]').forEach(x=>x.removeAttribute('id'));$('detail').after(ghost);baseCloseDetail();
  const a=ghost.animate([{opacity:1,transform:'none'},{opacity:0,transform:'translateX(18px)'}],{duration:140,easing:'ease-out'});a.onfinish=()=>ghost.remove();
 };
-// Brief skeleton shimmer over the content area on navigation, purely visual: the real
-// render below still happens synchronously so focus/scroll calls right after goJourney()/
-// renderJourney() keep working; the skeleton just covers the target area for a moment.
+// Navigation transition helper
 function showSkeleton(target){
- if(!target||document.body.classList.contains('tour-open'))return null;
- // Appended to <body> (not the target) and positioned fixed over its rect: the target's
- // innerHTML is about to be replaced synchronously by the real render, which would wipe
- // out a skeleton appended as a child.
- const r=target.getBoundingClientRect();
- const skel=document.createElement('div');skel.className='skeleton-veil';skel.setAttribute('aria-hidden','true');
- skel.style.top=r.top+'px';skel.style.left=r.left+'px';skel.style.width=r.width+'px';skel.style.height=r.height+'px';
- skel.innerHTML='<div class="skeleton-bar w1"></div><div class="skeleton-bar w2"></div><div class="skeleton-bar w3"></div><div class="skeleton-panel"></div>';
- document.body.appendChild(skel);
- const delay=reducedMotion()?120:450+Math.round(Math.random()*150);
- const finish=()=>{if(!skel.isConnected)return;if(reducedMotion()){skel.remove();return}const a=skel.animate([{opacity:1},{opacity:0}],{duration:160,easing:'ease-out'});a.onfinish=()=>skel.remove()};
- setTimeout(finish,delay);
- return skel;
+ return null;
 }
 const baseGoJourney=goJourney;
-goJourney=function(page){const target=page==='fleet'?oldMain:journeyMain;showSkeleton(target);const changed=journey.page!==page;baseGoJourney(page);if(changed)entrance(target)};
+goJourney=function(page){const target=page==='fleet'?oldMain:journeyMain;const changed=journey.page!==page;baseGoJourney(page);if(changed)entrance(target)};
 let lastSkeletonPage=journey.page;
 const baseRenderJourney=renderJourney;
 renderJourney=function(){
- if(journey.page!==lastSkeletonPage){showSkeleton(journey.page==='fleet'?oldMain:journeyMain);lastSkeletonPage=journey.page}
  baseRenderJourney();document.querySelectorAll('.journey-steps .current').forEach(el=>el.setAttribute('aria-current','step'));
 };
 // Quiet and accessible feedback: status text stays available without relying on motion.

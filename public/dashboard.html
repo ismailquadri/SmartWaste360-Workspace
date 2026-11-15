@@ -1100,12 +1100,12 @@ html[data-theme]:root:not(#sc) .cad-policy svg{flex:none;width:20px;height:20px;
 html[data-theme]:root:not(#sc) .cad-policy span{display:grid;gap:4px;font-size:13px}
 html[data-theme]:root:not(#sc) .cad-policy small{color:var(--sc-fg-muted);font-size:12px;line-height:1.5}
 html[data-theme]:root:not(#sc) .cad-ladder{margin:8px 0 24px}
-html[data-theme]:root:not(#sc) .cad-tabs{display:flex;flex-wrap:wrap;gap:4px;margin:20px 0}
+html[data-theme]:root:not(#sc) .cad-tabs{display:flex;flex-wrap:nowrap;overflow-x:auto;gap:6px;margin:16px 0;padding-bottom:6px;scrollbar-width:thin}
 html[data-theme]:root:not(#sc) .drain-map{display:block;width:100%;max-width:460px;height:auto;margin:16px auto;background:var(--sc-bg-lighter)}
 html[data-theme]:root:not(#sc) .drain-map polygon{fill:var(--sc-blue-bg);stroke:var(--sc-blue);stroke-width:2}
 html[data-theme]:root:not(#sc) .drain-map text{fill:var(--sc-fg);font:12px var(--sc-font)}
 html[data-theme]:root:not(#sc) .drain-map circle{fill:var(--sc-heat);stroke:var(--sc-surface);stroke-width:2}
-html[data-theme]:root:not(#sc) .cad-tabs button{font:inherit;font-size:12px;min-height:44px;padding:8px 12px;border:0;border-radius:var(--sc-r-sm);background:var(--sc-bg-lighter);color:var(--sc-fg-dim);cursor:pointer}
+html[data-theme]:root:not(#sc) .cad-tabs button{font:inherit;font-size:12px;min-height:44px;padding:8px 12px;border:0;border-radius:var(--sc-r-sm);background:var(--sc-bg-lighter);color:var(--sc-fg-dim);cursor:pointer;white-space:nowrap;flex-shrink:0}
 html[data-theme]:root:not(#sc) .cad-tabs button[aria-selected=true]{background:var(--sc-heat-12);color:var(--sc-heat-text);font-weight:600}
 html[data-theme]:root:not(#sc) .cad-tabs button:focus-visible{outline:2px solid var(--sc-heat);outline-offset:2px}
 html[data-theme]:root:not(#sc) .cad-qr{max-width:240px;margin:20px auto;background:var(--sc-surface);padding:12px}
@@ -1226,7 +1226,7 @@ html[data-theme]:root:not(#sc) .ov-panel-head :is(h2,p) {max-width:100%;white-sp
 html[data-theme]:root:not(#sc) .module-toolbar {gap:var(--sc-space-sm);padding:0 var(--sc-space-lg) var(--sc-space-md)}
 html[data-theme]:root:not(#sc) .module-toolbar :is(input,select,.module-search) {min-width:0;max-width:100%}
 html[data-theme]:root:not(#sc) :is(.btn,.text-action) {white-space:normal;line-height:1.4}
-html[data-theme]:root:not(#sc) .state-pill {white-space:normal;line-height:1.4;max-width:100%;overflow-wrap:anywhere}
+html[data-theme]:root:not(#sc) .state-pill {white-space:nowrap!important;word-break:keep-all;line-height:1.4;display:inline-flex;align-items:center}
 html[data-theme]:root:not(#sc) .modal {padding:var(--sc-space-lg);max-width:calc(100vw - 32px);border-radius:var(--sc-r)}
 html[data-theme]:root:not(#sc) .modal-head {margin-bottom:var(--sc-space-lg);align-items:flex-start}
 html[data-theme]:root:not(#sc) .module-field {margin:var(--sc-space-md) 0}
@@ -1267,7 +1267,7 @@ html[data-theme]:root:not(#sc) #fleetMain {padding-inline:0}
  html[data-theme]:root:not(#sc) .module-toolbar {align-items:stretch}
  html[data-theme]:root:not(#sc) .module-toolbar>label {flex-basis:100%}
  html[data-theme]:root:not(#sc) .module-toolbar :is(input,select,.module-search) {width:100%;flex:1 1 100%}
- html[data-theme]:root:not(#sc) :is(.cad-tabs,.module-tabs) {flex-wrap:wrap;gap:var(--sc-space-xs)}
+ html[data-theme]:root:not(#sc) :is(.cad-tabs,.module-tabs) {flex-wrap:nowrap;overflow-x:auto;gap:var(--sc-space-xs);padding-bottom:4px;scrollbar-width:thin}
  html[data-theme]:root:not(#sc) :is(.btn,.text-action,.iconbtn) {min-height:44px}
  html[data-theme]:root:not(#sc) .modal-back {padding:var(--sc-space-xs)}
  html[data-theme]:root:not(#sc) .modal {max-width:100%;max-height:calc(100dvh - 16px);padding:var(--sc-space-md)}
@@ -1282,7 +1282,7 @@ html[data-theme]:root:not(#sc) #billPrintRoot {display:none}
 html[data-theme]:root:not(#sc) #journeyMain:has([data-module="bill-back"]) table {table-layout:fixed;width:100%;min-width:0}
 html[data-theme]:root:not(#sc) #journeyMain:has([data-module="bill-back"]) :is(td,th) {white-space:normal;overflow-wrap:anywhere;padding:12px 8px}
 html[data-theme]:root:not(#sc) #journeyMain:has([data-module="bill-back"]) td:last-child {width:110px}
-html[data-theme]:root:not(#sc) #journeyMain:has([data-module="bill-back"]) .state-pill {display:inline-block;white-space:normal!important;overflow-wrap:anywhere;max-width:100%;box-sizing:border-box}
+html[data-theme]:root:not(#sc) #journeyMain:has([data-module="bill-back"]) .state-pill {display:inline-flex;align-items:center;white-space:nowrap!important;word-break:keep-all;box-sizing:border-box}
 html[data-theme]:root:not(#sc) #journeyMain:has([data-module="bill-back"]) .work-panel {border-radius:0;box-shadow:none}
 html[data-theme]:root:not(#sc) .modal:has(.bill-sheet) {width:850px;max-width:calc(100vw - 32px)}
 html[data-theme]:root:not(#sc) .bill-sheet {font-size:12px;line-height:1.5;overflow-wrap:anywhere;padding:var(--sc-space-md);background:var(--sc-surface);color:var(--sc-fg)}
@@ -1521,7 +1521,7 @@ const scenarioRecord=()=>'<div class="record-banner"><div><span class="eyebrow">
 function renderJourney(){
 $('persona').value=journey.role;const p=journey.page;
 navRail.innerHTML=journeyNav.filter(([id])=>personaPages[journey.role].includes(id)).map(([id,label,ic])=>'<button data-go="'+id+'" class="'+(p===id?'active':'')+'" '+(p===id?'aria-current="page"':'')+'>'+icon(ic)+label+'</button>').join('')+(journey.role==='crew'?'<button data-go="crew" class="'+(p==='crew'?'active':'')+'">'+icon('pin')+'My shift</button>':'')+(journey.role==='resident'?'<button data-go="resident" class="'+(p==='resident'?'active':'')+'">'+icon('help')+'My service</button>':'');
-const isFleet=p==='fleet';oldMain.hidden=!isFleet;journeyMain.hidden=isFleet;skip.href=isFleet?'#fleetMain':'#journeyMain';if(isFleet){setTimeout(()=>{if(typeof ensureFleetMap==='function')ensureFleetMap().then(()=>{if(ready&&!state.selected)fitFleet()})},0);bindJourney();return}
+const isFleet=p==='fleet';oldMain.hidden=!isFleet;journeyMain.hidden=isFleet;skip.href=isFleet?'#fleetMain':'#journeyMain';if(isFleet){setTimeout(()=>{if(typeof ensureFleetMap==='function')ensureFleetMap().then(()=>{if(ready&&!state.selected)fitFleet();if(typeof map!=='undefined'&&map)map.resize();})},0);bindJourney();saveJourney();return}
 let html='';
 if(p==='overview')html=pageHead('AUTHORITY OVERVIEW','A clearer picture of today.','Service delivery, facility handoff and exceptions in one place.',action('Open fleet map','fleet',true))+stats([['Vehicles in view','1,000','684 on route · 46 with stale signals'],['Service follow-ups','24','Evidence requiring supervisor review'],['Priority resident case',journey.caseStage===2?pill('Resolved','good'):'1','CC-1048 · missed collection'],['Connected load',journey.weighed?pill('Recorded','good'):pill('Pending','amber'),'LD-0218 · facility receipt']])+'<div class="journey-grid wide">'+panel('The service chain','Follow one collection from assignment to a confirmed outcome.',scenarioRecord()+steps(['Assign','Collect','Facility','Reconcile'],journey.assigned&&journey.synced&&journey.weighed&&journey.settled?4:journey.assigned&&journey.synced&&journey.weighed?3:journey.assigned&&journey.synced?2:journey.assigned?1:0)+'<div class="chain-links">'+routeButton('Assign the service','dispatch')+routeButton('Capture field evidence','crew')+routeButton('Receive the load','facility')+routeButton('Reconcile the account','finance')+'</div>')+panel('Needs a decision','Priorities with a clear next action.','<div class="priority-row"><span>'+pill('Evidence','amber')+'<b>Collection proof incomplete</b><small>FLT-0042 · three reported events</small></span>'+routeButton('Inspect','fleet')+'</div><div class="priority-row"><span>'+pill('Citizen care','amber')+'<b>Missed pickup in Ikeja</b><small>Resident confirmation required before closure</small></span>'+routeButton('Review','care')+'</div><div class="priority-row"><span>'+pill('Continuity')+'<b>Field connectivity interrupted</b><small>Queued records must preserve original capture time</small></span>'+routeButton('Open shift','crew')+'</div>')+'</div>'+panel('Performance questions','',table(['Outcome','Evidence needed','Workspace'],[['Reliable collection','Assignment, crew event and service review',routeButton('PSP operations','dispatch')],['Better facility turnaround','Arrival, scale and tipping timestamps',routeButton('Facilities','facility')],['Payment compliance','Property, invoice and bank match',routeButton('Revenue','finance')],['Resource recovery','Material weight and processor receipt',routeButton('Recovery','recovery')]]));
 if(p==='dispatch')html=pageHead('PSP OPERATIONS','Plan the shift. Close the gaps.','Use assignments, vehicle readiness and evidence to manage the day.',action('Assign collection','assign',true))+scenarioRecord()+steps(['Ready','Assigned','Evidence received'],journey.synced?3:journey.assigned?1:0)+'<div class="journey-grid wide">'+panel('Today’s route sheet','PSP partner 06 · sample operating area',table(['Route / vehicle','Crew','Progress','Action'],[['IKJ-07 / FLT-0042','Babatunde A.',pill(journey.synced?'Evidence received':journey.assigned?'Assigned':'Awaiting assignment'),routeButton('Open crew journey','crew')],['YAB-03 / FLT-0074','Crew B',pill('On route'),routeButton('Locate vehicle','fleet')],['AGE-02 / FLT-0141','Crew C',pill(journey.maintained?'Inspection scheduled':'Vehicle unavailable','amber'),action('Plan inspection','maintenance')]]))+panel('Readiness before dispatch','Practical checks for a reliable shift.','<ul class="plain-list"><li>Driver and crew assigned</li><li>Vehicle condition and capacity checked</li><li>Service area and route acknowledged</li><li>Device charged and offline queue available</li></ul>')+'</div>';
@@ -1612,30 +1612,15 @@ closeDetail=function(){
  const ghost=$('detail').cloneNode(true);ghost.removeAttribute('id');ghost.setAttribute('aria-hidden','true');ghost.inert=true;ghost.querySelectorAll('[id]').forEach(x=>x.removeAttribute('id'));$('detail').after(ghost);baseCloseDetail();
  const a=ghost.animate([{opacity:1,transform:'none'},{opacity:0,transform:'translateX(18px)'}],{duration:140,easing:'ease-out'});a.onfinish=()=>ghost.remove();
 };
-// Brief skeleton shimmer over the content area on navigation, purely visual: the real
-// render below still happens synchronously so focus/scroll calls right after goJourney()/
-// renderJourney() keep working; the skeleton just covers the target area for a moment.
+// Navigation transition helper
 function showSkeleton(target){
- if(!target||document.body.classList.contains('tour-open'))return null;
- // Appended to <body> (not the target) and positioned fixed over its rect: the target's
- // innerHTML is about to be replaced synchronously by the real render, which would wipe
- // out a skeleton appended as a child.
- const r=target.getBoundingClientRect();
- const skel=document.createElement('div');skel.className='skeleton-veil';skel.setAttribute('aria-hidden','true');
- skel.style.top=r.top+'px';skel.style.left=r.left+'px';skel.style.width=r.width+'px';skel.style.height=r.height+'px';
- skel.innerHTML='<div class="skeleton-bar w1"></div><div class="skeleton-bar w2"></div><div class="skeleton-bar w3"></div><div class="skeleton-panel"></div>';
- document.body.appendChild(skel);
- const delay=reducedMotion()?120:450+Math.round(Math.random()*150);
- const finish=()=>{if(!skel.isConnected)return;if(reducedMotion()){skel.remove();return}const a=skel.animate([{opacity:1},{opacity:0}],{duration:160,easing:'ease-out'});a.onfinish=()=>skel.remove()};
- setTimeout(finish,delay);
- return skel;
+ return null;
 }
 const baseGoJourney=goJourney;
-goJourney=function(page){const target=page==='fleet'?oldMain:journeyMain;showSkeleton(target);const changed=journey.page!==page;baseGoJourney(page);if(changed)entrance(target)};
+goJourney=function(page){const target=page==='fleet'?oldMain:journeyMain;const changed=journey.page!==page;baseGoJourney(page);if(changed)entrance(target)};
 let lastSkeletonPage=journey.page;
 const baseRenderJourney=renderJourney;
 renderJourney=function(){
- if(journey.page!==lastSkeletonPage){showSkeleton(journey.page==='fleet'?oldMain:journeyMain);lastSkeletonPage=journey.page}
  baseRenderJourney();document.querySelectorAll('.journey-steps .current').forEach(el=>el.setAttribute('aria-current','step'));
 };
 // Quiet and accessible feedback: status text stays available without relying on motion.
@@ -8541,8 +8526,9 @@ const dgRender=tab=>{const o=dg(),now=Date.now();let b='';
 };
 const dgOldDrain=screens.drainage;
 screens.drainage=()=>dgTabs.includes(ui.drainTab)?'<div class="cad-tabs" role="tablist" aria-label="Drainage sections">'+drainTabs.map(t=>button(t,'drain-tab',t).replace('<button ','<button role="tab" aria-selected="'+(t===ui.drainTab)+'" ')).join('')+'</div>'+pageHead('MOD-10 · CITIZEN CARE & DRAINAGE','Drainage safeguards','')+dgRender(ui.drainTab):dgOldDrain();
+const careBaseScreen=()=>pageHead('CITIZEN CARE','Turn a report into a resolved service.','Keep the resident informed and preserve the evidence behind closure.',action('Open priority case','case',true))+steps(['Received','Recovery assigned','Resident confirmed'],journey.caseStage===2?3:journey.caseStage)+panel('Case inbox','Web and assisted-channel reports share one reference.',table(['Case','Issue / property','Channel','State','Action'],[['CC-1048','Missed collection · PR-0182','Phone / assisted',pill(['New','Recovery assigned','Resolved'][journey.caseStage],journey.caseStage===2?'good':'amber'),action('Open case','case')],...(journey.reported?[['CC-1049',esc(journey.reportIssue||'Service issue')+' · PR-0182','Resident portal',pill('Received'),routeButton('Resident receipt','resident')]]:[]),['CC-1046','Incorrect bill · PR-0420','Web',pill('Account review'),action('Assign billing review','property')]]))+note('A case is closed after the recovery outcome and resident confirmation are recorded.')+panel('Resident portal requests','Requests created through the resident journey.',modules.serviceRequests.length?table(['Reference','Issue','Partner','Status',''],modules.serviceRequests.map(r=>[r.id,esc(r.type),esc(partnerName(r.partner)),status(r.status),link('Review','careRequest',r.id)])):empty('No new portal requests','Reports submitted from the resident workspace will appear here.'));
 const dgOldCare=screens.care;
-screens.care=()=>dgOldCare()+panel('Module 10 citizen safeguards','',dgBtn('Open anonymous channel register','go','Anonymous channels')+dgBtn('Open remediation closure register','go','Remediation closure'));
+screens.care=()=>(dgOldCare?dgOldCare():careBaseScreen())+panel('Module 10 citizen safeguards','',dgBtn('Open anonymous channel register','go','Anonymous channels')+dgBtn('Open remediation closure register','go','Remediation closure'));
 const dgOldFinance=screens.finance;
 screens.finance=()=>dgOldFinance()+panel('Council & citizen safeguards','',dgBtn('Open council clearinghouse','go','Council clearinghouse')+table(['Ticket','Settlement batch','Payment gate'],dg().cures.filter(x=>x.batch).map(x=>[esc(x.id),esc(x.batch),esc(dgReadState(x))])));
 const dgOldCalc=stCalc;
