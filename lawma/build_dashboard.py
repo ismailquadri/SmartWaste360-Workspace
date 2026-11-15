@@ -77,8 +77,11 @@ parts = {
     "/*DRAINRULES*/": read("work/drainage-rules.js"),
     "/*DRAINOPS*/": read("work/drainage-ops.js"),
     "/*INFRARULES*/": read("work/infra-rules.js"),
-    "/*INFRAOPS*/": read("work/infra-ops.js") + "\n" + read("work/readiness-ops.js") + "\n" + read("work/fleet-map-rules.js") + "\n" + read("work/fleet-map-ops.js"),
+    "/*INFRAOPS*/": read("work/infra-ops.js") + "\n" + read("work/readiness-ops.js") + "\n" + read("work/fleet-map-rules.js") + "\n" + read("work/fleet-map-ops.js") + "\n" + read("work/fleet-guard-rules.js") + "\n" + read("work/fleet-guard-ops.js") + "\n" + read("work/scale-guard-rules.js") + "\n" + read("work/scale-guard-ops.js") + "\n" + read("work/landfill-guard-rules.js") + "\n" + read("work/landfill-guard-ops.js") + "\n" + read("work/landfill-plant-ops.js") + "\n" + read("work/landfill-access-rules.js") + "\n" + read("work/landfill-access-ops.js"),
 }
+parts['/*INFRAOPS*/'] += '\n' + '\n'.join(read('work/' + name + '.js') for name in ['tracker-payment-rules', 'tracker-payment-ops', 'landfill-quota-rules', 'landfill-quota-ops', 'kai-guard-rules', 'kai-guard-ops', 'kai-detention-rules', 'kai-detention-ops', 'kai-vault-ops', 'kai-disposal-rules', 'kai-disposal-ops', 'kai-yard-rules', 'kai-yard-ops', 'eco-guard-rules', 'eco-guard-ops', 'haz-guard-rules', 'haz-guard-ops', 'market-guard-rules', 'market-guard-ops'])
+parts['/*INFRAOPS*/'] += '\n' + '\n'.join(read('work/' + name + '.js') for name in ['drainage-guard-rules', 'drainage-guard-ops'])
+parts['/*INFRAOPS*/'] += '\n' + '\n'.join(read('work/' + name + '.js') for name in ['bill-rules', 'bill-ops', 'bill-care-rules', 'bill-care-ops'])
 for key, name, mime in [
     ("PRODUCTLOGO", "smartwaste360.svg", "image/svg+xml"),
     ("PRODUCTLOGODARK", "smartwaste360-dark.svg", "image/svg+xml"),

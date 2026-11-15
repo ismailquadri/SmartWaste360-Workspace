@@ -1,0 +1,27 @@
+/* MOD-09 market sealing safeguards. Proposed dummy thresholds; LAWMA legal, market associations and host councils must confirm. */
+const MG_ZONES=['Zone A · frontage','Zone B · stalls','Zone C · rear drainage'];
+const MG_PASS=70;
+const MG_DESTOCK_H=12;
+const MG_SEAL_RE=/^RFID-SEAL-\d{4,}$/;
+const MG_REBATE_PCT=5;
+const MG_REBATE_SCORE=85;
+const MG_REBATE_DAYS=90;
+const MG_HEAVY_KG=8000;
+const MG_COUNCIL_PCT=5;
+const mgKey=s=>String(s||'').trim().toLowerCase().replace(/\s+/g,' ');
+const mgDistinct=(...xs)=>xs.every(x=>mgKey(x))&&new Set(xs.map(mgKey)).size===xs.length;
+const mgIndex=z=>z.length===3&&z.every(Number.isFinite)?Math.min(...z):null;
+const mgInspectionResult=z=>{const s=mgIndex(z);return s===null?'Incomplete':s>=MG_PASS?'Passed':'Failed'};
+const mgDestockState=(p,now)=>!p?'No pass':p.exited>=p.crates?'Complete':now>=Date.parse(p.opened)+MG_DESTOCK_H*3600000?'Window ended':'Open';
+const mgExitError=(p,n,now)=>mgDestockState(p,now)!=='Open'?'The de-stocking window is not open.':!Number.isInteger(n)||n<=0?'Enter a whole number of crates.':p.exited+n>p.crates?'More crates than declared on the pass.':'';
+const mgPadlockErrors=(p,now)=>{const s=mgDestockState(p,now);return s==='No pass'?['Issue a DESTOCK-PASS before padlocking']:s==='Open'?['De-stocking window still open']:[]};
+const mgSealScanResult=(seal,scan)=>!scan.intact?'Tampered':String(scan.tag||'').toUpperCase()!==seal.tag?'Tag mismatch':'Intact';
+const mgOpenTamper=seals=>seals.some(s=>s.tamper&&!s.tamper.resolved);
+const mgTamperResolveError=(t,reviewer)=>!mgDistinct(t.by,reviewer)?'A different official must review the tamper report.':'';
+const mgPaymentError=(stall,p)=>!stall.wallet?'Stall has no virtual wallet.':p.channel==='Cash to collector'?'Cash to collectors is not accepted; record an extortion report instead.':!['USSD','NIP transfer'].includes(p.channel)?'Choose USSD or NIP transfer.':!(p.amount>0)?'Enter a positive amount.':'';
+const mgRebateEligible=(inspections,now)=>{const recent=inspections.filter(i=>now-Date.parse(i.at)<=MG_REBATE_DAYS*86400000);if(!inspections.length)return false;const first=Math.min(...inspections.map(i=>Date.parse(i.at)));return now-first>=MG_REBATE_DAYS*86400000&&recent.length>0&&recent.every(i=>mgIndex(i.zones)>=MG_REBATE_SCORE)};
+const mgRebateAmount=fees=>Math.round(fees*MG_REBATE_PCT)/100;
+const mgMass=(bar,cal)=>cal&&cal.kgPerBar>0&&Number.isFinite(bar)&&bar>=0?Math.round(bar*cal.kgPerBar):null;
+const mgDispatchErrors=(kg,d)=>kg===null?['Calibrated strain-gauge reading required']:kg>=MG_HEAVY_KG?[d.vehicle!=='Heavy tandem-axle prime mover'&&'Heavy load: assign a tandem-axle prime mover',d.skip!=='Reinforced metal skip'&&'Heavy load: use a reinforced metal skip'].filter(Boolean):[];
+const mgAccordError=a=>!a.ref?'Signed accord reference required.':!mgDistinct(a.lawma,a.association,a.council)?'LAWMA, the association and the host council chairman must be three different signatories.':!a.councilName?'Name the host LGA/LCDA.':'';
+const mgCouncilShare=fines=>Math.round(fines*MG_COUNCIL_PCT)/100;

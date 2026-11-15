@@ -76,3 +76,21 @@ For each finalized module, a dedicated, courtroom-grade Strategic Defense Q&A & 
 - [Solutions and modules traceability matrix](solutions-and-modules-traceability-matrix.md) — full cross-reference of safeguards, acceptance criteria, modules, scenarios, and open policy decisions.
 - [Field checklists, evidence logs, and incident forms](field-checklists-evidence-logs-and-incident-forms.md) — operational field kit with pre-flight checklists, calibration sheets, Section 84 evidence manifests, Sev 1–4 defect forms, and emergency stop-work protocols.
 - [Leadership briefing: pilot scope, readiness, and governance](leadership-briefing-pilot-scope-readiness-and-governance.md) — concise executive brief covering pilot corridors, 10 policy prerequisites, systemic safeguards, and Go/No-Go decision gates.
+
+## 🧪 Testing & Safeguard Reviews
+
+Comprehensive rehearsal and safeguard reviews verifying module operations, plant billing, detention audits, and evidence registers:
+- [Bill Register Review](testing/bill-register-review.md) — review of final bill rules, printable bill sheets, and teller/PSP evidence registers.
+- [Module 03 Stakeholder Safeguards](testing/module-03-stakeholder-safeguards.md) — TLS scale guard and weighbridge calibration reviews.
+- [Module 04 Overflow Safeguard](testing/module-04-overflow-safeguard.md) — dumpsite diversion and fuel voucher operational reviews.
+- [Module 04 Plant Billing](testing/module-04-plant-billing.md) — heavy plant loaded hours and contractor wet-lease billing audits.
+- [Module 04 Recovery & Access](testing/module-04-recovery-and-access.md) — material recovery bays and biometric scavenger pass governance.
+- [Module 06 Command Safeguard Review](testing/module-06-command-safeguard-review.md) — KAI command and tactical interdiction review.
+- [Module 06 Detention Review](testing/module-06-detention-review.md) — virtual mobile court holding-cell video kiosks and bail bond engine reviews.
+- [Module 06 Evidence Vault Review](testing/module-06-evidence-vault-review.md) — Section 84 evidence vault and chain of custody audits.
+- [Module 06 Impound Provenance Review](testing/module-06-impound-provenance-review.md) — tri-factor provenance engine and anti-framing safeguards.
+- [Module 06 Property Detention Review](testing/module-06-property-detention-review.md) — commercial premises abatement and sealing warrant audits.
+- [Module 07 Completion Review](testing/module-07-completion-review.md) — ecotox groundwater monitoring, UV254 spectral proxies, and laterite capping audits.
+- [Module 10 Completion Review](testing/module-10-completion-review.md) — drainage guard, anonymous whistleblower vault, and multi-channel intake audits.
+- [Quota Tracker Payment Review](testing/quota-tracker-payment-review-2026-11-14.md) — landfill quota allocation and payment tracking audits.
+

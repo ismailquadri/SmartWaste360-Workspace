@@ -1,0 +1,22 @@
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
+import { describe, it, expect } from 'vitest';
+const source=readFileSync(resolve(__dirname,'../../lawma/work/bill-rules.js'),'utf8');
+const names=[...source.matchAll(/^const (\w+)=/gm)].map(m=>m[1]);
+const r=new Function(source+`;return {${names.join(',')}}`)();
+const bill={id:'B',property:'P',partner:'PSP',account:'DUMMY',status:'Issued',periods:['2026-09','2026-10'],lines:[{duid:'U'}],totals:{due:8000000}};
+describe('Paper bill and reconciliation safeguards',()=>{
+ it('calculates the reference five units at ₦2,000 for two months with ₦60,000 arrears',()=>{const lines=Array.from({length:5},()=>({rate:200000,arrears:1200000,credit:0}));expect(r.billTotals(lines,2)).toEqual({monthly:1000000,current:2000000,arrears:6000000,credit:0,due:8000000,remainingCredit:0})});
+ it('keeps credits without negative demand or losing advance surplus',()=>{expect(r.billTotals([{rate:200000,arrears:0,credit:600000}],2)).toEqual({monthly:200000,current:400000,arrears:0,credit:600000,due:0,remainingCredit:200000})});
+ it('spans the year correctly for monthly or two-month notices only',()=>{expect(r.billPeriod('2026-12',2)).toEqual(['2026-12','2027-01']);expect(r.billPeriod('2026-13',2)).toEqual([]);expect(r.billPeriod('2026-11',3)).toEqual([])});
+ it('blocks overlapping room bills but preserves voided serials and permits separate rooms',()=>{expect(r.billOverlap(bill,'P',['U'],['2026-10'])).toBe(true);expect(r.billOverlap(bill,'P',['OTHER'],['2026-10'])).toBe(false);expect(r.billOverlap({...bill,status:'Voided'},'P',['U'],['2026-10'])).toBe(false)});
+ it('rejects wrong property PSP and account rather than inferring teller matches',()=>{const d={property:'P',partner:'PSP',account:'DUMMY',amount:2000000,reference:'REF'};expect(r.billReceiptError(bill,d,[])).toBe('');for(const key of ['property','partner','account'])expect(r.billReceiptError(bill,{...d,[key]:'WRONG'},[])).not.toBe('')});
+ it('rejects duplicate bank references globally ignoring case and spacing',()=>{expect(r.billReceiptError(bill,{property:'P',partner:'PSP',account:'DUMMY',amount:100,reference:' ref '},[{reference:'REF'}])).toContain('already')});
+ it('requires positive integer kobo and rejects voided bill receipts',()=>{const d={property:'P',partner:'PSP',account:'DUMMY',reference:'R',amount:0};expect(r.billReceiptError(bill,d,[])).not.toBe('');expect(r.billReceiptError({...bill,status:'Voided'},{...d,amount:100},[])).not.toBe('')});
+ it('counts accepted bank evidence only and exposes ₦80,000 versus ₦20,000 declaration discrepancy',()=>{const receipts=[{bill:'B',amount:8000000,review:{decision:'Accepted'}},{bill:'B',amount:100000,review:{decision:'Rejected'}}];expect(r.billAudit(bill,receipts,[{bill:'B',amount:2000000}])).toMatchObject({paid:8000000,difference:6000000,outstanding:0,status:'Declaration discrepancy'});expect(r.billAudit(bill,[{bill:'B',amount:8000000}],[])).toMatchObject({paid:0,pending:1,status:'Receipt review'})});
+ it('treats successive declarations as cumulative revisions not extra money',()=>{expect(r.billAudit(bill,[{bill:'B',amount:8000000,review:{decision:'Accepted'}}],[{bill:'B',amount:2000000},{bill:'B',amount:8000000}])).toMatchObject({declared:8000000,status:'Matched',difference:0})});
+ it('distinguishes outstanding demand from bank vs declaration leakage',()=>{expect(r.billAudit(bill,[{bill:'B',amount:2000000,review:{decision:'Accepted'}}],[{bill:'B',amount:2000000}])).toMatchObject({difference:0,outstanding:6000000,status:'Part paid'})});
+ it('requires a different named official to accept evidence and review exceptions',()=>{expect(r.billReviewError('Alpha',' alpha ')).not.toBe('');expect(r.billReviewError('Alpha','Beta')).toBe('')});
+ it('retains bills with pending or accepted receipts rather than reversing payments',()=>{expect(r.billVoidError(bill,[{bill:'B'}])).not.toBe('');expect(r.billVoidError(bill,[{bill:'B',review:{decision:'Accepted'}}])).not.toBe('');expect(r.billVoidError(bill,[{bill:'B',review:{decision:'Rejected'}}])).toBe('')});
+ it('limits mutation to management finance and admin, not outside or auditor roles',()=>{for(const role of ['management','finance','admin'])expect(r.billCanEdit(role)).toBe(true);for(const role of ['auditor','partner','resident','operations','care'])expect(r.billCanEdit(role)).toBe(false)});
+});

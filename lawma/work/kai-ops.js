@@ -18,7 +18,7 @@ if(modules.kai?.version!==KAI_VERSION){modules.kai=kaiSeed();saveModules()}
 const kai=()=>modules.kai;
 const kaiCan=()=>KAI_ROLES.includes(journey.role);
 const kaiEv=c=>kai().evidence.filter(e=>e.case===c.id);
-const kaiCertified=c=>kaiEv(c).some(e=>e.certified&&sec84Ready(e))&&!forceReportMissing(kai().patrols,c.id);
+const kaiCertified=c=>kaiEv(c).some(e=>e.certified&&sec84Ready(e))&&!forceReportMissing(kai().patrols,c.id)&&kgCaseBooked(c.id);
 const kaiTabs=['Flag review','Sector teams','Patrol log','Evidence vault','Mobile Court','Impound yard'];
 const kaiPrev=screens.enforcement;
 screens.enforcement=()=>{

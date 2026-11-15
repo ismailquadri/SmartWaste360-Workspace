@@ -17,7 +17,7 @@ modules.scaleOps.tickets.forEach(t=>{t.lga||=SCALE_TICKET_LGA[t.id]||''});
 const so=()=>modules.scaleOps;
 const scaleCan=()=>SCALE_REVIEW_ROLES.includes(journey.role);
 const scaleOk=site=>{const s=so().scales.find(x=>x.site===site);return !s||scaleInTolerance(s.test,s.reading)};
-const scaleTicket=t=>{t.rainMm=so().rainMm;const f=ticketFindings(t,scaleOk(t.site));if(t.supersededBy)f.push('Superseded by '+t.supersededBy);return {f,held:!!t.supersededBy||!!t.voided||!!(f.length&&t.review?.outcome!=='Cleared'),net:ticketNet(t)}};
+let scaleTicket=t=>{const f=ticketFindings(t,scaleOk(t.site));if(t.supersededBy)f.push('Superseded by '+t.supersededBy);return {f,held:!!t.supersededBy||!!t.voided||!!(f.length&&t.review?.outcome!=='Cleared'),net:ticketNet(t)}};
 const kg=n=>Number(n).toLocaleString('en-GB')+' kg';
 const scaleTabs=['Gate & queue','Ticket checks','Scale calibration','Wet-season mud','Commercial tipping'];
 const prevFacility=screens.facility;

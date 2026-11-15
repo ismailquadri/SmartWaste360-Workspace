@@ -1,0 +1,26 @@
+/* Rehearsal engineering settings only. Do not treat as statutory or activate real equipment. */
+const EG_DEPTHS={Shallow:[8,15],Intermediate:[35,50]};
+const EG_HEAD_M=0.4;
+const EG_CONFIRM_H=24;
+const EG_PAIR_H=1;
+const EG_FRESH_MIN=30;
+const EG_WATER_LPD=25;
+const EG_RELIEF_H=6;
+const EG_STORM_PCT=80;
+const EG_COMPACTION_DENSITY=1.95;
+const egCod=(uv,cal)=>cal&&cal.r2>=0.92&&Number.isFinite(uv)&&uv>=0?cal.a*uv**cal.b+cal.c:null;
+const egCritical=r=>r.ec>2500&&r.ph<6.2&&r.cod>250;
+const egDilution=(previous,next)=>!!previous&&next.head-previous.head>EG_HEAD_M&&next.rain===0;
+const egStationState=(s,now)=>s.hold?'Tamper hold':!s.calibration?'Calibration required':!s.readings.length?'No readings':s.readings.at(-1).calibration?.ref!==s.calibration.ref?'Capture needs current calibration':!Number.isFinite(Date.parse(s.readings.at(-1).at))||now-Date.parse(s.readings.at(-1).at)>EG_FRESH_MIN*60000?'Stale / offline':'Current';
+const egPair=(down,up)=>!down||!up||down.site!==up.site||down.layer!==up.layer||down.position!=='Downgradient'||up.position!=='Upgradient'||egStationState(down,Date.now())!=='Current'||egStationState(up,Date.now())!=='Current'||Math.abs(Date.parse(down.readings.at(-1).at)-Date.parse(up.readings.at(-1).at))>EG_PAIR_H*3600000?null:down.readings.at(-1).cod/up.readings.at(-1).cod;
+const egReliefNeed=(people)=>people*EG_WATER_LPD;
+const egReliefError=(r,volume,capacity)=>!r.approved?'Independent relief approval required':!r.potable?'Potable tanker certificate required':!Number.isFinite(volume)||volume<=0||volume>capacity?'Tanker capacity exceeded':r.delivered+volume>r.need?'Delivery exceeds planned daily need':'';
+const egTreatmentErrors=t=>[t.do<2&&'Oxygen below 2 mg/L',t.uptime<0.9&&'Pump uptime below 90%',t.retention<15&&'Settling retention below 15 days',!t.wetlandSafe&&'Wetland inspection required',t.bod>=50&&'Effluent BOD must be below 50 mg/L',t.cod>=100&&'Effluent COD must be below 100 mg/L',t.tds>=1500&&'Effluent TDS must be below 1,500 mg/L',t.rain>0&&t.capacity>=EG_STORM_PCT&&'Storm hold: no canal discharge'].filter(Boolean);
+const egGasState=lel=>lel>=20?'Emergency':lel>=10?'Warning':'Below warning';
+const egGasActionError=(g,d)=>!d.engineering||!d.exclusion||!d.flameArrestor?'Reviewed engineering, exclusion zone and flame arrestor required':!d.blower||!d.ignition?'Failed blower / ignition: retain emergency hold':'';
+const egCapRequired=c=>c.area*c.thickness*c.density;
+const egCapErrors=(c)=>[c.mass<egCapRequired(c)*0.95&&'Laterite mass shortfall exceeds 5%',c.pressure<=160&&'Blade pressure must exceed 160 bar',c.hours<4.5&&'Spreading below 4.5 hours',c.coverage<95&&'Survey coverage below 95%',c.measured<0.15&&'Compacted thickness below 15 cm',c.achieved<EG_COMPACTION_DENSITY&&'Compaction density below reviewed 1.95 t/m³',!c.materialApproved&&'Material approval required',!c.review&&'Independent engineering review required'].filter(Boolean);
+const egCustodyError=(e,d,by)=>d.seal!==e.seal?'Sample seal mismatch':d.temp<3||d.temp>5?'Cold chain outside 4 ± 1 °C':!distinctOfficials(by,d.receiver)?'Different receiving custodian required':'';
+const egEvidenceSnapshot=e=>JSON.stringify({station:e.station,seal:e.seal,calibration:e.calibration,payload:e.payload,steps:e.steps});
+const egEvidenceReady=e=>!!e.checked&&e.checked.digest===e.hash&&e.checked.payload===e.payload&&e.steps.length===3&&e.steps.every(x=>x.seal===e.seal&&x.temp>=3&&x.temp<=5)&&!!e.calibration&&e.attestations.length===2&&distinctOfficials(e.attestations[0].by,e.attestations[1].by)&&e.attestations.every(a=>a.hash===e.hash&&a.snapshot===egEvidenceSnapshot(e));
+const egInvoiceErrors=(invoice,caps,referrals)=>[...(!invoice.review?['Independent invoice review required']:[]),...invoice.cap?caps.find(c=>c.id===invoice.cap)?egCapErrors(caps.find(c=>c.id===invoice.cap)):['Missing capping record']:[],...referrals.filter(r=>r.invoice===invoice.id&&!r.closed).map(r=>'Environmental investigation '+r.id)];

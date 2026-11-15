@@ -278,6 +278,7 @@ function runModule(cmd,id){
    d.vehicle=d.vehicle.toUpperCase();const v=fleet.find(x=>x.code===d.vehicle);
    if(!v)return'Fleet ID not found. Choose a vehicle from the fleet register.';
    if(modules.visits.some(x=>!x.departed&&x.vehicle===d.vehicle))return'This vehicle already has an open visit. Record its departure first.';
+   const siteName=modules.facilities.find(f=>f.id===d.facility)?.name||'';const gateError=lgAdmissionError(siteName,d.vehicle);if(gateError)return gateError;lgRecordAdmission(siteName,d.vehicle);
    const p=partnerByID(v.partnerId);const visit={id:moduleID('VIS',modules.visits),...d,partner:p?.id||'',arrived:new Date().toISOString(),departed:null};modules.visits.unshift(visit);ui.facility=d.facility;recordModuleAction(visit.id+' arrival: '+d.vehicle+' at '+d.facility);
   });return;
  }
@@ -429,7 +430,7 @@ function renderNav(){
  const groups=[
   ['Organisation',['overview','cadastre','partners','partner','registry']],
   ['Operations',['fleet','dispatch','serviceLedger','crew','facility','capacity','environment','hazwaste','cameras','partnerWork']],
-  ['Service & assurance',['publicReports','drainage','incidents','compliance','finance','remittances','commercial','care','connectedService','enforcement','recovery','resident','alerts']],
+  ['Service & assurance',['publicReports','drainage','incidents','compliance','finance','bills','remittances','commercial','care','connectedService','enforcement','recovery','resident','alerts']],
   ['Governance',['systems','reports','scenarios']]
  ];
  navRail.innerHTML=groups.map(([label,pages])=>{

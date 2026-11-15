@@ -99,6 +99,7 @@ function advanceOrder(o){
  else if(o.stage==='Collected'){
   const existing=modules.visits.find(v=>v.vehicle===o.vehicle&&!v.departed);
   if(existing&&existing.facility!==o.facility){toast('Record departure from the other site before this arrival.');return}
+  const siteName=sampleFacility(o.facility).name,gateError=lgAdmissionError(siteName,o.vehicle);if(gateError){toast(gateError);return}if(!existing)lgRecordAdmission(siteName,o.vehicle);
   const visit=existing||{id:moduleID('VIS',modules.visits),facility:o.facility,vehicle:o.vehicle,partner:o.partner,arrived:simNow(),departed:null,order:o.id};
   if(!existing)modules.visits.unshift(visit);o.visit=visit.id;o.stage='At facility';orderEvent(o,'Arrival recorded at '+sampleFacility(o.facility).name);
   if(occupancy(sampleFacility(o.facility))>sampleFacility(o.facility).capacity)simFlag('Capacity breach','Simulated arrivals exceed site capacity.',o.facility);

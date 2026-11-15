@@ -1,14 +1,20 @@
 /* MOD-06 proposed enforcement rules. Sample only; LAWMA legal, KAI command and the Mobile Court registry must approve. */
 const KAI_SECTORS=['Oshodi','Alausa','Alaba','Ikeja','Lagos Island','Apapa','Surulere','Mushin','Ikorodu','Lekki','Agege','Badagry'];
 const GPS_MATCH_M=200;
+const KAI_BODYCAM_M=50;
+const KAI_CCTV_M=250;
 const DEMURRAGE_PER_DAY={Car:5000,Tricycle:2000,Truck:20000,Bus:10000};
 const FREE_HOURS=24;
 const COMMUNITY_SERVICE_MAX_HOURS=72;
 const KAI_ROLES=['management','enforcement','admin'];
 const gpsDistanceM=(a,b)=>{const R=6371000,r=x=>x*Math.PI/180,dLat=r(b[0]-a[0]),dLng=r(b[1]-a[1]),h=Math.sin(dLat/2)**2+Math.cos(r(a[0]))*Math.cos(r(b[0]))*Math.sin(dLng/2)**2;return Math.round(2*R*Math.asin(Math.sqrt(h)))};
 const validEvidenceGps=p=>Array.isArray(p)&&p.length===2&&p.every(Number.isFinite)&&Math.abs(p[0])<=90&&Math.abs(p[1])<=180;
-const evidenceGaps=e=>[!(e.cctv||e.bodycam)&&'No CCTV or bodycam footage',!Number.isFinite(Date.parse(e.timestamp))&&'No valid device timestamp',!validEvidenceGps(e.gps)&&'Invalid officer GPS',!validEvidenceGps(e.scene)&&'Invalid scene GPS',validEvidenceGps(e.gps)&&validEvidenceGps(e.scene)&&gpsDistanceM(e.gps,e.scene)>GPS_MATCH_M&&'Officer GPS more than 200 m from the scene',!e.hash&&'No file fingerprint (hash)'].filter(Boolean);
-const sec84Ready=e=>evidenceGaps(e).length===0&&!!e.custodian;
+const kaiSightDistance=e=>{if(!validEvidenceGps(e.gps)||!validEvidenceGps(e.scene))return Infinity;const r=x=>x*Math.PI/180,a=e.gps,b=e.scene,h=Math.sin(r(b[0]-a[0])/2)**2+Math.cos(r(a[0]))*Math.cos(r(b[0]))*Math.sin(r(b[1]-a[1])/2)**2;return 2*6371000*Math.asin(Math.min(1,Math.sqrt(h)))};
+const kaiEvidenceSnapshot=e=>JSON.stringify({case:e.case,source:e.source,bodycam:e.bodycam,cctv:e.cctv,timestamp:e.timestamp,gps:e.gps,scene:e.scene,overhead:e.overhead,zoom:e.zoom,zoomRef:e.zoomRef,payload:e.payload,hash:e.hash,revision:e.revision});
+const evidenceGaps=e=>[!['Bodycam','Overhead CCTV'].includes(e.source)&&'Choose a footage source',e.source==='Bodycam'&&!e.bodycam&&'Bodycam reference missing',e.source==='Overhead CCTV'&&!e.cctv&&'CCTV reference missing',!Number.isFinite(Date.parse(e.timestamp))&&'No valid device timestamp',!validEvidenceGps(e.gps)&&'Invalid capture GPS',!validEvidenceGps(e.scene)&&'Invalid scene GPS',e.source==='Bodycam'&&kaiSightDistance(e)>KAI_BODYCAM_M&&'Bodycam sightline exceeds 50 m',e.source==='Overhead CCTV'&&kaiSightDistance(e)>KAI_CCTV_M&&'Overhead CCTV sightline exceeds 250 m',e.source==='Overhead CCTV'&&(!e.overhead||!Number.isFinite(e.zoom)||e.zoom<1||!String(e.zoomRef||'').trim())&&'Overhead CCTV requires logged zoom',!String(e.payload||'').trim()&&'Dummy evidence content missing',!/^[a-f0-9]{64}$/.test(e.hash||'')&&'Valid SHA-256 hash required'].filter(Boolean);
+const kaiHashReady=e=>!!e.hashCheck?.matched&&e.hashCheck.digest===e.hash&&e.hashCheck.snapshot===kaiEvidenceSnapshot(e);
+const kaiAttested=e=>e.attestations?.length===2&&e.attestations.every(a=>a.snapshot===kaiEvidenceSnapshot(e)&&a.hash===e.hash)&&String(e.attestations[0].by).trim().toLowerCase()!==String(e.attestations[1].by).trim().toLowerCase();
+const sec84Ready=e=>evidenceGaps(e).length===0&&kaiHashReady(e)&&kaiAttested(e)&&!!e.custodian;
 const interceptionNeedsReport=i=>i.force!=='None'||!!i.injury;
 const chargeReady=c=>!!c.offence&&!!c.evidenceCertified&&!c.reportMissing;
 const pleaNext=plea=>plea==='Guilty'?'Sentence':plea==='Not guilty'?'Hearing':'Plea';
