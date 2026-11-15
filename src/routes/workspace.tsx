@@ -20,12 +20,14 @@ export const Route = createFileRoute("/workspace")({
 
 // The workspace is a self-contained build (lawma/build_dashboard.py → public/dashboard.html),
 // hosted full-viewport so its own hash routes, storage and map engine run untouched.
+const DASHBOARD_SRC = "/dashboard.html?v=20261115b";
+
 function Workspace() {
   return (
     <main className="dashboard-host">
       <h1 className="sr-only">SmartWaste360 workspace</h1>
       <iframe
-        src="/dashboard.html"
+        src={DASHBOARD_SRC}
         title="SmartWaste360 workspace"
         className="dashboard-frame"
         allow="fullscreen; clipboard-write"
