@@ -10,7 +10,11 @@ export default defineConfig({
     tsconfigPaths(),
     tailwindcss(),
     tanstackStart({ server: { entry: "server" } }),
-    nitro(process.env["VERCEL"] ? { preset: "vercel" } : { preset: "cloudflare-module", output: { dir: "dist" } }),
+    nitro(
+      process.env["VERCEL"] || process.env["NITRO_PRESET"] === "vercel"
+        ? { preset: "vercel" }
+        : { preset: "cloudflare-module", output: { dir: "dist" } }
+    ),
     react(),
   ],
   resolve: { dedupe: ["react", "react-dom", "@tanstack/react-router"] },
