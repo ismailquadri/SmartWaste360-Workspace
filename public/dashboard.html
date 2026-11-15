@@ -702,6 +702,13 @@ html[data-theme]:root:not(#sc) :is(.layers-pop, .tour-card, .maplibregl-popup-co
   box-shadow: var(--sc-shadow-pop);
 }
 html[data-theme]:root:not(#sc) .tour-ring { border-radius: var(--sc-r-md); box-shadow: 0 0 0 2000px rgba(0, 0, 0, .45), 0 0 0 2px var(--sc-heat); }
+html[data-theme]:root:not(#sc) .tour-card { width: 360px; max-width: calc(100vw - 20px); max-height: calc(100dvh - 20px); overflow-y: auto; padding: 20px; border-radius: var(--sc-r); }
+html[data-theme]:root:not(#sc) .tour-card h2 { font-size: 18px; line-height: 1.3; letter-spacing: 0; }
+html[data-theme]:root:not(#sc) .tour-card p { color: var(--sc-fg-dim); font-size: 14px; }
+html[data-theme]:root:not(#sc) .tour-progress { font: 11px var(--sc-mono); color: var(--sc-heat-text); margin-bottom: 12px; }
+html[data-theme]:root:not(#sc) .tour-open-page { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; color: var(--sc-heat-text); }
+html[data-theme]:root:not(#sc) .tour-open-page svg { width: 16px; height: 16px; }
+html[data-theme]:root:not(#sc) .tour-actions { flex-wrap: wrap; }
 
 /* ---------- 11. Fleet map workspace -------------------------------- */
 html[data-theme]:root:not(#sc) .fleet-list { background: var(--sc-surface); border-color: var(--sc-border-faint); }
@@ -1100,12 +1107,12 @@ html[data-theme]:root:not(#sc) .cad-policy svg{flex:none;width:20px;height:20px;
 html[data-theme]:root:not(#sc) .cad-policy span{display:grid;gap:4px;font-size:13px}
 html[data-theme]:root:not(#sc) .cad-policy small{color:var(--sc-fg-muted);font-size:12px;line-height:1.5}
 html[data-theme]:root:not(#sc) .cad-ladder{margin:8px 0 24px}
-html[data-theme]:root:not(#sc) .cad-tabs{display:flex;flex-wrap:nowrap;overflow-x:auto;gap:6px;margin:16px 0;padding-bottom:6px;scrollbar-width:thin}
+html[data-theme]:root:not(#sc) .cad-tabs{display:flex;flex-wrap:wrap;gap:4px;margin:20px 0}
 html[data-theme]:root:not(#sc) .drain-map{display:block;width:100%;max-width:460px;height:auto;margin:16px auto;background:var(--sc-bg-lighter)}
 html[data-theme]:root:not(#sc) .drain-map polygon{fill:var(--sc-blue-bg);stroke:var(--sc-blue);stroke-width:2}
 html[data-theme]:root:not(#sc) .drain-map text{fill:var(--sc-fg);font:12px var(--sc-font)}
 html[data-theme]:root:not(#sc) .drain-map circle{fill:var(--sc-heat);stroke:var(--sc-surface);stroke-width:2}
-html[data-theme]:root:not(#sc) .cad-tabs button{font:inherit;font-size:12px;min-height:44px;padding:8px 12px;border:0;border-radius:var(--sc-r-sm);background:var(--sc-bg-lighter);color:var(--sc-fg-dim);cursor:pointer;white-space:nowrap;flex-shrink:0}
+html[data-theme]:root:not(#sc) .cad-tabs button{font:inherit;font-size:12px;min-height:44px;padding:8px 12px;border:0;border-radius:var(--sc-r-sm);background:var(--sc-bg-lighter);color:var(--sc-fg-dim);cursor:pointer}
 html[data-theme]:root:not(#sc) .cad-tabs button[aria-selected=true]{background:var(--sc-heat-12);color:var(--sc-heat-text);font-weight:600}
 html[data-theme]:root:not(#sc) .cad-tabs button:focus-visible{outline:2px solid var(--sc-heat);outline-offset:2px}
 html[data-theme]:root:not(#sc) .cad-qr{max-width:240px;margin:20px auto;background:var(--sc-surface);padding:12px}
@@ -1229,7 +1236,7 @@ html[data-theme]:root:not(#sc) .ov-panel-head :is(h2,p) {max-width:100%;white-sp
 html[data-theme]:root:not(#sc) .module-toolbar {gap:var(--sc-space-sm);padding:0 var(--sc-space-lg) var(--sc-space-md)}
 html[data-theme]:root:not(#sc) .module-toolbar :is(input,select,.module-search) {min-width:0;max-width:100%}
 html[data-theme]:root:not(#sc) :is(.btn,.text-action) {white-space:normal;line-height:1.4}
-html[data-theme]:root:not(#sc) .state-pill {white-space:nowrap!important;word-break:keep-all;line-height:1.4;display:inline-flex;align-items:center}
+html[data-theme]:root:not(#sc) .state-pill {white-space:normal;line-height:1.4;max-width:100%;overflow-wrap:anywhere}
 html[data-theme]:root:not(#sc) .modal {padding:var(--sc-space-lg);max-width:calc(100vw - 32px);border-radius:var(--sc-r)}
 html[data-theme]:root:not(#sc) .modal-head {margin-bottom:var(--sc-space-lg);align-items:flex-start}
 html[data-theme]:root:not(#sc) .module-field {margin:var(--sc-space-md) 0}
@@ -1270,7 +1277,7 @@ html[data-theme]:root:not(#sc) #fleetMain {padding-inline:0}
  html[data-theme]:root:not(#sc) .module-toolbar {align-items:stretch}
  html[data-theme]:root:not(#sc) .module-toolbar>label {flex-basis:100%}
  html[data-theme]:root:not(#sc) .module-toolbar :is(input,select,.module-search) {width:100%;flex:1 1 100%}
- html[data-theme]:root:not(#sc) :is(.cad-tabs,.module-tabs) {flex-wrap:nowrap;overflow-x:auto;gap:var(--sc-space-xs);padding-bottom:4px;scrollbar-width:thin}
+ html[data-theme]:root:not(#sc) :is(.cad-tabs,.module-tabs) {flex-wrap:wrap;gap:var(--sc-space-xs)}
  html[data-theme]:root:not(#sc) :is(.btn,.text-action,.iconbtn) {min-height:44px}
  html[data-theme]:root:not(#sc) .modal-back {padding:var(--sc-space-xs)}
  html[data-theme]:root:not(#sc) .modal {max-width:100%;max-height:calc(100dvh - 16px);padding:var(--sc-space-md)}
@@ -1285,7 +1292,7 @@ html[data-theme]:root:not(#sc) #billPrintRoot {display:none}
 html[data-theme]:root:not(#sc) #journeyMain:has([data-module="bill-back"]) table {table-layout:fixed;width:100%;min-width:0}
 html[data-theme]:root:not(#sc) #journeyMain:has([data-module="bill-back"]) :is(td,th) {white-space:normal;overflow-wrap:anywhere;padding:12px 8px}
 html[data-theme]:root:not(#sc) #journeyMain:has([data-module="bill-back"]) td:last-child {width:110px}
-html[data-theme]:root:not(#sc) #journeyMain:has([data-module="bill-back"]) .state-pill {display:inline-flex;align-items:center;white-space:nowrap!important;word-break:keep-all;box-sizing:border-box}
+html[data-theme]:root:not(#sc) #journeyMain:has([data-module="bill-back"]) .state-pill {display:inline-block;white-space:normal!important;overflow-wrap:anywhere;max-width:100%;box-sizing:border-box}
 html[data-theme]:root:not(#sc) #journeyMain:has([data-module="bill-back"]) .work-panel {border-radius:0;box-shadow:none}
 html[data-theme]:root:not(#sc) .modal:has(.bill-sheet) {width:850px;max-width:calc(100vw - 32px)}
 html[data-theme]:root:not(#sc) .bill-sheet {font-size:12px;line-height:1.5;overflow-wrap:anywhere;padding:var(--sc-space-md);background:var(--sc-surface);color:var(--sc-fg)}
@@ -1330,7 +1337,7 @@ html[data-theme]:root:not(#sc) .bill-canvas .bill-sheet {box-shadow:0 2px 12px r
 html[data-theme]:root:not(#sc) .bill-canvas-count {font-size:12px;color:var(--sc-fg-muted);margin:0 0 8px}
 @media (max-width:900px){html[data-theme]:root:not(#sc) .bill-compose-grid {grid-template-columns:minmax(0,1fr)} html[data-theme]:root:not(#sc) .bill-canvas {position:static;max-height:none}}
 /* Revenue tables: let status labels wrap inside their cell and keep figures on one line. */
-html[data-theme]:root:not(#sc) #journeyMain table.mobile-records td .state-pill {white-space:normal!important;max-width:100%;display:inline-block;word-break:keep-all;overflow-wrap:normal}
+html[data-theme]:root:not(#sc) #journeyMain table.mobile-records td .state-pill {white-space:normal!important;max-width:100%;display:inline-block}
 html[data-theme]:root:not(#sc) #journeyMain table.mobile-records td:has(.state-pill+.state-pill) {min-width:240px}
 html[data-theme]:root:not(#sc) #journeyMain table.mobile-records td:not(:first-child) {overflow-wrap:normal;word-break:normal}
 html[data-theme]:root:not(#sc) #journeyMain table.mobile-records td:not(:first-child):not(:has(.state-pill,.btn,button)) {white-space:nowrap}
@@ -1530,7 +1537,7 @@ const scenarioRecord=()=>'<div class="record-banner"><div><span class="eyebrow">
 function renderJourney(){
 $('persona').value=journey.role;const p=journey.page;
 navRail.innerHTML=journeyNav.filter(([id])=>personaPages[journey.role].includes(id)).map(([id,label,ic])=>'<button data-go="'+id+'" class="'+(p===id?'active':'')+'" '+(p===id?'aria-current="page"':'')+'>'+icon(ic)+label+'</button>').join('')+(journey.role==='crew'?'<button data-go="crew" class="'+(p==='crew'?'active':'')+'">'+icon('pin')+'My shift</button>':'')+(journey.role==='resident'?'<button data-go="resident" class="'+(p==='resident'?'active':'')+'">'+icon('help')+'My service</button>':'');
-const isFleet=p==='fleet';oldMain.hidden=!isFleet;journeyMain.hidden=isFleet;skip.href=isFleet?'#fleetMain':'#journeyMain';if(isFleet){setTimeout(()=>{if(typeof ensureFleetMap==='function')ensureFleetMap().then(()=>{if(ready&&!state.selected)fitFleet();if(typeof map!=='undefined'&&map)map.resize();})},0);bindJourney();saveJourney();return}
+const isFleet=p==='fleet';oldMain.hidden=!isFleet;journeyMain.hidden=isFleet;skip.href=isFleet?'#fleetMain':'#journeyMain';if(isFleet){setTimeout(()=>{if(typeof ensureFleetMap==='function')ensureFleetMap().then(()=>{if(ready&&!state.selected)fitFleet()})},0);bindJourney();return}
 let html='';
 if(p==='overview')html=pageHead('AUTHORITY OVERVIEW','A clearer picture of today.','Service delivery, facility handoff and exceptions in one place.',action('Open fleet map','fleet',true))+stats([['Vehicles in view','1,000','684 on route · 46 with stale signals'],['Service follow-ups','24','Evidence requiring supervisor review'],['Priority resident case',journey.caseStage===2?pill('Resolved','good'):'1','CC-1048 · missed collection'],['Connected load',journey.weighed?pill('Recorded','good'):pill('Pending','amber'),'LD-0218 · facility receipt']])+'<div class="journey-grid wide">'+panel('The service chain','Follow one collection from assignment to a confirmed outcome.',scenarioRecord()+steps(['Assign','Collect','Facility','Reconcile'],journey.assigned&&journey.synced&&journey.weighed&&journey.settled?4:journey.assigned&&journey.synced&&journey.weighed?3:journey.assigned&&journey.synced?2:journey.assigned?1:0)+'<div class="chain-links">'+routeButton('Assign the service','dispatch')+routeButton('Capture field evidence','crew')+routeButton('Receive the load','facility')+routeButton('Reconcile the account','finance')+'</div>')+panel('Needs a decision','Priorities with a clear next action.','<div class="priority-row"><span>'+pill('Evidence','amber')+'<b>Collection proof incomplete</b><small>FLT-0042 · three reported events</small></span>'+routeButton('Inspect','fleet')+'</div><div class="priority-row"><span>'+pill('Citizen care','amber')+'<b>Missed pickup in Ikeja</b><small>Resident confirmation required before closure</small></span>'+routeButton('Review','care')+'</div><div class="priority-row"><span>'+pill('Continuity')+'<b>Field connectivity interrupted</b><small>Queued records must preserve original capture time</small></span>'+routeButton('Open shift','crew')+'</div>')+'</div>'+panel('Performance questions','',table(['Outcome','Evidence needed','Workspace'],[['Reliable collection','Assignment, crew event and service review',routeButton('PSP operations','dispatch')],['Better facility turnaround','Arrival, scale and tipping timestamps',routeButton('Facilities','facility')],['Payment compliance','Property, invoice and bank match',routeButton('Revenue','finance')],['Resource recovery','Material weight and processor receipt',routeButton('Recovery','recovery')]]));
 if(p==='dispatch')html=pageHead('PSP OPERATIONS','Plan the shift. Close the gaps.','Use assignments, vehicle readiness and evidence to manage the day.',action('Assign collection','assign',true))+scenarioRecord()+steps(['Ready','Assigned','Evidence received'],journey.synced?3:journey.assigned?1:0)+'<div class="journey-grid wide">'+panel('Today’s route sheet','PSP partner 06 · sample operating area',table(['Route / vehicle','Crew','Progress','Action'],[['IKJ-07 / FLT-0042','Babatunde A.',pill(journey.synced?'Evidence received':journey.assigned?'Assigned':'Awaiting assignment'),routeButton('Open crew journey','crew')],['YAB-03 / FLT-0074','Crew B',pill('On route'),routeButton('Locate vehicle','fleet')],['AGE-02 / FLT-0141','Crew C',pill(journey.maintained?'Inspection scheduled':'Vehicle unavailable','amber'),action('Plan inspection','maintenance')]]))+panel('Readiness before dispatch','Practical checks for a reliable shift.','<ul class="plain-list"><li>Driver and crew assigned</li><li>Vehicle condition and capacity checked</li><li>Service area and route acknowledged</li><li>Device charged and offline queue available</li></ul>')+'</div>';
@@ -1621,15 +1628,30 @@ closeDetail=function(){
  const ghost=$('detail').cloneNode(true);ghost.removeAttribute('id');ghost.setAttribute('aria-hidden','true');ghost.inert=true;ghost.querySelectorAll('[id]').forEach(x=>x.removeAttribute('id'));$('detail').after(ghost);baseCloseDetail();
  const a=ghost.animate([{opacity:1,transform:'none'},{opacity:0,transform:'translateX(18px)'}],{duration:140,easing:'ease-out'});a.onfinish=()=>ghost.remove();
 };
-// Navigation transition helper
+// Brief skeleton shimmer over the content area on navigation, purely visual: the real
+// render below still happens synchronously so focus/scroll calls right after goJourney()/
+// renderJourney() keep working; the skeleton just covers the target area for a moment.
 function showSkeleton(target){
- return null;
+ if(!target||document.body.classList.contains('tour-open'))return null;
+ // Appended to <body> (not the target) and positioned fixed over its rect: the target's
+ // innerHTML is about to be replaced synchronously by the real render, which would wipe
+ // out a skeleton appended as a child.
+ const r=target.getBoundingClientRect();
+ const skel=document.createElement('div');skel.className='skeleton-veil';skel.setAttribute('aria-hidden','true');
+ skel.style.top=r.top+'px';skel.style.left=r.left+'px';skel.style.width=r.width+'px';skel.style.height=r.height+'px';
+ skel.innerHTML='<div class="skeleton-bar w1"></div><div class="skeleton-bar w2"></div><div class="skeleton-bar w3"></div><div class="skeleton-panel"></div>';
+ document.body.appendChild(skel);
+ const delay=reducedMotion()?120:450+Math.round(Math.random()*150);
+ const finish=()=>{if(!skel.isConnected)return;if(reducedMotion()){skel.remove();return}const a=skel.animate([{opacity:1},{opacity:0}],{duration:160,easing:'ease-out'});a.onfinish=()=>skel.remove()};
+ setTimeout(finish,delay);
+ return skel;
 }
 const baseGoJourney=goJourney;
-goJourney=function(page){const target=page==='fleet'?oldMain:journeyMain;const changed=journey.page!==page;baseGoJourney(page);if(changed)entrance(target)};
+goJourney=function(page){const target=page==='fleet'?oldMain:journeyMain;showSkeleton(target);const changed=journey.page!==page;baseGoJourney(page);if(changed)entrance(target)};
 let lastSkeletonPage=journey.page;
 const baseRenderJourney=renderJourney;
 renderJourney=function(){
+ if(journey.page!==lastSkeletonPage){showSkeleton(journey.page==='fleet'?oldMain:journeyMain);lastSkeletonPage=journey.page}
  baseRenderJourney();document.querySelectorAll('.journey-steps .current').forEach(el=>el.setAttribute('aria-current','step'));
 };
 // Quiet and accessible feedback: status text stays available without relying on motion.
@@ -1653,27 +1675,29 @@ function applyTheme(preference){
 }
 themeControl.addEventListener('click',e=>{const b=e.target.closest('.theme-opt');if(!b)return;themePreference=b.dataset.appearance;try{localStorage.setItem('lawma-appearance',themePreference)}catch{}applyTheme(themePreference);toast('Appearance: '+themePreference)});
 themeMedia.addEventListener('change',()=>{if(themePreference==='system')applyTheme('system')});applyTheme(themePreference);
-// First-time guided tour: five coach-marks over real controls, dimmed overlay with a
-// spotlight cutout. Reuses lockDialogBackground()'s inert approach so background content
-// is non-interactive while the tour is open. Gracefully skips any step whose target is
-// missing for the current role/view.
+// Management tour visits real pages without changing any operational records.
 const tourSteps=[
- {sel:'#persona',title:'Switch roles',text:'Switch roles to see each team’s workspace.'},
- {sel:'.journey-nav',title:'Every module',text:'Every module of the service, one click away.'},
- {sel:'#journeyGuide',title:'Guided walkthrough',text:'Follow a guided walkthrough of a full collection.'},
- {sel:'.theme-control',title:'Appearance',text:'Light or dark, your choice sticks.'},
- {sel:'#resetJourney',title:'Reset anytime',text:'Start fresh anytime.'}
+ {page:'overview',sel:'#journeyMain .journey-stats, #journeyMain .work-panel',title:'Start with the daily picture',text:'Check collection totals, district performance and the service backlog. Identify overdue work and the areas needing attention first.',action:'Open Overview'},
+ {page:'fleet',sel:'.fleet-list .list-tools',title:'Locate fleet exceptions',text:'Review stale trackers, vehicle status and district coverage. Open a truck record to inspect its route and follow-up evidence. Positions are sample data, not live tracking.',action:'Open Fleet map'},
+ {page:'publicReports',sel:'#journeyMain .work-panel',title:'Prioritise resident reports',text:'Review incoming dumping alarms and service complaints. Check urgency, assign responsibility and follow the evidence through to a recorded outcome.',action:'Open Resident reports'},
+ {page:'partners',sel:'#journeyMain .cad-tabs, #journeyMain .work-panel',title:'Hold partners accountable',text:'Review the partner directory, work orders, remittances, pickups and facility weights together. Compare service records before starting a compliance review.',action:'Open Partners'},
+ {page:'finance',sel:'#journeyMain .cad-tabs, #journeyMain .work-panel',title:'Review revenue before release',text:'Compare settlement amounts with eligible weigh tickets, outstanding holds and review decisions. Collection tonnage is not proof of payment.',action:'Open Revenue'},
+ {page:'bills',sel:'#journeyMain .journey-head',title:'Issue and audit demand bills',text:'Choose Issue bill for the live bill canvas, then preview the four-part notice. Use Payment audit for bank evidence, Feedback & scorecard for returned stubs and Arrears escalation for reviewed notice drafts. QR payments are simulated.',action:'Open Demand bills'},
+ {page:'compliance',sel:'#journeyMain .work-panel',title:'Close the loop with a reviewed decision',text:'Check evidence and record the responsible official’s decision. Safeguards that require a second official still apply. This workspace uses sample records saved on this device; no live penalties or payments are triggered.',action:'Open Compliance'}
 ];
 let tourState=null;
-function closeTour(){
+function closeTour(stay=false){
  if(!tourState)return;
- const {overlay,resize}=tourState;
- window.removeEventListener('resize',resize);document.removeEventListener('keydown',tourKeydown,true);
+ const {overlay,resize,originalPage,originalScroll}=tourState;
+ window.removeEventListener('resize',resize);window.removeEventListener('scroll',resize,true);document.removeEventListener('keydown',tourKeydown,true);
  lockDialogBackground(false);
  overlay.remove();
  document.body.classList.remove('tour-open');
- if(tourState.lastFocus?.isConnected)tourState.lastFocus.focus();
+ const lastFocus=tourState.lastFocus;
  tourState=null;
+ if(!stay){goJourney(originalPage);window.scrollTo({top:originalScroll,behavior:'instant'})}
+ if(!stay&&lastFocus?.isConnected)lastFocus.focus({preventScroll:true});
+ else document.querySelector('main:not([hidden]) h1')?.focus({preventScroll:true});
  try{localStorage.setItem('lawma-tour-v1','done')}catch{}
 }
 function tourKeydown(e){
@@ -1690,35 +1714,39 @@ function tourKeydown(e){
  }
 }
 function tourPlaceCard(target){
+ if(!tourState||!target)return;
  const {card,ring}=tourState;
  const r=target.getBoundingClientRect();
  const pad=8;
- ring.style.top=(r.top-pad)+'px';ring.style.left=(r.left-pad)+'px';ring.style.width=(r.width+pad*2)+'px';ring.style.height=(r.height+pad*2)+'px';
+ const ringTop=Math.max(pad,r.top),ringLeft=Math.max(pad,r.left);
+ ring.style.top=(ringTop-pad)+'px';ring.style.left=(ringLeft-pad)+'px';ring.style.width=Math.max(0,Math.min(window.innerWidth-pad,r.right)-ringLeft+pad*2)+'px';ring.style.height=Math.max(0,Math.min(window.innerHeight-pad,r.bottom)-ringTop+pad*2)+'px';
  const cardH=card.offsetHeight||160,cardW=card.offsetWidth||300;
  let top=r.bottom+14;
  if(top+cardH>window.innerHeight-10)top=Math.max(10,r.top-cardH-14);
  let left=Math.min(Math.max(10,r.left),window.innerWidth-cardW-10);
- card.style.top=top+'px';card.style.left=left+'px';
+ card.style.top=Math.min(top,Math.max(10,window.innerHeight-cardH-10))+'px';card.style.left=left+'px';
 }
 function tourGo(index){
  if(!tourState)return;
  const steps=tourState.steps;
  if(index<0)return;
  if(index>=steps.length){closeTour();return}
- let i=index;
- let target=document.querySelector(steps[i].sel);
- while(!target&&i<steps.length-1){i++;target=document.querySelector(steps[i].sel)}
- if(!target){closeTour();return}
+ const i=index;
  tourState.index=i;
  const step=steps[i];
+ goJourney(step.page);
+ lockDialogBackground(true);
+ const target=document.querySelector(step.sel)||(step.page==='fleet'?oldMain:journeyMain);
+ if(!target){closeTour();return}
  const {card}=tourState;
- target.scrollIntoView({block:'center',behavior:reducedMotion()?'auto':'smooth'});
- card.innerHTML='<h2 id="tourTitle">'+esc(step.title)+'</h2><p id="tourText">'+esc(step.text)+'</p><div class="tour-dots">'+steps.map((s,n)=>'<span class="'+(n===i?'on':'')+'"></span>').join('')+'</div><div class="tour-actions">'+(i>0?'<button type="button" class="btn" data-tour="back">Back</button>':'')+'<button type="button" class="text-action" data-tour="skip">Skip</button><button type="button" class="btn primary" data-tour="next">'+(i===steps.length-1?'Done':'Next')+'</button></div>';
- requestAnimationFrame(()=>{tourPlaceCard(target);card.querySelector('[data-tour="next"]')?.focus()});
+ target.scrollIntoView({block:'start',behavior:'instant'});
+ card.innerHTML='<div class="tour-progress" role="status">MANAGEMENT ESSENTIALS · '+(i+1)+' / '+steps.length+'</div><h2 id="tourTitle">'+esc(step.title)+'</h2><p id="tourText">'+esc(step.text)+'</p><button type="button" class="text-action tour-open-page" data-tour="open">'+esc(step.action)+' '+icon('arrow')+'</button><div class="tour-dots" aria-hidden="true">'+steps.map((s,n)=>'<span class="'+(n===i?'on':'')+'"></span>').join('')+'</div><div class="tour-actions">'+(i>0?'<button type="button" class="btn" data-tour="back">Back</button>':'')+'<button type="button" class="text-action" data-tour="skip">Skip tour</button><button type="button" class="btn primary" data-tour="next">'+(i===steps.length-1?'Finish':'Next')+'</button></div>';
+ requestAnimationFrame(()=>{if(!tourState)return;tourPlaceCard(target);card.querySelector('[data-tour="next"]')?.focus({preventScroll:true})});
 }
 function startTour(){
  if(tourState)return;
- const steps=tourSteps.filter(s=>document.querySelector(s.sel));
+ if(!$('modalBack').hidden)return;
+ const steps=tourSteps.filter(s=>(personaPages[journey.role]||[]).includes(s.page));
  if(!steps.length)return;
  const overlay=document.createElement('div');overlay.className='tour-overlay';overlay.setAttribute('role','dialog');overlay.setAttribute('aria-modal','true');overlay.setAttribute('aria-labelledby','tourTitle');overlay.setAttribute('aria-describedby','tourText');
  overlay.innerHTML='<div class="tour-ring"></div><div class="tour-card"></div>';
@@ -1727,9 +1755,10 @@ function startTour(){
  lockDialogBackground(true);
  const resize=()=>{if(tourState)tourPlaceCard(document.querySelector(tourState.steps[tourState.index].sel))};
  window.addEventListener('resize',resize);
+ window.addEventListener('scroll',resize,true);
  document.addEventListener('keydown',tourKeydown,true);
- overlay.addEventListener('click',e=>{const b=e.target.closest('[data-tour]');if(b){if(b.dataset.tour==='back')tourGo(tourState.index-1);else if(b.dataset.tour==='skip')closeTour();else tourGo(tourState.index+1);return}if(e.target===overlay)closeTour()});
- tourState={overlay,ring:overlay.querySelector('.tour-ring'),card:overlay.querySelector('.tour-card'),resize,steps,index:0,lastFocus:document.activeElement};
+ overlay.addEventListener('click',e=>{const b=e.target.closest('[data-tour]');if(!b||!tourState)return;if(b.dataset.tour==='back')tourGo(tourState.index-1);else if(b.dataset.tour==='skip')closeTour();else if(b.dataset.tour==='open')closeTour(true);else tourGo(tourState.index+1)});
+ tourState={overlay,ring:overlay.querySelector('.tour-ring'),card:overlay.querySelector('.tour-card'),resize,steps,index:0,lastFocus:document.activeElement,originalPage:journey.page,originalScroll:window.scrollY};
  tourGo(0);
 }
 function maybeStartTour(){
@@ -1737,7 +1766,7 @@ function maybeStartTour(){
  if(!done)startTour();
 }
 const tourBtn=document.getElementById('lawmaTourBtn');
-if(tourBtn)tourBtn.onclick=()=>{try{localStorage.removeItem('lawma-tour-v1')}catch{}startTour()};
+if(tourBtn){tourBtn.textContent='Management tour';tourBtn.onclick=()=>startTour()};
 </script><script>/* Browser-only rehearsal safeguards; no operational services are contacted. */
 const officialKey=value=>String(value||'').trim().toLowerCase().replace(/\s+/g,' ');
 const distinctOfficials=(a,b)=>!!officialKey(a)&&!!officialKey(b)&&officialKey(a)!==officialKey(b);
@@ -2308,7 +2337,9 @@ $('persona').onchange=e=>{
 document.addEventListener('click',e=>{const b=e.target.closest('[data-module]');if(b){e.preventDefault();runModule(b.dataset.module,b.dataset.record||'')}});
 // Clear all local workflow stores together when the existing reset dialog is confirmed.
 document.addEventListener('click',e=>{if(e.target.id==='confirmReset'){try{localStorage.removeItem('lawma-demo-saved-v1');sessionStorage.removeItem('lawma-modules-v1');sessionStorage.removeItem('lawma-entry-v1')}catch{}}},true);
-$('journeyGuide').onclick=()=>dialog('Explore LAWMA 360','<ol class="guide-list"><li><b>Management:</b> register a partner, choose its category and service responsibility, then review registration.</li><li><b>Operations:</b> register people and vehicles, assign a route and record field progress.</li><li><b>Facility operator:</b> record arrival, review occupancy, process a load and record departure.</li><li><b>Supervisor:</b> assign an incident, review its outcome and close it.</li><li><b>Resident:</b> choose an eligible collection provider and submit a report. Switch to Customer care to progress it.</li><li><b>Administrator:</b> review local activity, users and partner categories.</li></ol>'+note('All records are simulated. Role selection previews workflows; it is not authentication. Integrations are deferred.'));
+$('journeyGuide').textContent='Daily checklist';
+const managementChecklist=()=>dialog('Management daily checklist','<ol class="guide-list"><li><b>Overview:</b> identify underperforming districts and overdue collections.</li><li><b>Fleet map:</b> review tracker freshness, vehicle exceptions and route evidence.</li><li><b>Resident reports:</b> prioritise urgent reports and check assigned follow-ups.</li><li><b>Partners:</b> compare work orders, pickups, remittances and facility weights.</li><li><b>Revenue:</b> check settlement evidence and unresolved holds before release.</li><li><b>Demand bills:</b> preview notices, reconcile bank evidence and review returned customer stubs.</li><li><b>Compliance:</b> record evidence-led decisions and obtain independent approval where required.</li></ol>'+note('LAWMA officials only. Sample records are saved on this device. Payments, external connections and legal notice service are not live.'));
+$('journeyGuide').onclick=managementChecklist;
 const switchButton=document.createElement('button');switchButton.className='btn';switchButton.textContent='Switch workspace';switchButton.dataset.module='entry';document.querySelector('.account').append(switchButton);
 const fullButton=document.createElement('button');fullButton.className='iconbtn';fullButton.innerHTML=icon('fit');fullButton.setAttribute('aria-label','Toggle full-screen control room');fullButton.dataset.module='fullscreen';document.querySelector('.account').append(fullButton);
 
@@ -7455,7 +7486,7 @@ dialog=function(...args){practiceDialog(...args);polishPractice($('modal'))};
 saveModules();
 const assetScreen=screens.systems;
 screens.systems=()=>assetScreen()+(ui.infraTab==='Replacement fund'?panel('Replacement inventory reviews','',table(['Asset','Condition','Review history',''],infra().assets.map(a=>[esc(a.name),esc(a.status||'In service'),String((a.reviews||[]).length)+' retained reviews',infraCan()?button('Review asset','ready-asset',a.id):'']))):'');
-$('journeyGuide').onclick=()=>dialog('LAWMA officials’ practice review',table(['Official role','Responsibility'],[['Management','Review operational exceptions and proposed decisions'],['Operations supervisor','Dispatch, fleet, scale and environmental oversight'],['Revenue officer','Room accounts, eligible weigh-ticket settlements and reconciliation'],['Customer care','Reports and resident follow-up'],['Enforcement reviewer','Evidence, patrol reports and court records'],['TLS auditor','Read-only records and activity review'],['Platform administrator','Access records and infrastructure practice reviews']])+note('Dummy records only. Named reviewers and role switching are practice controls, not authentication. Outside personnel appear only in records.'));
+$('journeyGuide').onclick=managementChecklist;
 /* Rehearsal thresholds only; not LAWMA telemetry or service policy. */
 const FM_STALE_SECONDS=300;
 const FM_MISSING_SECONDS=900;
@@ -8535,9 +8566,8 @@ const dgRender=tab=>{const o=dg(),now=Date.now();let b='';
 };
 const dgOldDrain=screens.drainage;
 screens.drainage=()=>dgTabs.includes(ui.drainTab)?'<div class="cad-tabs" role="tablist" aria-label="Drainage sections">'+drainTabs.map(t=>button(t,'drain-tab',t).replace('<button ','<button role="tab" aria-selected="'+(t===ui.drainTab)+'" ')).join('')+'</div>'+pageHead('MOD-10 · CITIZEN CARE & DRAINAGE','Drainage safeguards','')+dgRender(ui.drainTab):dgOldDrain();
-const careBaseScreen=()=>pageHead('CITIZEN CARE','Turn a report into a resolved service.','Keep the resident informed and preserve the evidence behind closure.',action('Open priority case','case',true))+steps(['Received','Recovery assigned','Resident confirmed'],journey.caseStage===2?3:journey.caseStage)+panel('Case inbox','Web and assisted-channel reports share one reference.',table(['Case','Issue / property','Channel','State','Action'],[['CC-1048','Missed collection · PR-0182','Phone / assisted',pill(['New','Recovery assigned','Resolved'][journey.caseStage],journey.caseStage===2?'good':'amber'),action('Open case','case')],...(journey.reported?[['CC-1049',esc(journey.reportIssue||'Service issue')+' · PR-0182','Resident portal',pill('Received'),routeButton('Resident receipt','resident')]]:[]),['CC-1046','Incorrect bill · PR-0420','Web',pill('Account review'),action('Assign billing review','property')]]))+note('A case is closed after the recovery outcome and resident confirmation are recorded.')+panel('Resident portal requests','Requests created through the resident journey.',modules.serviceRequests.length?table(['Reference','Issue','Partner','Status',''],modules.serviceRequests.map(r=>[r.id,esc(r.type),esc(partnerName(r.partner)),status(r.status),link('Review','careRequest',r.id)])):empty('No new portal requests','Reports submitted from the resident workspace will appear here.'));
 const dgOldCare=screens.care;
-screens.care=()=>(dgOldCare?dgOldCare():careBaseScreen())+panel('Module 10 citizen safeguards','',dgBtn('Open anonymous channel register','go','Anonymous channels')+dgBtn('Open remediation closure register','go','Remediation closure'));
+screens.care=()=>dgOldCare()+panel('Module 10 citizen safeguards','',dgBtn('Open anonymous channel register','go','Anonymous channels')+dgBtn('Open remediation closure register','go','Remediation closure'));
 const dgOldFinance=screens.finance;
 screens.finance=()=>dgOldFinance()+panel('Council & citizen safeguards','',dgBtn('Open council clearinghouse','go','Council clearinghouse')+table(['Ticket','Settlement batch','Payment gate'],dg().cures.filter(x=>x.batch).map(x=>[esc(x.id),esc(x.batch),esc(dgReadState(x))])));
 const dgOldCalc=stCalc;
