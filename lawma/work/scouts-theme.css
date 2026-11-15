@@ -1058,7 +1058,7 @@ html[data-theme]:root:not(#sc) .bill-canvas .bill-sheet {box-shadow:0 2px 12px r
 html[data-theme]:root:not(#sc) .bill-canvas-count {font-size:12px;color:var(--sc-fg-muted);margin:0 0 8px}
 @media (max-width:900px){html[data-theme]:root:not(#sc) .bill-compose-grid {grid-template-columns:minmax(0,1fr)} html[data-theme]:root:not(#sc) .bill-canvas {position:static;max-height:none}}
 /* Revenue tables: let status labels wrap inside their cell and keep figures on one line. */
-html[data-theme]:root:not(#sc) #journeyMain table.mobile-records td .state-pill {white-space:normal!important;max-width:100%;display:inline-block}
+html[data-theme]:root:not(#sc) #journeyMain table.mobile-records td .state-pill {white-space:normal!important;max-width:100%;display:inline-block;word-break:keep-all;overflow-wrap:normal}
 html[data-theme]:root:not(#sc) #journeyMain table.mobile-records td:has(.state-pill+.state-pill) {min-width:240px}
 html[data-theme]:root:not(#sc) #journeyMain table.mobile-records td:not(:first-child) {overflow-wrap:normal;word-break:normal}
 html[data-theme]:root:not(#sc) #journeyMain table.mobile-records td:not(:first-child):not(:has(.state-pill,.btn,button)) {white-space:nowrap}
