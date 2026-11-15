@@ -947,7 +947,10 @@ html[data-theme]:root:not(#sc) .ov-panel>table {margin:0}
 html[data-theme]:root:not(#sc) :is(.work-panel>header,.ov-panel-head) {padding:var(--sc-space-lg) var(--sc-space-lg) var(--sc-space-md)}
 html[data-theme]:root:not(#sc) :is(.work-panel,.ov-panel) :is(.work-panel,.record-banner,.context-note) {box-shadow:none;border-radius:0}
 html[data-theme]:root:not(#sc) :is(th,td) {padding:var(--sc-space-md) var(--sc-space-lg);vertical-align:top}
-html[data-theme]:root:not(#sc) .ov-table {width:100%;min-width:0;table-layout:fixed}
+html[data-theme]:root:not(#sc) .ov-table {width:100%;min-width:0;table-layout:auto}
+html[data-theme]:root:not(#sc) .ov-table .ov-bar-cell {min-width:90px}
+html[data-theme]:root:not(#sc) .ov-table .ov-bar-cell .num {width:auto;flex:none;white-space:nowrap}
+html[data-theme]:root:not(#sc) .ov-table td:not(:first-child) {overflow-wrap:normal}
 html[data-theme]:root:not(#sc) .ov-table :is(th,td) {white-space:normal;overflow-wrap:anywhere;padding:var(--sc-space-sm)}
 html[data-theme]:root:not(#sc) :is(.ov-panel-head,.ov-metric) {min-width:0;overflow-wrap:anywhere}
 html[data-theme]:root:not(#sc) .ov-panel-head :is(h2,p) {max-width:100%;white-space:normal}
@@ -1054,3 +1057,9 @@ html[data-theme]:root:not(#sc) .bill-canvas {position:sticky;top:0;max-height:75
 html[data-theme]:root:not(#sc) .bill-canvas .bill-sheet {box-shadow:0 2px 12px rgb(0 0 0 / .08);border-radius:4px}
 html[data-theme]:root:not(#sc) .bill-canvas-count {font-size:12px;color:var(--sc-fg-muted);margin:0 0 8px}
 @media (max-width:900px){html[data-theme]:root:not(#sc) .bill-compose-grid {grid-template-columns:minmax(0,1fr)} html[data-theme]:root:not(#sc) .bill-canvas {position:static;max-height:none}}
+/* Revenue tables: let status labels wrap inside their cell and keep figures on one line. */
+html[data-theme]:root:not(#sc) #journeyMain table.mobile-records td .state-pill {white-space:normal!important;max-width:100%;display:inline-block}
+html[data-theme]:root:not(#sc) #journeyMain table.mobile-records td:has(.state-pill+.state-pill) {min-width:240px}
+html[data-theme]:root:not(#sc) #journeyMain table.mobile-records td:not(:first-child) {overflow-wrap:normal;word-break:normal}
+html[data-theme]:root:not(#sc) #journeyMain table.mobile-records td:not(:first-child):not(:has(.state-pill,.btn,button)) {white-space:nowrap}
+@media (max-width:600px){html[data-theme]:root:not(#sc) #journeyMain table.mobile-records td:not(:first-child) {white-space:normal}}
