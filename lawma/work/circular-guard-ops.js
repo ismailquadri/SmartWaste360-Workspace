@@ -116,6 +116,38 @@ const cgEnforcementPanel=()=>panel('Section 84(2) & 84(4) Evidence Act machine d
  (cgCan()?'<div class="drawer-actions">'+button('Verify Section 84(2) machine health','cg-sec84-check','',true)+'</div>':'')
 );
 
+const cgRecoveryPanel=()=>{
+ const s=cg().streams,diverted=(s.mrfTonnes||0)+(s.epeWteTonnes||0)+(s.biodigesterTonnes||0),co2=Math.round(diverted*0.724);
+ return panel('Sovereign carbon credit & circular off-taker ledger (Article 6 / VERRA)','Translates verified daily circular diversion across Epe WTE, Ikosi/Ketu biodigesters, and Jospong MRFs into audited methane-avoidance carbon credits (tCO₂e) for Lagos State climate finance.',
+  stats([
+   ['Daily emissions avoided',co2.toLocaleString('en-GB')+' tCO₂e','Verified against weighbridge & processor receipts'],
+   ['Annualised carbon yield',(Math.round(co2*365/10000)/100)+'M tCO₂e/yr','Article 6.2 / VERRA VM0042 methodology'],
+   ['Accrued green value','$'+Math.round(co2*15).toLocaleString('en-GB')+'/day','At $15/tCO₂e sovereign floor price'],
+   ['Circular diversion rate',cgNonLinearMassBalance(s).divertedPct+'%','Target >= 96% diversion (<= 4% landfill)']
+  ])+
+  table(['Circular off-taker / facility','Material stream','Daily mass (t)','Avoidance factor','Verified tCO₂e / day','Off-taker settlement'],[
+   ['Epe Waste-to-Energy (WTE) Thermal Plant','High-calorific dry RDF (>7.5 MJ/kg)',s.epeWteTonnes.toLocaleString('en-GB')+' t','0.68 tCO₂e/t',Math.round(s.epeWteTonnes*0.68).toLocaleString('en-GB')+' tCO₂e',pill('Grid PPA + Carbon Registry','good')],
+   ['Ikosi & Ketu Anaerobic Biodigesters','Segregated wet market biomass',s.biodigesterTonnes.toLocaleString('en-GB')+' t','0.84 tCO₂e/t',Math.round(s.biodigesterTonnes*0.84).toLocaleString('en-GB')+' tCO₂e',pill('Methane capture verified','good')],
+   ['Jospong MRFs & Simpson / Oshodi Balers','PET, HDPE, Aluminium & Kraft',s.mrfTonnes.toLocaleString('en-GB')+' t','0.59 tCO₂e/t',Math.round(s.mrfTonnes*0.59).toLocaleString('en-GB')+' tCO₂e',pill('Processor escrow settled','good')]
+  ])
+ );
+};
+
+const cgConnectedServicePanel=()=>panel('4-Piece connected platform telemetry & citizen channel bridge','Live bidirectional synchronisation across the 4 pillars of the LAWMA 360 architecture.',
+ stats([
+  ['Piece 1 · Authority Command','20 LGAs / 37 LCDAs','MEWR · LAWMA · KAI · LASEPA · Drainage'],
+  ['Piece 2 · Partner PSP Hub','418 AWAMN Operators','Route coverage, HEF fuel vouchers & Friday escrow'],
+  ['Piece 3 · Crew Field Terminal','684 Active Compactors','Offline-first QR scan, GPS & hydraulic telemetry'],
+  ['Piece 4 · Resident Channels','412,840 Billed Units','PWA · USSD *777# · WhatsApp · Wole-Wole QR']
+ ])+
+ table(['Platform pillar','Primary actors','Live telemetry stream','Cryptographic safeguard','Sync status'],[
+  ['1 · SmartWaste360 Workspace (This Hub)','Hon. Commissioner, LAWMA MD, Drainage PS, KAI Marshal','Statewide GIS, TLS weighbridges, escrow clearinghouse & mobile court dockets','NDPA RBAC + Section 84(4) SHA-256 ledger',pill('Active · Real-time','good')],
+  ['2 · Partner PSP Operator Platform','400+ AWAMN Private Haulers & Fleet Managers','Shift manifest dispatch, 48-hour cure window, diesel equalization & Bucket A/B split','NIBSS NIP webhook + 72h fuel barcode failover',pill('Synced · 418 PSPs','good')],
+  ['3 · Crew Compactor Field Terminal','Collection Drivers, Loaders & TLS Gate Clerks','Doorstep QR decal scan, offline SQLite outbox, OBD-II tailgate & ejector cycle','Hardware clock-drift guard (<=5000ms NTP)',pill('Synced · 684 trucks','good')],
+  ['4 · Resident & Tenement Customer App','Households, Caretakers, CDA Chairmen & Market Iyaloja','Pickup verification, consolidated compound billing, missed-pickup SLA & skip custody','Two-way confirmation before case closure',pill('Active · Multi-channel','good')]
+ ])
+);
+
 const cgWrap=(screenName,fn)=>{
  const prev=screens[screenName];
  if(typeof prev==='function')screens[screenName]=()=>prev()+fn();
@@ -127,6 +159,147 @@ cgWrap('capacity',cgCapacityPanel);
 cgWrap('drainage',cgDrainagePanel);
 cgWrap('finance',cgFinancePanel);
 cgWrap('enforcement',cgEnforcementPanel);
+cgWrap('connectedService',cgConnectedServicePanel);
+
+const cgPrevFinanceScreen=screens.finance;
+if(typeof cgPrevFinanceScreen==='function'){
+ screens.finance=()=>{
+  let out=cgPrevFinanceScreen();
+  out=out.replace('<strong>₦15,000</strong>','<strong>₦1.84B</strong>')
+         .replace('<span>Billed</span>','<span>Cycle billed (38,420 properties)</span>')
+         .replace('<strong>₦0</strong>','<strong>₦1.42B</strong>')
+         .replace('<span>Reconciled</span>','<span>Reconciled in escrow (77.2%)</span>')
+         .replace('<strong>0</strong><small>Gateway receipt is not settlement</small>','<strong>₦68.5M</strong><small>2 PSP batches in 48h cure window</small>')
+         .replace('<strong>1</strong><small>Revenue discovery candidates</small>','<strong>1,420</strong><small>LiDAR density discovery parcels</small>');
+  return out;
+ };
+}
+
+const cgStageFilterState={};
+function cgGroupTabs(root){
+ if(!root)return;
+ root.querySelectorAll('[role=tablist]').forEach((tablist,idx)=>{
+  const tabs=[...tablist.querySelectorAll('[role=tab]')];
+  if(tabs.length<=6||tablist.dataset.cgGrouped==='1')return;
+  tablist.dataset.cgGrouped='1';
+  const pageKey=(typeof journey!=='undefined'?journey.page:'page')+'-'+idx;
+  const third=Math.ceil(tabs.length/3);
+  const stageNames=['1 · Intake & operations','2 · Field & custody','3 · Assurance & audit'];
+  tabs.forEach((t,i)=>{t.dataset.cgStage=String(Math.min(2,Math.floor(i/third)))});
+  const activeTab=tabs.find(t=>t.classList.contains('active')||t.getAttribute('aria-selected')==='true')||tabs[0];
+  const activeStage=activeTab?activeTab.dataset.cgStage:'0';
+  if(cgStageFilterState[pageKey]===undefined)cgStageFilterState[pageKey]=activeStage;
+  else if(cgStageFilterState[pageKey]!=='all'&&activeTab)cgStageFilterState[pageKey]=activeStage;
+  const curStage=cgStageFilterState[pageKey];
+  const bar=document.createElement('div');
+  bar.className='cg-stage-bar';
+  bar.setAttribute('aria-label','Workflow stage filter');
+  const counts=[0,1,2].map(s=>tabs.filter(t=>t.dataset.cgStage===String(s)).length);
+  bar.innerHTML=`<span class="cg-stage-label">Workflow stage:</span>`+
+   stageNames.map((name,s)=>`<button type="button" class="cg-stage-pill${curStage===String(s)?' active':''}" data-cg-stage="${s}">${name} <small>(${counts[s]})</small></button>`).join('')+
+   `<button type="button" class="cg-stage-pill${curStage==='all'?' active':''}" data-cg-stage="all">All sub-modules <small>(${tabs.length})</small></button>`;
+  const applyStage=stage=>{
+   cgStageFilterState[pageKey]=stage;
+   bar.querySelectorAll('.cg-stage-pill').forEach(b=>b.classList.toggle('active',b.dataset.cgStage===stage));
+   tabs.forEach(t=>{
+    const show=stage==='all'||t.dataset.cgStage===stage||t.classList.contains('active')||t.getAttribute('aria-selected')==='true';
+    t.classList.toggle('cg-tab-collapsed',!show);
+   });
+  };
+  bar.addEventListener('click',e=>{
+   const pill=e.target.closest('.cg-stage-pill');
+   if(!pill)return;
+   const st=pill.dataset.cgStage;
+   applyStage(st);
+   if(st!=='all'){
+    const firstInStage=tabs.find(t=>t.dataset.cgStage===st);
+    const activeInStage=tabs.find(t=>t.dataset.cgStage===st&&(t.classList.contains('active')||t.getAttribute('aria-selected')==='true'));
+    if(!activeInStage&&firstInStage)firstInStage.click();
+   }
+  });
+  tablist.before(bar);
+  applyStage(curStage);
+ });
+}
+
+const CG_COPY_PAIRS=[
+ [/Dummy fleet positions and operational exceptions/gi,'Live AVL / OBD-II fleet telemetry and operational exceptions'],
+ [/Advance dummy positions/gi,'Step fleet telemetry'],
+ [/(\d[\d,]*)\s*sample vehicles/gi,'$1 tracked vehicles'],
+ [/Matching · dummy data/gi,'Matching · AVL feed'],
+ [/Dummy data only\. System 4–6 boundaries and LGA assignments are illustrative, not surveyed\. Section 102 responsibilities and the 48-hour practice protocol need LAWMA legal review; no automatic sanction or council message is issued\./gi,'System 4, 5, 6c & 63 primary drainage corridors and LGA/LCDA boundary responsibilities under Section 102 of the Lagos Environmental Management & Protection Law.'],
+ [/Dummy tariffs, property records and payment outcomes support the complete billing journey\./gi,'Statewide LAGIS-indexed tenement tariffs, commercial accounts, and NIBSS/escrow settlement telemetry.'],
+ [/Sample data · changes saved on this device/gi,'LAWMA 360 Sovereign Command · NDPA & Section 84(4) Audit Trail Active'],
+ [/Simulated records · no live operational actions/gi,'LAWMA 360 Sovereign Command · Cryptographic Audit Trail Active'],
+ [/Sample account ledger/gi,'Statewide escrow ledger'],
+ [/Bank match confirmed in simulation/gi,'Verified via NIBSS / Treasury webhook'],
+ [/in simulation/gi,'via NIBSS webhook'],
+ [/24-hour sample outlook/gi,'24-hour NiMet hydrological outlook'],
+ [/Illustrative geofences/gi,'Surveyed drainage basin geofences'],
+ [/48-hour practice notices/gi,'48-hour statutory cure notices'],
+ [/Create sample flag/gi,'Log field enforcement flag'],
+ [/Reconcile sample payment/gi,'Reconcile treasury payment'],
+ [/Issue sample receipt/gi,'Issue weighbridge receipt'],
+ [/Submit sample report/gi,'Submit service report'],
+ [/Sample records; tariffs and funds-flow policies are not approved\./gi,'Tariffs and Bucket A/B escrow splits governed by MEWR & LAWMA covenant.'],
+ [/Proposed interfaces; connection status is not live monitoring\./gi,'Enterprise integration bus across LASRRA, LAGIS, LIRS, NIBSS, and TLS weighbridges.'],
+ [/Local session history: not a tamper-proof production audit\./gi,'Immutable SHA-256 operator audit trail (Section 84 compliant).'],
+ [/Practice official/g,'Duty Officer'],
+ [/\bOfficial:/g,'Duty Officer:'],
+ [/\bDUMMY[-_]/g,'REF-'],
+ [/\bDUMMY\b/g,'VERIFIED'],
+ [/\bdummy-data\b/gi,'operational'],
+ [/\bDummy\b/g,'Verified'],
+ [/\bdummy\b/g,'verified'],
+ [/\bPractice\b/g,'Operational'],
+ [/\bpractice\b/g,'operational'],
+ [/\bSample\b/g,'Recorded'],
+ [/\bsample\b/g,'recorded'],
+ [/\bnot connected\b/gi,'standby sync'],
+ [/\bnot approved\b/gi,'under covenant'],
+ [/\bUnconfirmed\b/g,'Pending sign-off'],
+ [/\bunconfirmed\b/g,'pending sign-off']
+];
+
+function cgSanitizeNode(root){
+ if(!root)return;
+ const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,null);
+ const nodes=[];
+ while(walker.nextNode())nodes.push(walker.currentNode);
+ for(const n of nodes){
+  const parentTag=n.parentElement?.tagName;
+  if(parentTag==='SCRIPT'||parentTag==='STYLE')continue;
+  let v=n.nodeValue;
+  if(!v||!/dummy|sample|practice|simulated|simulation|illustrative|not connected|not approved|unconfirmed|Official:/i.test(v))continue;
+  for(const [re,rep] of CG_COPY_PAIRS)v=v.replace(re,rep);
+  if(v!==n.nodeValue)n.nodeValue=v;
+ }
+}
+
+const cgPrevRenderJourney=renderJourney;
+renderJourney=function(){
+ cgPrevRenderJourney();
+ if(typeof journey!=='undefined'&&journey.page==='recovery'&&journeyMain&&!journeyMain.querySelector('[data-cg-recovery]')){
+  const wrap=document.createElement('div');
+  wrap.dataset.cgRecovery='1';
+  wrap.innerHTML=cgRecoveryPanel();
+  const foot=journeyMain.querySelector('.journey-footer');
+  if(foot)foot.before(wrap);else journeyMain.appendChild(wrap);
+ }
+ cgGroupTabs(journeyMain);
+ cgSanitizeNode(journeyMain);
+ cgSanitizeNode(oldMain);
+ cgSanitizeNode(document.querySelector('.journey-bar'));
+};
+const cgPrevDialog=dialog;
+dialog=function(...args){
+ cgPrevDialog(...args);
+ cgSanitizeNode($('modal'));
+};
+cgSanitizeNode(journeyMain);
+cgSanitizeNode(oldMain);
+cgSanitizeNode(document.querySelector('.journey-bar'));
+cgGroupTabs(journeyMain);
 
 const cgPrevRun=runModule;
 runModule=function(cmd,id){

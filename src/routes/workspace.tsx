@@ -20,7 +20,7 @@ export const Route = createFileRoute("/workspace")({
 
 // The workspace is a self-contained build (lawma/build_dashboard.py → public/dashboard.html),
 // hosted full-viewport so its own hash routes, storage and map engine run untouched.
-const DASHBOARD_SRC = "/dashboard.html?v=20261117c#app";
+const DASHBOARD_SRC = "/dashboard.html?v=20261117d#app";
 
 function Workspace() {
   return (

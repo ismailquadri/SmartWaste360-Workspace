@@ -66,7 +66,6 @@ body.entry-open>:is(.top,.journey-bar,.journey-nav,#journeyMain,#fleetMain,.skip
 .ov-bar-fill { display:block; height:100%; border-radius:999px; background:var(--sc-fg-dim, rgba(38,38,38,.55)); }
 .ov-bar-fill.is-warn { background:var(--sc-heat, #f47707); }
 
-@media (max-width:720px) { 
 /* Table presentation, column widths, and responsive bounds */
 .table-scroll {
   overflow-x: auto;

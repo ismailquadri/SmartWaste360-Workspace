@@ -1070,3 +1070,11 @@ html[data-theme]:root:not(#sc) #journeyMain table.mobile-records td:has(.state-p
 html[data-theme]:root:not(#sc) #journeyMain table.mobile-records td:not(:first-child) {overflow-wrap:normal;word-break:normal}
 html[data-theme]:root:not(#sc) #journeyMain table.mobile-records td:not(:first-child):not(:has(.state-pill,.btn,button)) {white-space:nowrap}
 @media (max-width:600px){html[data-theme]:root:not(#sc) #journeyMain table.mobile-records td:not(:first-child) {white-space:normal}}
+html[data-theme]:root:not(#sc) .cg-stage-bar {display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:0 0 10px;padding:6px 10px;background:var(--sc-bg-lighter);border:1px solid var(--sc-border-faint);border-radius:var(--sc-r)}
+html[data-theme]:root:not(#sc) .cg-stage-label {font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.06em;color:var(--sc-fg-muted);margin-right:4px}
+html[data-theme]:root:not(#sc) .cg-stage-pill {border:1px solid transparent;background:transparent;color:var(--sc-fg-dim);font-size:12px;font-weight:450;padding:5px 10px;border-radius:var(--sc-r-sm);cursor:pointer;transition:background .15s,color .15s}
+html[data-theme]:root:not(#sc) .cg-stage-pill small {font-family:var(--sc-mono);font-size:11px;color:var(--sc-fg-muted);margin-left:2px}
+html[data-theme]:root:not(#sc) .cg-stage-pill:hover {background:var(--sc-a4);color:var(--sc-fg)}
+html[data-theme]:root:not(#sc) .cg-stage-pill.active {background:var(--sc-surface);color:var(--sc-heat-text);border-color:var(--sc-border-faint);font-weight:500;box-shadow:0 1px 2px rgb(0 0 0 / .05)}
+html[data-theme]:root:not(#sc) [role=tab].cg-tab-collapsed {display:none!important}
+html[data-theme]:root:not(#sc) .work-panel {content-visibility:visible}
