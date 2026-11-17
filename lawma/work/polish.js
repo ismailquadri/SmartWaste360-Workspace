@@ -48,15 +48,30 @@ closeDetail=function(){
  const ghost=$('detail').cloneNode(true);ghost.removeAttribute('id');ghost.setAttribute('aria-hidden','true');ghost.inert=true;ghost.querySelectorAll('[id]').forEach(x=>x.removeAttribute('id'));$('detail').after(ghost);baseCloseDetail();
  const a=ghost.animate([{opacity:1,transform:'none'},{opacity:0,transform:'translateX(18px)'}],{duration:140,easing:'ease-out'});a.onfinish=()=>ghost.remove();
 };
-// Navigation transition helper
+// Brief skeleton shimmer over the content area on navigation, purely visual: the real
+// render below still happens synchronously so focus/scroll calls right after goJourney()/
+// renderJourney() keep working; the skeleton just covers the target area for a moment.
 function showSkeleton(target){
- return null;
+ if(!target||document.body.classList.contains('tour-open'))return null;
+ // Appended to <body> (not the target) and positioned fixed over its rect: the target's
+ // innerHTML is about to be replaced synchronously by the real render, which would wipe
+ // out a skeleton appended as a child.
+ const r=target.getBoundingClientRect();
+ const skel=document.createElement('div');skel.className='skeleton-veil';skel.setAttribute('aria-hidden','true');
+ skel.style.top=r.top+'px';skel.style.left=r.left+'px';skel.style.width=r.width+'px';skel.style.height=r.height+'px';
+ skel.innerHTML='<div class="skeleton-bar w1"></div><div class="skeleton-bar w2"></div><div class="skeleton-bar w3"></div><div class="skeleton-panel"></div>';
+ document.body.appendChild(skel);
+ const delay=reducedMotion()?120:450+Math.round(Math.random()*150);
+ const finish=()=>{if(!skel.isConnected)return;if(reducedMotion()){skel.remove();return}const a=skel.animate([{opacity:1},{opacity:0}],{duration:160,easing:'ease-out'});a.onfinish=()=>skel.remove()};
+ setTimeout(finish,delay);
+ return skel;
 }
 const baseGoJourney=goJourney;
-goJourney=function(page){const target=page==='fleet'?oldMain:journeyMain;const changed=journey.page!==page;baseGoJourney(page);if(changed)entrance(target)};
+goJourney=function(page){const target=page==='fleet'?oldMain:journeyMain;showSkeleton(target);const changed=journey.page!==page;baseGoJourney(page);if(changed)entrance(target)};
 let lastSkeletonPage=journey.page;
 const baseRenderJourney=renderJourney;
 renderJourney=function(){
+ if(journey.page!==lastSkeletonPage){showSkeleton(journey.page==='fleet'?oldMain:journeyMain);lastSkeletonPage=journey.page}
  baseRenderJourney();document.querySelectorAll('.journey-steps .current').forEach(el=>el.setAttribute('aria-current','step'));
 };
 // Quiet and accessible feedback: status text stays available without relying on motion.
@@ -80,27 +95,29 @@ function applyTheme(preference){
 }
 themeControl.addEventListener('click',e=>{const b=e.target.closest('.theme-opt');if(!b)return;themePreference=b.dataset.appearance;try{localStorage.setItem('lawma-appearance',themePreference)}catch{}applyTheme(themePreference);toast('Appearance: '+themePreference)});
 themeMedia.addEventListener('change',()=>{if(themePreference==='system')applyTheme('system')});applyTheme(themePreference);
-// First-time guided tour: five coach-marks over real controls, dimmed overlay with a
-// spotlight cutout. Reuses lockDialogBackground()'s inert approach so background content
-// is non-interactive while the tour is open. Gracefully skips any step whose target is
-// missing for the current role/view.
+// Management tour visits real pages without changing any operational records.
 const tourSteps=[
- {sel:'#persona',title:'Switch roles',text:'Switch roles to see each team’s workspace.'},
- {sel:'.journey-nav',title:'Every module',text:'Every module of the service, one click away.'},
- {sel:'#journeyGuide',title:'Guided walkthrough',text:'Follow a guided walkthrough of a full collection.'},
- {sel:'.theme-control',title:'Appearance',text:'Light or dark, your choice sticks.'},
- {sel:'#resetJourney',title:'Reset anytime',text:'Start fresh anytime.'}
+ {page:'overview',sel:'#journeyMain .journey-stats, #journeyMain .work-panel',title:'Start with the daily picture',text:'Check collection totals, district performance and the service backlog. Identify overdue work and the areas needing attention first.',action:'Open Overview'},
+ {page:'fleet',sel:'.fleet-list .list-tools',title:'Locate fleet exceptions',text:'Review stale trackers, vehicle status and district coverage. Open a truck record to inspect its route and follow-up evidence. Positions are sample data, not live tracking.',action:'Open Fleet map'},
+ {page:'publicReports',sel:'#journeyMain .work-panel',title:'Prioritise resident reports',text:'Review incoming dumping alarms and service complaints. Check urgency, assign responsibility and follow the evidence through to a recorded outcome.',action:'Open Resident reports'},
+ {page:'partners',sel:'#journeyMain .cad-tabs, #journeyMain .work-panel',title:'Hold partners accountable',text:'Review the partner directory, work orders, remittances, pickups and facility weights together. Compare service records before starting a compliance review.',action:'Open Partners'},
+ {page:'finance',sel:'#journeyMain .cad-tabs, #journeyMain .work-panel',title:'Review revenue before release',text:'Compare settlement amounts with eligible weigh tickets, outstanding holds and review decisions. Collection tonnage is not proof of payment.',action:'Open Revenue'},
+ {page:'bills',sel:'#journeyMain .journey-head',title:'Issue and audit demand bills',text:'Choose Issue bill for the live bill canvas, then preview the four-part notice. Use Payment audit for bank evidence, Feedback & scorecard for returned stubs and Arrears escalation for reviewed notice drafts. QR payments are simulated.',action:'Open Demand bills'},
+ {page:'compliance',sel:'#journeyMain .work-panel',title:'Close the loop with a reviewed decision',text:'Check evidence and record the responsible official’s decision. Safeguards that require a second official still apply. This workspace uses sample records saved on this device; no live penalties or payments are triggered.',action:'Open Compliance'}
 ];
 let tourState=null;
-function closeTour(){
+function closeTour(stay=false){
  if(!tourState)return;
- const {overlay,resize}=tourState;
- window.removeEventListener('resize',resize);document.removeEventListener('keydown',tourKeydown,true);
+ const {overlay,resize,originalPage,originalScroll}=tourState;
+ window.removeEventListener('resize',resize);window.removeEventListener('scroll',resize,true);document.removeEventListener('keydown',tourKeydown,true);
  lockDialogBackground(false);
  overlay.remove();
  document.body.classList.remove('tour-open');
- if(tourState.lastFocus?.isConnected)tourState.lastFocus.focus();
+ const lastFocus=tourState.lastFocus;
  tourState=null;
+ if(!stay){goJourney(originalPage);window.scrollTo({top:originalScroll,behavior:'instant'})}
+ if(!stay&&lastFocus?.isConnected)lastFocus.focus({preventScroll:true});
+ else document.querySelector('main:not([hidden]) h1')?.focus({preventScroll:true});
  try{localStorage.setItem('lawma-tour-v1','done')}catch{}
 }
 function tourKeydown(e){
@@ -117,35 +134,39 @@ function tourKeydown(e){
  }
 }
 function tourPlaceCard(target){
+ if(!tourState||!target)return;
  const {card,ring}=tourState;
  const r=target.getBoundingClientRect();
  const pad=8;
- ring.style.top=(r.top-pad)+'px';ring.style.left=(r.left-pad)+'px';ring.style.width=(r.width+pad*2)+'px';ring.style.height=(r.height+pad*2)+'px';
+ const ringTop=Math.max(pad,r.top),ringLeft=Math.max(pad,r.left);
+ ring.style.top=(ringTop-pad)+'px';ring.style.left=(ringLeft-pad)+'px';ring.style.width=Math.max(0,Math.min(window.innerWidth-pad,r.right)-ringLeft+pad*2)+'px';ring.style.height=Math.max(0,Math.min(window.innerHeight-pad,r.bottom)-ringTop+pad*2)+'px';
  const cardH=card.offsetHeight||160,cardW=card.offsetWidth||300;
  let top=r.bottom+14;
  if(top+cardH>window.innerHeight-10)top=Math.max(10,r.top-cardH-14);
  let left=Math.min(Math.max(10,r.left),window.innerWidth-cardW-10);
- card.style.top=top+'px';card.style.left=left+'px';
+ card.style.top=Math.min(top,Math.max(10,window.innerHeight-cardH-10))+'px';card.style.left=left+'px';
 }
 function tourGo(index){
  if(!tourState)return;
  const steps=tourState.steps;
  if(index<0)return;
  if(index>=steps.length){closeTour();return}
- let i=index;
- let target=document.querySelector(steps[i].sel);
- while(!target&&i<steps.length-1){i++;target=document.querySelector(steps[i].sel)}
- if(!target){closeTour();return}
+ const i=index;
  tourState.index=i;
  const step=steps[i];
+ goJourney(step.page);
+ lockDialogBackground(true);
+ const target=document.querySelector(step.sel)||(step.page==='fleet'?oldMain:journeyMain);
+ if(!target){closeTour();return}
  const {card}=tourState;
- target.scrollIntoView({block:'center',behavior:reducedMotion()?'auto':'smooth'});
- card.innerHTML='<h2 id="tourTitle">'+esc(step.title)+'</h2><p id="tourText">'+esc(step.text)+'</p><div class="tour-dots">'+steps.map((s,n)=>'<span class="'+(n===i?'on':'')+'"></span>').join('')+'</div><div class="tour-actions">'+(i>0?'<button type="button" class="btn" data-tour="back">Back</button>':'')+'<button type="button" class="text-action" data-tour="skip">Skip</button><button type="button" class="btn primary" data-tour="next">'+(i===steps.length-1?'Done':'Next')+'</button></div>';
- requestAnimationFrame(()=>{tourPlaceCard(target);card.querySelector('[data-tour="next"]')?.focus()});
+ target.scrollIntoView({block:'start',behavior:'instant'});
+ card.innerHTML='<div class="tour-progress" role="status">MANAGEMENT ESSENTIALS · '+(i+1)+' / '+steps.length+'</div><h2 id="tourTitle">'+esc(step.title)+'</h2><p id="tourText">'+esc(step.text)+'</p><button type="button" class="text-action tour-open-page" data-tour="open">'+esc(step.action)+' '+icon('arrow')+'</button><div class="tour-dots" aria-hidden="true">'+steps.map((s,n)=>'<span class="'+(n===i?'on':'')+'"></span>').join('')+'</div><div class="tour-actions">'+(i>0?'<button type="button" class="btn" data-tour="back">Back</button>':'')+'<button type="button" class="text-action" data-tour="skip">Skip tour</button><button type="button" class="btn primary" data-tour="next">'+(i===steps.length-1?'Finish':'Next')+'</button></div>';
+ requestAnimationFrame(()=>{if(!tourState)return;tourPlaceCard(target);card.querySelector('[data-tour="next"]')?.focus({preventScroll:true})});
 }
 function startTour(){
  if(tourState)return;
- const steps=tourSteps.filter(s=>document.querySelector(s.sel));
+ if(!$('modalBack').hidden)return;
+ const steps=tourSteps.filter(s=>(personaPages[journey.role]||[]).includes(s.page));
  if(!steps.length)return;
  const overlay=document.createElement('div');overlay.className='tour-overlay';overlay.setAttribute('role','dialog');overlay.setAttribute('aria-modal','true');overlay.setAttribute('aria-labelledby','tourTitle');overlay.setAttribute('aria-describedby','tourText');
  overlay.innerHTML='<div class="tour-ring"></div><div class="tour-card"></div>';
@@ -154,9 +175,10 @@ function startTour(){
  lockDialogBackground(true);
  const resize=()=>{if(tourState)tourPlaceCard(document.querySelector(tourState.steps[tourState.index].sel))};
  window.addEventListener('resize',resize);
+ window.addEventListener('scroll',resize,true);
  document.addEventListener('keydown',tourKeydown,true);
- overlay.addEventListener('click',e=>{const b=e.target.closest('[data-tour]');if(b){if(b.dataset.tour==='back')tourGo(tourState.index-1);else if(b.dataset.tour==='skip')closeTour();else tourGo(tourState.index+1);return}if(e.target===overlay)closeTour()});
- tourState={overlay,ring:overlay.querySelector('.tour-ring'),card:overlay.querySelector('.tour-card'),resize,steps,index:0,lastFocus:document.activeElement};
+ overlay.addEventListener('click',e=>{const b=e.target.closest('[data-tour]');if(!b||!tourState)return;if(b.dataset.tour==='back')tourGo(tourState.index-1);else if(b.dataset.tour==='skip')closeTour();else if(b.dataset.tour==='open')closeTour(true);else tourGo(tourState.index+1)});
+ tourState={overlay,ring:overlay.querySelector('.tour-ring'),card:overlay.querySelector('.tour-card'),resize,steps,index:0,lastFocus:document.activeElement,originalPage:journey.page,originalScroll:window.scrollY};
  tourGo(0);
 }
 function maybeStartTour(){
@@ -164,4 +186,4 @@ function maybeStartTour(){
  if(!done)startTour();
 }
 const tourBtn=document.getElementById('lawmaTourBtn');
-if(tourBtn)tourBtn.onclick=()=>{try{localStorage.removeItem('lawma-tour-v1')}catch{}startTour()};
+if(tourBtn){tourBtn.textContent='Management tour';tourBtn.onclick=()=>startTour()};

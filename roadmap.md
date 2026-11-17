@@ -1,5 +1,7 @@
 # Roadmap
 
+- [x] Refresh the workspace tour around seven management essentials and a daily checklist; browser verified all stops, back/next, Escape/skip, replay, bill shortcut, reload and 1390px/390px layouts with no browser errors; 43 relevant tests passed. Sample operational records retained.
+
 - [x] Printable four-part demand bills and serial/payment reconciliation: immutable property snapshots, monthly/two-month issue, LGA batches, retained voids, teller/PSP comparisons and independent receipt/exception reviews. Browser verified refusals, discrepancy-to-matched revision, reloads, Cadastre/Revenue/Partners access, phone and one-page A4 print; 314 tests pass. Dummy only; authorised bill wording, real accounts and live bank connections remain deferred; no room credits or tonnage-based collection claims.
 
 - [x] MOD-10 stakeholder safeguards: risk/skip/broadcast plans; optical/radar alert and EFAG SLA; closed-loop spoil haulage; centroid/ward 5% clearinghouse and shared boundary maintenance; merchant decals/notices; synthetic anonymous channels, hashed evidence, attestation and bounties; dual-key remediation and explicit payment links. Browser verified refusals, all workflows, reload and phone. All external systems and legal authority remain deferred.
