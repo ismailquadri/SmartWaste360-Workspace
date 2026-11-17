@@ -424,7 +424,13 @@ function bindModules(){
  });
  journeyMain.querySelectorAll('button[data-fleet-district]').forEach(b=>b.onclick=()=>openFleetDistrict(b.dataset.fleetDistrict));
  journeyMain.querySelectorAll('[data-action]').forEach(b=>b.onclick=()=>runJourney(b.dataset.action));
- navRail.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>goJourney(b.dataset.go));
+ if(!navRail.dataset.navBound){
+  navRail.dataset.navBound='1';
+  navRail.addEventListener('click',e=>{
+   const b=e.target.closest('button[data-go]');
+   if(b&&navRail.contains(b))goJourney(b.dataset.go);
+  });
+ }
 }
 function renderNav(){
  const groups=[
@@ -435,7 +441,7 @@ function renderNav(){
  ];
  const prevScroll=navRail.scrollTop;
  const visibleKeys=groups.flatMap(([_,pages])=>pages.filter(p=>journeyNav.some(n=>n[0]===p)&&permitted(p))).join(',');
- if(navRail.dataset.renderedKeys===visibleKeys){
+ if(navRail.dataset.renderedKeys===visibleKeys&&navRail.querySelector('.nav-section')){
   navRail.querySelectorAll('button[data-go]').forEach(b=>{
    const active=b.dataset.go===journey.page;
    b.classList.toggle('active',active);
