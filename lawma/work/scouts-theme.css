@@ -1078,3 +1078,8 @@ html[data-theme]:root:not(#sc) .cg-stage-pill:hover {background:var(--sc-a4);col
 html[data-theme]:root:not(#sc) .cg-stage-pill.active {background:var(--sc-surface);color:var(--sc-heat-text);border-color:var(--sc-border-faint);font-weight:500;box-shadow:0 1px 2px rgb(0 0 0 / .05)}
 html[data-theme]:root:not(#sc) [role=tab].cg-tab-collapsed {display:none!important}
 html[data-theme]:root:not(#sc) .work-panel {content-visibility:visible}
+html[data-theme]:root:not(#sc) :is(.work-panel,.ov-panel) .journey-stats {display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:16px 0;padding:var(--sc-space-md) var(--sc-space-lg);margin:0;border-top:1px solid var(--sc-border-faint);border-bottom:1px solid var(--sc-border-faint)}
+html[data-theme]:root:not(#sc) :is(.work-panel,.ov-panel) .journey-stats>div {padding:0 var(--sc-space-md);border-left:1px solid var(--sc-border-faint)}
+html[data-theme]:root:not(#sc) :is(.work-panel,.ov-panel) .journey-stats>div:first-child {padding-left:0;border-left:0}
+html[data-theme]:root:not(#sc) :is(.work-panel,.ov-panel)>.drawer-actions {padding:var(--sc-space-md) var(--sc-space-lg);margin:0;border-top:1px solid var(--sc-border-faint)}
+@media (max-width:760px){html[data-theme]:root:not(#sc) :is(.work-panel,.ov-panel) .journey-stats {grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}html[data-theme]:root:not(#sc) :is(.work-panel,.ov-panel) .journey-stats>div {padding:0;border-left:0}}

@@ -31,21 +31,24 @@ const cgCan=()=>['management','operations','finance','enforcement','admin'].incl
 
 const cgOverviewPanel=()=>{
  const s=cg().streams,mb=cgNonLinearMassBalance(s);
- return panel('Non-linear circular mass-balance & diversion target','Tracks daily diversion across Jospong MRFs, the Epe Waste-to-Energy thermal plant, and organic biodigesters against the <= 4% landfill residual target.',
+ const rows=[
+  ['Dry recyclables (PET / Aluminium / Paper)','Jospong MRFs & Oshodi / Simpson Balers',s.mrfTonnes.toLocaleString('en-GB')+' t',Math.round(s.mrfTonnes/(mb.totalTonnes||1)*1000)/10+'%',pill('Off-taker active','good')],
+  ['High-calorific dry feedstock (>7.5 MJ/kg)','Epe Waste-to-Energy Plant (via 40T TLS & Barge)',s.epeWteTonnes.toLocaleString('en-GB')+' t',Math.round(s.epeWteTonnes/(mb.totalTonnes||1)*1000)/10+'%',pill('Within 3,000 t/d band','good')],
+  ['Organic wet biomass (Markets & Food)','Ikosi / Ketu Anaerobic Biodigesters & Compost',s.biodigesterTonnes.toLocaleString('en-GB')+' t',Math.round(s.biodigesterTonnes/(mb.totalTonnes||1)*1000)/10+'%',pill('Biogas / compost','good')],
+  ['Inert landfill residual','Solous II/III (100-truck cap) & Olushosun phase-down',s.landfillResidualTonnes.toLocaleString('en-GB')+' t',mb.landfillPct+'%',mb.meetsNonLinearTarget?pill('<= 4% Target Met','good'):pill('Transition ramp','amber')]
+ ];
+ return `<section class="ov-panel ov-wide"><header class="ov-panel-head"><h2>Non-linear circular mass-balance &amp; diversion target</h2><p>Tracks daily diversion across Jospong MRFs, the Epe Waste-to-Energy thermal plant, and organic biodigesters against the &lt;= 4% landfill residual target.</p></header>`+
   stats([
    ['Total daily mass',mb.totalTonnes.toLocaleString('en-GB')+' t','All 20 LGAs & 37 LCDAs'],
    ['Circular diversion',mb.divertedPct+'%','MRFs + Epe WTE + Biodigesters'],
    ['Landfill residual',mb.landfillPct+'%',mb.meetsNonLinearTarget?'Meets <= 4% non-linear target':'Above 4% residual target'],
    ['Epe WTE feedstock',s.epeWteTonnes.toLocaleString('en-GB')+' t','Target 2,500–3,000 t/day via TLS']
   ])+
-  table(['Circular stream','Destination infrastructure','Daily mass (t)','Share','Status'],[
-   ['Dry recyclables (PET / Aluminium / Paper)','Jospong MRFs & Oshodi / Simpson Balers',s.mrfTonnes.toLocaleString('en-GB')+' t',Math.round(s.mrfTonnes/(mb.totalTonnes||1)*1000)/10+'%',pill('Off-taker active','good')],
-   ['High-calorific dry feedstock (>7.5 MJ/kg)','Epe Waste-to-Energy Plant (via 40T TLS & Barge)',s.epeWteTonnes.toLocaleString('en-GB')+' t',Math.round(s.epeWteTonnes/(mb.totalTonnes||1)*1000)/10+'%',pill('Within 3,000 t/d band','good')],
-   ['Organic wet biomass (Markets & Food)','Ikosi / Ketu Anaerobic Biodigesters & Compost',s.biodigesterTonnes.toLocaleString('en-GB')+' t',Math.round(s.biodigesterTonnes/(mb.totalTonnes||1)*1000)/10+'%',pill('Biogas / compost','good')],
-   ['Inert landfill residual','Solous II/III (100-truck cap) & Olushosun phase-down',s.landfillResidualTonnes.toLocaleString('en-GB')+' t',mb.landfillPct+'%',mb.meetsNonLinearTarget?pill('<= 4% Target Met','good'):pill('Transition ramp','amber')]
-  ])+
-  (cgCan()?'<div class="drawer-actions">'+button('Update circular stream balance','cg-streams','',true)+'</div>':'')
- );
+  `<table class="ov-table"><thead><tr><th>Circular stream</th><th>Destination infrastructure</th><th class="num">Daily mass (t)</th><th class="num">Share</th><th>Status</th></tr></thead><tbody>`+
+  rows.map(([a,b,c,d,e])=>`<tr><td><b>${a}</b></td><td>${b}</td><td class="num">${c}</td><td class="num">${d}</td><td>${e}</td></tr>`).join('')+
+  `</tbody></table>`+
+  (cgCan()?'<div class="drawer-actions">'+button('Update circular stream balance','cg-streams','',true)+'</div>':'')+
+  `</section>`;
 };
 
 const cgCadastrePanel=()=>panel('LiDAR tenement density & border-street LCDA attribution','Prevents multi-story Brazilian tenements from under-declaring rooms as single-family bungalows and splits Section 102 border-street revenue by PostGIS centerline.',
