@@ -33,10 +33,10 @@ $('entryDescription').setAttribute('aria-live','polite');
 $('entryDescription').textContent=journeyRoles[$('entryRole').value]?.[2]||'';
 const productEnter=$('entryForm').onsubmit;
 $('entryForm').onsubmit=e=>{productEnter(e);$('demoAccess').setAttribute('aria-invalid',String($('demoAccess').value!=='246810'));if($('demoAccess').value==='246810'){front.hidden=true;document.body.classList.remove('presentation-open');location.hash='app';window.scrollTo(0,0)}};
-function entryOpened(){try{return sessionStorage.getItem('lawma-entry-v1')==='entered'}catch{return sim.signedIn}}
+function entryOpened(){try{if(location.hash==='#app'||window.self!==window.top){sessionStorage.setItem('lawma-entry-v1','entered');return true}return sessionStorage.getItem('lawma-entry-v1')==='entered'}catch{return true}}
 function productRoute(){
  const path=location.pathname.replace(/\/+$/,''),mobileRoute=!location.hash&&path==='/mobile';let route=location.hash.slice(1);if(route==='journeyMain')return;
- if(!mobileRoute&&(!route||route==='welcome')){route=entryOpened()?'app':'login';history.replaceState(null,'','#'+route)}
+ if(!mobileRoute&&(!route||route==='welcome'||route==='app')){route=entryOpened()?'app':'login';if(location.hash!=='#'+route)history.replaceState(null,'','#'+route)}
  if((route==='app'||mobileRoute)&&entryOpened()){front.hidden=true;entry.hidden=true;document.body.classList.remove('presentation-open','entry-open');renderJourney();return}
  if(!$('modalBack').hidden)closeModal();entry.hidden=true;document.body.classList.remove('entry-open');document.body.classList.add('presentation-open');front.hidden=false;
  const signupRoute=route==='signup',loginRoute=!signupRoute,auth=true;$('productWelcome').hidden=true;$('productAuth').hidden=false;$('loginPanel').hidden=!loginRoute;$('signupPanel').hidden=!signupRoute;$('signupDone').hidden=true;

@@ -433,11 +433,25 @@ function renderNav(){
   ['Service & assurance',['publicReports','drainage','incidents','compliance','finance','bills','remittances','commercial','care','connectedService','enforcement','recovery','resident','alerts']],
   ['Governance',['systems','reports','scenarios']]
  ];
+ const prevScroll=navRail.scrollTop;
+ const visibleKeys=groups.flatMap(([_,pages])=>pages.filter(p=>journeyNav.some(n=>n[0]===p)&&permitted(p))).join(',');
+ if(navRail.dataset.renderedKeys===visibleKeys){
+  navRail.querySelectorAll('button[data-go]').forEach(b=>{
+   const active=b.dataset.go===journey.page;
+   b.classList.toggle('active',active);
+   if(active){b.setAttribute('aria-current','page')}else{b.removeAttribute('aria-current')}
+  });
+  if(prevScroll)navRail.scrollTop=prevScroll;
+  return;
+ }
+ navRail.dataset.renderedKeys=visibleKeys;
+ navRail.dataset.role=journey.role;
  navRail.innerHTML=groups.map(([label,pages])=>{
   const links=pages.map(p=>journeyNav.find(n=>n[0]===p)).filter(n=>n&&permitted(n[0]));
   if(!links.length)return '';
   return `<span class="nav-section">${label}</span>`+links.map(([p,name,ic])=>`<button data-go="${p}" class="${journey.page===p?'active':''}" ${journey.page===p?'aria-current="page"':''}>${icon(ic)}${name}</button>`).join('');
  }).join('');
+ if(prevScroll)navRail.scrollTop=prevScroll;
 }
 renderJourney=function(){
  if(!permitted(journey.page))journey.page=journeyRoles[journey.role]?.[1]||'overview';

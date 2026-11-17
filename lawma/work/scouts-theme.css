@@ -982,7 +982,7 @@ html[data-theme]:root:not(#sc) #fleetMain {padding-inline:0}
 @media (min-width:851px) {
  html[data-theme]:root:not(#sc) #fleetMain .workspace {min-height:600px;max-height:none;height:max(600px,calc(100dvh - 350px))}
 }
-@media (max-width:1100px) {
+@media (max-width:850px) {
  html[data-theme]:root:not(#sc) {--sc-page-gutter:24px}
  html[data-theme]:root:not(#sc) .journey-nav {display:none}
  html[data-theme]:root:not(#sc) .practice-menu {display:flex;align-items:center;gap:var(--sc-space-xs);margin:var(--sc-space-sm) var(--sc-page-gutter)}
