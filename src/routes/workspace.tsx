@@ -27,7 +27,7 @@ function Workspace() {
     <main className="dashboard-host">
       <h1 className="sr-only">SmartWaste360 workspace</h1>
       <iframe
-        src="/dashboard.html"
+        src={DASHBOARD_SRC}
         title="SmartWaste360 workspace"
         className="dashboard-frame"
         allow="fullscreen; clipboard-write"
