@@ -82,6 +82,8 @@ parts = {
 parts['/*INFRAOPS*/'] += '\n' + '\n'.join(read('work/' + name + '.js') for name in ['tracker-payment-rules', 'tracker-payment-ops', 'landfill-quota-rules', 'landfill-quota-ops', 'kai-guard-rules', 'kai-guard-ops', 'kai-detention-rules', 'kai-detention-ops', 'kai-vault-ops', 'kai-disposal-rules', 'kai-disposal-ops', 'kai-yard-rules', 'kai-yard-ops', 'eco-guard-rules', 'eco-guard-ops', 'haz-guard-rules', 'haz-guard-ops', 'market-guard-rules', 'market-guard-ops'])
 parts['/*INFRAOPS*/'] += '\n' + '\n'.join(read('work/' + name + '.js') for name in ['drainage-guard-rules', 'drainage-guard-ops'])
 parts['/*INFRAOPS*/'] += '\n' + '\n'.join(read('work/' + name + '.js') for name in ['bill-rules', 'bill-ops', 'bill-care-rules', 'bill-care-ops'])
+parts['/*INFRAOPS*/'] += '\n' + '\n'.join(read('work/' + name + '.js') for name in ['property-directory-rules', 'property-directory-ops'])
+parts['/*INFRAOPS*/'] += '\nconst FL_ROUTES=' + read('work/alimosho-routes.json') + ';\n' + '\n'.join(read('work/' + name + '.js') for name in ['fleet-live-rules', 'fleet-live-ops', 'psp-profile-rules', 'psp-profile-ops'])
 parts['/*INFRAOPS*/'] += '\n' + '\n'.join(read('work/' + name + '.js') for name in ['circular-guard-rules', 'circular-guard-ops'])
 for key, name, mime in [
     ("PRODUCTLOGO", "smartwaste360.svg", "image/svg+xml"),

@@ -18,3 +18,8 @@
 
 - Module 08 safeguard 5 lives in haz-guard rules/ops after eco-guard; holds, fines and ash placement need a second official; valve locks and kiln diversion are simulated. Why: no automatic penalties or vehicle control from dummy evidence.
 - Module 09 market safeguards live in market-guard rules/ops after haz-guard, adding Markets tabs and wrapping cordon (needs a finished de-stocking pass) and reopening (needs a tripartite accord and reviewed seal tamper reports). Why: keep the existing case workflow and add gates around it.
+
+# Fleet and PSP oversight layers
+
+- The Alimosho live fleet lives in fleet-live rules/ops after property-directory, with road-aligned corridors in `alimosho-routes.json` inlined as `FL_ROUTES`; only `live` sample trucks move, the ping clock rebases legacy ages so their freshness never changes, and blockades hold or divert trucks without touching other records. Why: show simulated movement without implying real telemetry.
+- PSP performance profiles live in psp-profile rules/ops (last layer) as a full page inside Partners; metrics are deterministic sample values drifting per minute, suggested actions are never applied and need a second official to approve. Why: give management actionable oversight without automatic penalties.

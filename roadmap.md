@@ -1,5 +1,10 @@
 # Roadmap
 
+- [x] Improved Property & room register with cascading location filters, removable filters, Alimosho shortcuts, optional linked charts and clearer results; added 300 labelled synthetic Alimosho properties across ten areas (350 total including retained records), covering arrears, vacancies, mixed-use and enumeration gaps. Browser verified filtering, property details, chart drill-down, CSV and reload at 1133px/390px without errors; 55 related tests passed. Real resident data remains deferred.
+- [x] Linked Happy4's GitHub API connection to this remixed project and verified account access; automatic repository sync is separate.
+
+- [x] Expand the property register to at least 50 labelled sample properties per LGA (1,000 total on a fresh register); preserve existing records/balances, add location/category/unit filters, sorting, filtered charts, CSV export and property-entry metadata. Browser verified hierarchy search, sample household details, new house/room categories, export and reload retention at 1380px and 390px with no errors; 41 related rule tests passed. Real resident data remains deferred pending authorised sources and LAWMA acceptance.
+
 - [x] Refresh the workspace tour around seven management essentials and a daily checklist; browser verified all stops, back/next, Escape/skip, replay, bill shortcut, reload and 1390px/390px layouts with no browser errors; 43 relevant tests passed. Sample operational records retained.
 
 - [x] Printable four-part demand bills and serial/payment reconciliation: immutable property snapshots, monthly/two-month issue, LGA batches, retained voids, teller/PSP comparisons and independent receipt/exception reviews. Browser verified refusals, discrepancy-to-matched revision, reloads, Cadastre/Revenue/Partners access, phone and one-page A4 print; 314 tests pass. Dummy only; authorised bill wording, real accounts and live bank connections remain deferred; no room credits or tonnage-based collection claims.
@@ -82,3 +87,5 @@ Next Module 06 increment: commercial abatement. Proposed dummy workflows require
 - [ ] Real USSD short code and WhatsApp number (blocked: LAWMA to assign)
 - [x] MOD-02: dual-shift manifests, 05:00 lock + 60-min hot-swap, emergency reroute, retrofit telematics (fuel theft, compaction), Keke/Dino bin scans, dumpsite slots with hold-at-source (sample data; team test pending)
 - [x] MOD-03: beam, tamper, calibration, mud, leachate and commercial-class checks on weigh tickets (held tonnage excluded from weekly settlement)
+- [x] PSP full-page profiles with dynamic sample metrics, league table and second-official actions
+- [x] Fleet map: 120 simulated Alimosho trucks on real road corridors, live movement, street-level zoom, highway blockade simulation

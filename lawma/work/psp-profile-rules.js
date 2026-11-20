@@ -1,0 +1,12 @@
+/* PSP performance rehearsal rules. Scores, bands and weights are placeholders until LAWMA confirms franchise criteria. */
+const PSP_STRONG=80;
+const PSP_WATCH=65;
+const PSP_WEIGHTS={completion:0.3,onTime:0.2,csat:0.2,remittance:0.15,fleet:0.15};
+const PSP_NAMES=['Adeyemi Clean Ventures','Bayo Environmental Services','Crest Waste Logistics','Divine Grace Sanitation','Eko Green Haulage','Folarin Waste Partners','Golden Broom Services','Harmony Refuse Systems','Ilu Clean Enterprise','Jide & Sons Sanitation','Kolawole Environmental','Lagoon Waste Services','Morayo Clean City','Nnamdi Refuse Logistics','Olumide Green Works','Prime Sweep Nigeria','Quayside Sanitation','Ruby Environmental Care'];
+const pspHash=(s)=>{let h=2166136261;for(const c of String(s)){h^=c.charCodeAt(0);h=Math.imul(h,16777619)>>>0}return h};
+const pspNoise=(id,key,lo,hi,tick=0)=>{const h=pspHash(id+'|'+key),base=lo+(h%1000)/999*(hi-lo),drift=Math.sin((tick+(h%97))/3)*(hi-lo)*0.04;return Math.round(Math.min(hi,Math.max(lo,base+drift))*10)/10};
+const pspScore=(m)=>Math.round(m.completion*PSP_WEIGHTS.completion+m.onTime*PSP_WEIGHTS.onTime+m.csat*PSP_WEIGHTS.csat+m.remittance*PSP_WEIGHTS.remittance+m.fleetAvailability*PSP_WEIGHTS.fleet);
+const pspBand=(score)=>score>=PSP_STRONG?'Strong':score>=PSP_WATCH?'Watch':'Cure review';
+const pspActions=(m)=>[m.completion<80&&{key:'completion',title:'Collection completion below 80%',action:'Request a recovery plan for missed streets within 48 hours'},m.onTime<75&&{key:'ontime',title:'On-time arrival below 75%',action:'Review route schedules with the PSP dispatcher'},m.csat<50&&{key:'csat',title:'Resident satisfaction below 50%',action:'Open a cure review using returned bill stubs'},m.remittance<85&&{key:'remit',title:'Remittance compliance below 85%',action:'Reconcile declared collections against bank evidence'},m.fleetAvailability<75&&{key:'fleet',title:'Fleet availability below 75%',action:'Schedule a roadworthiness inspection of idle trucks'},m.openComplaints>=12&&{key:'complaints',title:'12 or more open resident complaints',action:'Assign a citizen-care officer to clear the backlog'},m.turnaround>95&&{key:'tls',title:'Facility turnaround above 95 minutes',action:'Agree off-peak dump slots with the transfer station'}].filter(Boolean);
+const pspRank=(rows)=>[...rows].sort((a,b)=>b.score-a.score||a.id.localeCompare(b.id)).map((r,i)=>({...r,rank:i+1}));
+const pspActionError=(a,by,me)=>a.status!=='Proposed'?'Only proposed actions can be approved.':by===me?'A second, different official must approve this action.':'';
